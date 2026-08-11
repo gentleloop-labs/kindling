@@ -1,0 +1,62 @@
+---
+interface Props {
+  /** Visual weight of the mascot. */
+  variant?: "hero" | "inline" | "dot";
+  /** Draw the drifting sparks that rise off the flame. */
+  sparks?: boolean;
+  class?: string;
+}
+
+const { variant = "inline", sparks = false, class: className = "" } = Astro.props;
+
+// Gradient ids must stay unique when the mascot appears more than once per page.
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+<span class:list={["ember", `ember--${variant}`, className]} aria-hidden="true">
+  <svg viewBox="0 0 200 240" role="presentation" focusable="false">
+    <defs>
+      <radialGradient id={`body-${uid}`} cx="50%" cy="72%" r="72%">
+        <stop offset="0%" stop-color="var(--ember-core)" />
+        <stop offset="48%" stop-color="var(--ember-mid)" />
+        <stop offset="100%" stop-color="var(--ember-edge)" />
+      </radialGradient>
+      <radialGradient id={`aura-${uid}`} cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--ember-mid)" stop-opacity="0.5" />
+        <stop offset="60%" stop-color="var(--ember-mid)" stop-opacity="0.14" />
+        <stop offset="100%" stop-color="var(--ember-mid)" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <circle class="ember-aura" cx="100" cy="132" r="98" fill={`url(#aura-${uid})`} />
+
+    <g class="ember-body">
+      <path
+        class="ember-flame"
+        fill={`url(#body-${uid})`}
+        d="M104 16 C108 50 130 62 145 83 C164 107 167 143 149 170 C133 195 116 207 99 207 C82 207 65 195 50 170 C33 143 37 105 57 81 C74 60 98 52 104 16 Z"
+      />
+      <path class="ember-shine" d="M63 100 C73 79 90 64 99 44" />
+
+      <g class="ember-face">
+        <ellipse class="ember-cheek" cx="60" cy="161" rx="11" ry="6.5" />
+        <ellipse class="ember-cheek" cx="142" cy="161" rx="11" ry="6.5" />
+        <g class="ember-eyes">
+          <circle class="ember-eye" cx="79" cy="140" r="8.5" />
+          <circle class="ember-eye" cx="122" cy="140" r="8.5" />
+          <circle class="ember-glint" cx="82" cy="137" r="2.7" />
+          <circle class="ember-glint" cx="125" cy="137" r="2.7" />
+        </g>
+        <path class="ember-smile" d="M86 160 Q100.5 175 115 160" />
+      </g>
+    </g>
+
+    {sparks && (
+      <g class="ember-sparks">
+        <circle class="ember-spark ember-spark--a" cx="150" cy="70" r="4.5" />
+        <circle class="ember-spark ember-spark--b" cx="47" cy="92" r="3.2" />
+        <circle class="ember-spark ember-spark--c" cx="128" cy="34" r="2.6" />
+      </g>
+    )}
+  </svg>
+</span>

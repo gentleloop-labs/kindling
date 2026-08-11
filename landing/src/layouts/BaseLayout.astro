@@ -1,0 +1,85 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import Ember from "../components/Ember.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#faf6f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1c1815" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href={canonicalURL} />
+    <title>{title}</title>
+    <script is:inline>
+      // Set before first paint so revealed sections never flash in and back out.
+      if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js-reveal");
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="wordmark" href="/" aria-label="Kindling home">
+          <Ember variant="dot" />
+          Kindling
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="/#how-it-works">How it works</a>
+          <a class="nav-try" href="/try/" data-track="try_clicked">Try it now</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <p><Ember variant="dot" /> A small start is still a start.</p>
+      <nav aria-label="Legal">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </nav>
+      <p>© {new Date().getFullYear()} Kindling</p>
+    </footer>
+
+    <script is:inline>
+      const header = document.querySelector(".site-header");
+      const setScrolled = () => header?.setAttribute("data-scrolled", String(window.scrollY > 8));
+      setScrolled();
+      window.addEventListener("scroll", setScrolled, { passive: true });
+
+      const reveals = document.querySelectorAll("[data-reveal]");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        reveals.forEach((element) => element.classList.add("is-visible"));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            });
+          },
+          { rootMargin: "0px 0px -12% 0px" }
+        );
+        reveals.forEach((element) => observer.observe(element));
+      }
+    </script>
+  </body>
+</html>

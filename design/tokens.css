@@ -1,0 +1,52 @@
+:root {
+  color-scheme: light dark;
+
+  --color-background: #faf6f1;
+  --color-surface: #f1eae1;
+  --color-surface-strong: #e7ddd1;
+  --color-text-primary: #2b2420;
+  --color-text-secondary: #6b5f55;
+  --color-accent: #a9471c;
+  --color-accent-ink: #ffffff;
+  --color-ember: #e8703a;
+  --color-glow: #f2a65c;
+  --color-celebration: #e8b84b;
+  --color-focus: #a9471c;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 2.5rem;
+  --space-6: 3rem;
+  --radius: 1.125rem;
+  --tap-min: 3rem;
+  --content-max: 72rem;
+  --measure: 42rem;
+  --shadow-soft: 0 1rem 3rem rgb(43 36 32 / 10%);
+  --motion-duration: 220ms;
+  --motion-ease: ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1c1815;
+    --color-surface: #262019;
+    --color-surface-strong: #332b23;
+    --color-text-primary: #f2ebe3;
+    --color-text-secondary: #a69a8c;
+    --color-accent: #f0824a;
+    --color-accent-ink: #1c1815;
+    --color-ember: #f0824a;
+    --color-glow: #f5b563;
+    --color-celebration: #e8b84b;
+    --color-focus: #f0824a;
+    --shadow-soft: 0 1rem 3rem rgb(0 0 0 / 28%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration: 1ms;
+  }
+}
