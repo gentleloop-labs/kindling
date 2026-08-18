@@ -8,10 +8,10 @@ import SwiftUI
 /// knows who bought what.
 struct SettingsScreen: View {
     @Environment(\.modelContext) private var context
-    @Environment(RevenueCatEntitlementStore.self) private var entitlements
+    @Environment(StoreKitEntitlementStore.self) private var entitlements
 
     @State private var isRestoring = false
-    @State private var restoreOutcome: RevenueCatEntitlementStore.RestoreResult?
+    @State private var restoreOutcome: StoreKitEntitlementStore.RestoreResult?
     @State private var haptics = true
     @State private var aiStepsEnabled = false
     @State private var notificationsOptIn = false
@@ -45,25 +45,24 @@ struct SettingsScreen: View {
                     }
                 }
 
-                // Hidden entirely when billing is not configured — a control that
-                // cannot work should not be visible. Same rule as the AI toggle.
-                if entitlements.isConfigured {
-                    Section {
-                        Button("Restore purchases") { Task { await restore() } }
-                            .disabled(isRestoring)
+                // Always shown. Under StoreKit 2 there is no SDK to configure and no
+                // key that can be missing, so unlike the AI toggle there is no state
+                // in which this control exists but cannot work.
+                Section {
+                    Button("Restore purchases") { Task { await restore() } }
+                        .disabled(isRestoring)
 
-                        if isRestoring {
-                            Text("Checking with Apple…")
-                                .font(.kindlingCaption)
-                                .foregroundStyle(KindlingColor.textSecondary)
-                        } else if let restoreOutcome {
-                            Text(Self.message(for: restoreOutcome))
-                                .font(.kindlingCaption)
-                                .foregroundStyle(KindlingColor.textSecondary)
-                        }
-                    } footer: {
-                        Text("Already bought Kindling on this Apple ID? This brings it back — on a new phone, or after reinstalling.")
+                    if isRestoring {
+                        Text("Checking with Apple…")
+                            .font(.kindlingCaption)
+                            .foregroundStyle(KindlingColor.textSecondary)
+                    } else if let restoreOutcome {
+                        Text(Self.message(for: restoreOutcome))
+                            .font(.kindlingCaption)
+                            .foregroundStyle(KindlingColor.textSecondary)
                     }
+                } footer: {
+                    Text("Already bought Kindling on this Apple ID? This brings it back — on a new phone, or after reinstalling.")
                 }
 
                 Section {
@@ -129,7 +128,7 @@ struct SettingsScreen: View {
 
     /// §13: no red, no alert boxes. "Nothing to restore" is a plain statement of fact,
     /// not a failure — it is the right answer for anyone who never purchased.
-    private static func message(for result: RevenueCatEntitlementStore.RestoreResult) -> String {
+    private static func message(for result: StoreKitEntitlementStore.RestoreResult) -> String {
         switch result {
         case .restored: "Your purchase is back."
         case .nothingToRestore: "Nothing to restore on this Apple ID."

@@ -123,7 +123,7 @@ Five concepts were developed (Ember, Snail, Sprout, Pebble, Bramble); **the Embe
 
 ## 10. Technical architecture
 
-**Kindling is an iOS app: Swift and SwiftUI, one Xcode project, no cross-platform layer.** Minimum deployment target iOS 17. Android is not planned and would only be reconsidered against real post-launch demand, as a separate native build.
+**Kindling is an iOS app: Swift and SwiftUI, one Xcode project, no cross-platform layer.** Minimum deployment target iOS 17. **Android is not planned — not now, and not later.** This is settled rather than deferred; treat a second platform as out of scope.
 
 *(This section replaces an earlier Kotlin Multiplatform recommendation. That recommendation existed to share logic between two native UIs; with one platform, the shared-module machinery is cost with no benefit. The reasoning that ruled out Flutter still stands and now applies more strongly, so it's kept below.)*
 
@@ -133,7 +133,7 @@ Five concepts were developed (Ember, Snail, Sprout, Pebble, Bramble); **the Embe
 
 **Persistence: SwiftData**, in an App Group container shared with the widget extension. See §11.
 
-**Payments: decided at build time, not here.** The original choice of RevenueCat rested on cross-platform entitlement state — one check answering "is the multi-task tier unlocked" regardless of which store the purchase came from. That reason is gone. StoreKit 2 handles one non-consumable and two subscriptions directly, with no dependency and no fee on top of Apple's 15%. The counterargument is §18's assumption that RevenueCat's paywall experimentation tools would run the pricing and paywall-timing tests. `IMPLEMENTATION.md` Phase 5 carries the trade-off; the call is made before purchase code is written.
+**Payments: StoreKit 2**, decided 2026-08-18 (§15). RevenueCat's original justification was cross-platform entitlement state — one check answering "is the multi-task tier unlocked" regardless of which store the purchase came from — and with one store that reason never applies. StoreKit 2 handles one non-consumable and two subscriptions directly, with no dependency and no fee on top of Apple's 15%.
 
 ---
 
@@ -170,7 +170,7 @@ Five concepts were developed (Ember, Snail, Sprout, Pebble, Bramble); **the Embe
 Kept deliberately minimal for v1, per the standing "no AI without a working fallback" principle:
 
 - **v1: template-based first-step generation only, no AI at all.** Deterministic, offline-capable, zero latency, zero per-request cost, zero privacy exposure. This also means the most vulnerable moment in the whole product — someone's very first attempt to use it, in onboarding — never depends on a network call or an AI provider being up.
-- **v1.1: AI-assisted step generation as an opt-in layer on top of the proven template baseline**, not a replacement for it. Candidate approach: a single hosted API call per request (task text in, one suggested step out), since bundling an on-device model is disproportionate solo-dev effort for v1.1 — Apple's and Google's on-device foundation-model APIs (Apple Intelligence / Foundation Models framework, Gemini Nano) are worth revisiting as they mature, as a lower-latency, fully private alternative once they're a better fit than a server call.
+- **v1.1: AI-assisted step generation as an opt-in layer on top of the proven template baseline**, not a replacement for it. Candidate approach: a single hosted API call per request (task text in, one suggested step out), since bundling an on-device model is disproportionate solo-dev effort for v1.1 — Apple's on-device foundation-model API (Apple Intelligence / Foundation Models framework) is worth revisiting as it matures, as a lower-latency, fully private alternative once they're a better fit than a server call.
 - **Evaluation criteria applied to any future AI feature:** does it solve something the deterministic path genuinely can't (rather than just sounding more impressive); what's the added latency in the moment someone's already struggling to start; what leaves the device and under what disclosure; what happens when the AI call fails or is offline (must degrade to the template path, never to a dead end).
 - **Not planned:** on-device obstacle-type detection, AI-generated encouragement copy, or any AI feature whose failure mode could plausibly generate bad advice in a moment of genuine distress — kept out on the same "no feature that could render as harm" principle as the rest of the product.
 
@@ -192,7 +192,7 @@ No red anywhere in the system, including the timer's final seconds — the no-fa
 
 **Components:** flat-fill buttons, no gradient overlays (a common tell of AI-generated-looking design), 48×48pt minimum tap targets; soft-filled inputs, glow-based focus state instead of hard outlines; circular timer ring in the accent color with the Ember centered inside, no color shift as time runs low; platform-native icon sets for anything functional, with custom illustration budget reserved entirely for the Ember.
 
-**Accessibility:** full Dynamic Type; VoiceOver/TalkBack labels on every Ember state change (state changes are visual by default and need an explicit text equivalent); no color-only signaling; reduced-motion fallback.
+**Accessibility:** full Dynamic Type; VoiceOver labels on every Ember state change (state changes are visual by default and need an explicit text equivalent); no color-only signaling; reduced-motion fallback.
 
 **Empty/error states:** a small resting Ember plus one warm line of copy for empty states; errors framed as "let's try that differently," never a red alert box.
 
@@ -234,11 +234,11 @@ No red anywhere in the system, including the timer's final seconds — the no-fa
 - Unlimited AI-assisted steps (secondary, power-user bonus)
 - Home-screen widget beyond the Live Activity, Watch app, custom timer durations, additional sound themes
 
-**Pricing:** Monthly $3.99 (offered, not default); **Annual $19.99/yr (default)** — meaningfully undercuts Tiimo (~$54-80/yr), Finch (~$40-70/yr), Llama Life ($39/yr); **Lifetime $44.99 one-time** — the real differentiator, since none of the direct competitors researched offer one, and it directly answers the subscription-fatigue complaint that shows up repeatedly in their own reviews. 7-day trial. Regional pricing via Apple's/Google's built-in PPP tiers, no custom logic. Skip student pricing for v1. Native family sharing enabled at no extra build cost.
+**Pricing:** Monthly $3.99 (offered, not default); **Annual $19.99/yr (default)** — meaningfully undercuts Tiimo (~$54-80/yr), Finch (~$40-70/yr), Llama Life ($39/yr); **Lifetime $44.99 one-time** — the real differentiator, since none of the direct competitors researched offer one, and it directly answers the subscription-fatigue complaint that shows up repeatedly in their own reviews. 7-day trial. Regional pricing via Apple's built-in PPP tiers, no custom logic. Skip student pricing for v1. Native family sharing enabled at no extra build cost.
 
-**Store fees, confirmed current:** Apple charges **15%**, not the standard 30%, via the Small Business Program (automatic for new developers under $1M/year). If RevenueCat is chosen over StoreKit 2 (§10), its own fee sits on top of that — standard tier is free up to a monthly tracked-revenue threshold, then a small percentage; confirm the current threshold and rate directly before finalizing the revenue math, since that's a RevenueCat pricing detail rather than an Apple one. Regional pricing note above still applies; the Google Play half of it is moot.
+**Store fees, confirmed current:** Apple charges **15%**, not the standard 30%, via the Small Business Program (automatic for new developers under $1M/year). That is the whole fee — billing is StoreKit 2, so nothing sits on top of it. Regional pricing note above still applies.
 
-**Payments infrastructure: RESOLVED — RevenueCat (2026-08-18).** Required for Shipaton eligibility; see `IMPLEMENTATION.md` Phase 5 for why this overrode the technical recommendation below, which is left in place as the record of the original reasoning. ~~The default is **StoreKit 2 directly**~~ — one non-consumable and two subscriptions is a small surface, and Apple handles receipt validation, renewal, and restore natively. RevenueCat remains a reasonable alternative if its paywall experimentation tooling (§18) is judged worth a dependency and an added fee; its original justification, cross-platform entitlement state, no longer applies to a single-platform app.
+**Payments infrastructure: RESOLVED — StoreKit 2 (2026-08-18).** One non-consumable and two subscriptions is a small surface, and Apple handles receipt validation, renewal, and restore natively. RevenueCat's original justification was cross-platform entitlement state, which never applies to a single-platform app; it was briefly adopted anyway on the premise that Android was returning, and dropped again when that premise did. The cost of the decision is §18's paywall-experimentation tooling, which is now manual, and subscription analytics, which move to TelemetryDeck. See `IMPLEMENTATION.md` Phase 5.
 
 **Paywall timing:** shown when someone tries to start a second concurrent task, from a settings "Upgrade" entry always available, and a single soft tease of "Patterns" once there's enough session history (5-7 sessions) for it to say something real. Never during onboarding, never mid-session.
 
@@ -286,7 +286,7 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 **Funnel:** `onboarding_started` → `task_entered` → `first_step_shown` → `session_started` → `session_outcome` → (days later) `second_task_attempted` → `paywall_shown` → `upgrade_completed`.
 
-**Experiment framework:** a simple remote-config flag covers headline framing, sample-chip presence, and timer length. The pricing and paywall-timing tests depend on the §10/§15 billing decision: RevenueCat would cover them with its own paywall experimentation tools, whereas StoreKit 2 means running them manually across releases — the main thing given up by dropping the dependency, and worth weighing deliberately rather than by default.
+**Experiment framework:** a simple remote-config flag covers headline framing, sample-chip presence, and timer length. The pricing and paywall-timing tests are **manual, across releases** — billing is StoreKit 2 (§15), and RevenueCat's paywall experimentation tooling was the main thing given up in that decision. Plan those tests as deliberate, infrequent releases rather than as something the billing layer runs for you.
 
 ---
 
@@ -306,9 +306,9 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 *Engineering-level guidance on what needs professional review — not legal advice.*
 
-**Needs an actual lawyer:** the privacy policy and terms of use (straightforward to draft given how simple the local-first data flows are, but should still get real review — ADHD-adjacent framing brushes against health-app-adjacent scrutiny in some jurisdictions, e.g. EU/UK, even for a product that explicitly isn't a medical device); the exact legal phrasing and placement of the non-diagnostic disclaimer; the App Store/Play Store age-rating questionnaire, filled out against final content.
+**Needs an actual lawyer:** the privacy policy and terms of use (straightforward to draft given how simple the local-first data flows are, but should still get real review — ADHD-adjacent framing brushes against health-app-adjacent scrutiny in some jurisdictions, e.g. EU/UK, even for a product that explicitly isn't a medical device); the exact legal phrasing and placement of the non-diagnostic disclaimer; the App Store age-rating questionnaire, filled out against final content.
 
-**Straightforward, because the architecture makes it true rather than just claimed:** local-only storage by default, deletion via the existing "clear finished tasks" action (no server copy to also delete), a simple local-data export option worth adding for portability, payments handled entirely by Apple (no PCI burden; if RevenueCat is used it needs its own line in the privacy policy as a data processor, alongside TelemetryDeck below, and if StoreKit 2 is used the processor list may reduce to TelemetryDeck alone), no cloud sync in v1 (needs its own privacy review whenever it's added), voice input deferred (needs mic-usage disclosure and a retention statement when it ships).
+**Straightforward, because the architecture makes it true rather than just claimed:** local-only storage by default, deletion via the existing "clear finished tasks" action (no server copy to also delete), a simple local-data export option worth adding for portability, payments handled entirely by Apple (no PCI burden, and **no billing processor to disclose** — StoreKit 2 adds no third party, so the processor list is TelemetryDeck plus OpenAI where the optional AI tier is used), no cloud sync in v1 (needs its own privacy review whenever it's added), voice input deferred (needs mic-usage disclosure and a retention statement when it ships).
 
 **Needs disclosure once built:** any third-party AI provider used for AI-assist (disclose that a task's text is sent for that single request; verify the provider's *current* data-retention/training-use terms before launch, not assumed from today); TelemetryDeck/analytics collection (declared accurately in privacy policy and store privacy labels, even though it's privacy-first); any crash reporting tool, configured to scrub PII and verified not to capture task text in stack traces.
 
@@ -373,7 +373,7 @@ Timelines aren't set here deliberately — complexity ratings are the honest inp
 - Exact AI provider for v1.1's AI-assist, and their current data-retention/training-use terms — not resolved here, needs a check at build time, not launch-planning time.
 - Whether the one-task-free / multi-task-paid boundary actually converts as intended — genuinely unknown until `second_task_attempted` data exists.
 - Whether the design system's color palette passes real WCAG contrast checks as specified, or needs adjustment.
-- StoreKit 2 or RevenueCat for billing (§10/§15) — the trade is the paywall-experimentation tooling in §18 against a dependency and an added fee. Decide before purchase code is written.
+- ~~StoreKit 2 or RevenueCat for billing (§10/§15)~~ — **resolved 2026-08-18: StoreKit 2.** See §15 and `IMPLEMENTATION.md` Phase 5. §18's paywall experimentation is manual as a result, and should be re-read against that.
 - Whether TelemetryDeck's current pricing still fits a pre-revenue solo budget — not reconfirmed since the initial check.
 
 ## 25. Final recommendation

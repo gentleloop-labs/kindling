@@ -142,3 +142,31 @@ struct ActiveTaskPolicyTests {
         #expect(ActiveTaskPolicy.canStartAnotherTask(currentActiveCount: 5, hasMultiTaskEntitlement: true))
     }
 }
+
+struct ProductIDTests {
+    @Test("all three §15 products grant the multi-task entitlement")
+    func everyProductGrants() {
+        for id in ProductID.all {
+            #expect(ProductID.entitlement(for: id) == .multiTask)
+        }
+        #expect(ProductID.all.count == 3)
+    }
+
+    @Test("an unrecognised product grants nothing")
+    func unknownProductGrantsNothing() {
+        // StoreKit can hand back a transaction for a product this build no longer
+        // knows about. "I don't recognise this" must read as *grants nothing*.
+        #expect(ProductID.entitlement(for: "dev.aftaab.kindling.something.else") == nil)
+        #expect(ProductID.entitlement(for: "") == nil)
+    }
+
+    @Test("product identifiers are namespaced under the bundle ID and are distinct")
+    func identifiersAreWellFormed() {
+        // A typo here is invisible at build time and surfaces only as "no products
+        // found" on a real device, long after the mistake was made.
+        for id in ProductID.all {
+            #expect(id.hasPrefix("dev.aftaab.kindling."))
+        }
+        #expect(Set([ProductID.monthly, ProductID.annual, ProductID.lifetime]).count == 3)
+    }
+}

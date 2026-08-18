@@ -1,6 +1,6 @@
 # Implementation status
 
-Updated: 2026-08-17
+Updated: 2026-08-18
 
 ## Phase 0 — Validation
 
@@ -30,7 +30,7 @@ Automated verification at this checkpoint:
 
 State: **in progress — gate released 2026-08-17**
 
-Stack: Swift + SwiftUI, iOS 17+, SwiftData, one Xcode project. The earlier Kotlin Multiplatform plan is superseded; see `IMPLEMENTATION.md`.
+Stack: Swift + SwiftUI, iOS 17+, SwiftData, one Xcode project. **iOS only, permanently** — see `IMPLEMENTATION.md`, which also records why the earlier Kotlin Multiplatform plan was superseded.
 
 The `ios/` gate is released. It was released by an explicit owner `GO` recorded in `docs/validation-results.md`, not by validation evidence — that distinction is recorded there and should not be smoothed over later.
 
@@ -51,7 +51,7 @@ State: **code complete; simulator-verified. Device verification of the Live Acti
 | Live Activity | Code complete | Activity created and `active` on simulator, adopted by SpringBoard and chronod (confirmed in the ActivityKit log) |
 | Accessibility | Complete for Dynamic Type | Largest accessibility size on every screen with no clipping or truncation |
 
-Automated verification: **40 tests in `KindlingCore`, passing, with no simulator required.**
+Automated verification: **67 tests in `KindlingCore`, passing, with no simulator required.**
 
 Run them with `cd ios/Packages/KindlingCore && swift test`.
 
@@ -91,23 +91,32 @@ The fix is an Xcode version that supports iOS 26.6; no amount of local configura
 will resolve it.
 
 Left to verify on hardware once that lands:
-- Live Activity rendered on a real lock screen (the simulator cannot be screenshotted
-  for this — `simctl io screenshot` does not composite the Activity layer).
+- Live Activity rendered on a real lock screen. **Not verifiable from the command line
+  either**: `simctl io screenshot` does not composite the Activity or Dynamic Island
+  layer, so the Activity is provably created and adopted but how it *looks* is
+  unconfirmed on any surface.
 - Activity dismissed by the user mid-session, and the app reconciling on next foreground.
 - Session ending while backgrounded, and the local notification actually being delivered
   (the copy and its privacy guarantee are unit-tested; delivery is not).
+- VoiceOver walked through a complete session, confirming each Ember state is announced.
 - Dynamic Island — **not testable on this device at all**: the iPhone 12 has none.
   Needs an iPhone 14 Pro or later, or the simulator.
 
-- Live Activity rendered on a real lock screen. **Not verifiable from the command line**: `simctl io screenshot` does not composite the Dynamic Island or Live Activity layer, so no screenshot can confirm the presentation. The Activity is provably created and active; how it *looks* is still unconfirmed.
-- App force-quit mid-session, with the Activity surviving and staying accurate.
-- User dismissing the Activity mid-session, and the app reconciling on next foreground.
-- Session ending while backgrounded, and the local notification firing.
-- Device rebooted mid-session.
-- VoiceOver walked through a complete session, confirming each Ember state is announced.
-
-One further gap worth recording: the available device is an **iPhone 12, which has no Dynamic Island**. The lock-screen presentation can be verified on it; the Dynamic Island presentation cannot, and needs an iPhone 14 Pro or later, or the simulator.
 
 ## Phase 5
 
-State: not started, deliberately deferred. Still owed: the StoreKit 2 vs. RevenueCat call, TelemetryDeck and the event taxonomy, paywall UI, local JSON export, legal review of privacy/terms/disclaimer, App Review notes, and TestFlight distribution.
+State: **in progress.** Full sequence and dates in `docs/release-plan.md`, which is the
+authority for this phase; this table is the summary.
+
+| Item | State | Evidence / next action |
+|---|---|---|
+| Billing decision | **Settled 2026-08-18 — StoreKit 2** | Resolved after a reversal to RevenueCat and back; Android was the whole basis for the reversal. Reasoning in `IMPLEMENTATION.md` Phase 5 |
+| 5.1 StoreKit 2 plumbing | Complete | `ProductID` + `EntitlementProviding` in `KindlingCore` (zero dependencies); `StoreKitEntitlementStore` in the app target with a lifetime `Transaction.updates` listener. Debug and signed Release both build clean |
+| Local purchase testing | Complete | `ios/Kindling.storekit` wired to the Debug scheme — purchases testable without App Store Connect or the Paid Applications Agreement |
+| 5.2a Restore Purchases | Complete | Settings row on `AppStore.sync()`, three outcomes kept distinct, always visible |
+| 5.2 Paywall UI | Not started | Build against `Kindling.storekit`; no external dependency |
+| 5.3 Second-task trigger | Not started | `ActiveTaskPolicy` already encodes the boundary and is unit-tested; the paywall attaches where it is enforced |
+| 5.4 TelemetryDeck + §18 events | Not started | **Promoted in importance.** With RevenueCat gone this is the *only* source of subscription and conversion data; `second_task_attempted` first |
+| 5.5 Legal + store assets | Not started, **blocking, external latency** | Two processors: TelemetryDeck + OpenAI. See `docs/ai-privacy-todo.md` — including the still-open question of whether the hosted AI tier is worth keeping at all |
+| 5.6 TestFlight → submit | Not started | Target: submission 2026-08-31 |
+| Local JSON export (§20) | Not started | |

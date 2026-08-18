@@ -34,11 +34,6 @@ KINDLING_STEP_HOST = kindling-step.maskedsyntax.workers.dev
 // the app simply stays local-only.
 KINDLING_APP_TOKEN =
 
-// RevenueCat public SDK key. Safe to ship in the binary — it is the key RevenueCat
-// intends clients to carry, unlike a secret API key. Lives in Local.xcconfig for
-// now so it is not committed before the account exists.
-KINDLING_REVENUECAT_KEY =
-
 #include? "Local.xcconfig"
 
 CLANG_ENABLE_MODULES = YES

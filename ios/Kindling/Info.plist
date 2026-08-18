@@ -14,8 +14,6 @@
 	<string>6.0</string>
 	<key>KindlingStepHost</key>
 	<string>$(KINDLING_STEP_HOST)</string>
-	<key>KindlingRevenueCatKey</key>
-	<string>$(KINDLING_REVENUECAT_KEY)</string>
 	<key>KindlingAppToken</key>
 	<string>$(KINDLING_APP_TOKEN)</string>
 	<key>CFBundleDisplayName</key>

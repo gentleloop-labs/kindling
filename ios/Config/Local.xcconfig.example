@@ -2,8 +2,3 @@
 //   wrangler secret put APP_TOKEN
 // Without this, the app runs template-only and the AI toggle stays hidden.
 KINDLING_APP_TOKEN = paste-your-app-token-here
-
-// RevenueCat public SDK key (starts with `appl_`). Get it from the RevenueCat
-// dashboard once the project exists. Without it the app runs free-tier only and
-// the Upgrade entry is hidden rather than shown broken.
-KINDLING_REVENUECAT_KEY = paste-your-revenuecat-public-key-here

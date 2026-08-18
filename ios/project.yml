@@ -19,11 +19,6 @@ packages:
     path: Packages/KindlingCore
   KindlingUI:
     path: Packages/KindlingUI
-  # Billing. Required for Shipaton eligibility; see IMPLEMENTATION.md Phase 5 for
-  # why this overrode the StoreKit 2 recommendation.
-  RevenueCat:
-    url: https://github.com/RevenueCat/purchases-ios
-    from: 5.0.0
 
 targets:
   Kindling:
@@ -34,8 +29,6 @@ targets:
     dependencies:
       - package: KindlingCore
       - package: KindlingUI
-      - package: RevenueCat
-        product: RevenueCat
       - target: KindlingWidget
         embed: true
     settings:
@@ -70,5 +63,10 @@ schemes:
         Kindling: all
     run:
       config: Debug
+      # Local StoreKit products, so the paywall and the entitlement paths are
+      # testable without the Paid Applications Agreement, App Store Connect, or a
+      # sandbox Apple ID — all of which have external latency we do not control.
+      # Debug only; Release talks to the real App Store.
+      storeKitConfiguration: Kindling.storekit
     archive:
       config: Release

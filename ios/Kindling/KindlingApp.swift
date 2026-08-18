@@ -13,15 +13,10 @@ struct KindlingApp: App {
 
     /// Entitlement state, held for the app's lifetime so the paywall check never
     /// waits on the network mid-flow.
-    @State private var entitlements = RevenueCatEntitlementStore()
+    @State private var entitlements = StoreKitEntitlementStore()
 
     init() {
         container = Result { try KindlingStore.makeModelContainer() }
-        // Configure before any view can ask about entitlements. A missing key is
-        // normal during development and simply means "not entitled" everywhere.
-        RevenueCatEntitlementStore.configure(
-            apiKey: Bundle.main.object(forInfoDictionaryKey: "KindlingRevenueCatKey") as? String ?? ""
-        )
     }
 
     var body: some Scene {
@@ -31,7 +26,9 @@ struct KindlingApp: App {
                 RootView()
                     .modelContainer(container)
                     .environment(entitlements)
-                    .task { await entitlements.refresh() }
+                    // `start()` also takes the first reading, so this covers both
+                    // the launch refresh and the long-lived transaction listener.
+                    .task { entitlements.start() }
             case .failure(let error):
                 StoreFailureView(message: String(describing: error))
             }

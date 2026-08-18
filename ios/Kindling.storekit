@@ -1,0 +1,93 @@
+{
+  "identifier": "B92BD717-2328-5A90-9AC4-7FB823438E54",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "44.99",
+      "familyShareable": true,
+      "internalID": "8DF36A5E-D17D-546A-944A-95A9FF18CD27",
+      "localizations": [
+        {
+          "description": "Park as many tasks as you need, forever. One payment.",
+          "displayName": "Kindling, for good",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "dev.aftaab.kindling.multitask.lifetime",
+      "referenceName": "Lifetime",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_applicationInternalID": "kindling",
+    "_developerTeamID": "",
+    "_failTransactionsEnabled": false,
+    "_lastSynchronizedDate": 0,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [
+    {
+      "id": "9AFBF20E-411B-59CB-A796-FE8F6726E501",
+      "localizations": [],
+      "name": "Multi-task",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "3.99",
+          "familyShareable": true,
+          "groupNumber": 1,
+          "internalID": "F0902014-5861-55C0-8875-25F286DD03C3",
+          "introductoryOffer": {
+            "internalID": "56DE532B-9F12-5032-BD3C-132D61E745C1",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P1W"
+          },
+          "localizations": [
+            {
+              "description": "Park as many tasks as you need.",
+              "displayName": "Monthly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "dev.aftaab.kindling.multitask.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Monthly",
+          "subscriptionGroupID": "9AFBF20E-411B-59CB-A796-FE8F6726E501",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "19.99",
+          "familyShareable": true,
+          "groupNumber": 1,
+          "internalID": "9E079F5A-C4DD-563A-9388-389D2E4E5FCB",
+          "introductoryOffer": {
+            "internalID": "350BC0E7-B73C-5297-97BA-EFB57FAF7E70",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P1W"
+          },
+          "localizations": [
+            {
+              "description": "Park as many tasks as you need.",
+              "displayName": "Annual",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "dev.aftaab.kindling.multitask.annual",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Annual",
+          "subscriptionGroupID": "9AFBF20E-411B-59CB-A796-FE8F6726E501",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}

@@ -4,7 +4,7 @@
 
 `docs/kindling-full-plan.md` is the product source of truth for Kindling, an ADHD task-initiation app: name the avoided task → get a small first step → run a short timer → three no-shame outcomes. This document is the engineering counterpart — it turns that product plan into an executable sequence.
 
-**Kindling is an iOS app.** It is built in Swift and SwiftUI, in one Xcode project, with no cross-platform layer. Android is not planned, not scaffolded, and not designed for; it becomes a question only if there is a real, evidenced demand signal after iOS v1 ships, and it would be a separate native build starting from this same product plan.
+**Kindling is an iOS app, and only an iOS app.** It is built in Swift and SwiftUI, in one Xcode project, with no cross-platform layer. **Android is not planned — not now, and not later.** This is a settled product decision rather than a deferral, and it is load-bearing: several choices below are correct *because* there is one platform and would need re-deciding if that ever changed. Nothing in this plan should be written to keep an Android door open.
 
 This supersedes the earlier Kotlin Multiplatform plan. §10 of the product plan chose KMP to share logic between two native UIs — with only one platform, that argument disappears entirely and the shared-module tax is pure cost. §11's Room dependency goes with it.
 
@@ -17,7 +17,7 @@ This supersedes the earlier Kotlin Multiplatform plan. §10 of the product plan 
 | Persistence | SwiftData | Native, minimal code, integrates directly with SwiftUI; App Group container shared with the widget target |
 | Concurrency | Swift 6 language mode, strict concurrency | Cheap to adopt in a greenfield codebase, expensive to retrofit |
 | Sequencing | Validation gate first | Unchanged from the original plan — §25 says the next step is validation, not engineering |
-| Billing | **RevenueCat** (decided 2026-08-18) | Reversed from StoreKit 2 — see Phase 5. Android is intended eventually, which restores the original cross-platform-entitlement argument; subscription analytics are the near-term payoff |
+| Billing | **StoreKit 2** (settled 2026-08-18) | One store, so RevenueCat's cross-platform-entitlement argument never applies. No dependency in the purchase path, no third data processor, no fee above Apple's 15% — see Phase 5 |
 
 **Feature scope is unchanged.** Every feature in §7 of the product plan ships as specified. Nothing was added or cut in this replan — only the stack under it changed.
 
@@ -172,49 +172,72 @@ Then work the failure paths deliberately, because these are where it breaks in t
 
 The deferred work, batched so it lands together before beta.
 
-### Billing — a decision this replan reopens
-§10 and §15 chose RevenueCat, and the stated reason was **cross-platform entitlement state**: "is the multi-task tier unlocked" resolving identically whether the purchase came from Apple or Google. With Android gone, that reason is gone with it. StoreKit 2 on its own is a small, well-documented API for one non-consumable and two subscriptions, and it removes both a dependency and RevenueCat's fee on top of Apple's 15%.
+### Billing — StoreKit 2
 
-**Decision: RevenueCat. Reversed 2026-08-18.**
+**Decision: StoreKit 2. Settled 2026-08-18, after one reversal and a reversal of the reversal.**
 
-The rejection above was reasoned from a premise that no longer holds. It killed
-RevenueCat because cross-platform entitlement state — its original justification —
-became irrelevant once Android was dropped. **Android is intended again**, so that
-justification returns on its own terms. This is a reversal of the premise, not an
-override of the conclusion.
+The history is short and worth keeping, because the mistake in the middle is instructive:
 
-Two further reasons the original analysis under-weighted, both of which hold even
-while the app is iOS-only:
+1. §10 and §15 originally chose **RevenueCat**, for one stated reason —
+   **cross-platform entitlement state**: "is the multi-task tier unlocked" resolving
+   identically whether the purchase came from Apple or Google.
+2. The iOS-only replan **rejected** it. With one store, that reason evaporates.
+3. It was then **reversed back to RevenueCat** on the premise that "Android is intended
+   again".
+4. **Android is now permanently off the table**, so premise 3 is void and the choice
+   returns to StoreKit 2.
 
-- **Subscription analytics.** MRR, churn, trial conversion, and cohort data arrive
-  for free. §15's revenue model is explicitly labelled assumption rather than
-  forecast ("3-6% freemium conversion, no ADHD-specific benchmark available"), and
-  §15 names the number that actually matters — *what fraction of active users
-  attempt a second task in their first month*. RevenueCat answers that on day one;
-  StoreKit 2 leaves it a guess unless the instrumentation is hand-built.
-- **§18's pricing and paywall-timing A/B tests**, which the StoreKit 2 choice had
-  written off as manual work across releases.
+Step 3 is the error to learn from: it was a decision resting entirely on a roadmap
+intention rather than on anything the product does. When the intention moved, the
+decision had nothing left holding it up. **Prefer decisions justified by what is being
+built over decisions justified by what might be built later.**
 
-Costs, unchanged and still real:
-- A third-party dependency in the purchase path.
-- **A third data processor** in the privacy policy, alongside TelemetryDeck and
-  OpenAI. Legal review is already on the critical path; this adds to it.
-- RevenueCat's fee above Apple's 15% — though at §15's own projected scale this is
-  theoretical for a long while, since RevenueCat is free below its tracked-revenue
-  threshold.
+StoreKit 2 is a small, well-documented API for one non-consumable and two subscriptions.
+It removes a dependency from the purchase path, removes a third data processor from a
+privacy policy that is already on the critical path, and removes RevenueCat's fee on top
+of Apple's 15%. On a single store, Apple already *is* the record of who bought what,
+which is why §7's "no accounts" is not a compromise on iOS — it is simply correct.
 
-**Shipaton is not the reason.** Entering it requires the RevenueCat SDK, and Kindling
-is being entered — but the release window (2026-08-01 to 09-30) already contains the
-independently chosen 08-31 submission date, so eligibility costs nothing extra and
-justifies nothing on its own.
+**What is genuinely given up, and where it goes instead:**
 
-### What this does *not* change
+| Lost with RevenueCat | Where it is handled now |
+|---|---|
+| Subscription analytics — MRR, churn, trial conversion, cohorts | **TelemetryDeck**, Phase 5.4. This is not free any more; it is instrumentation that must be written. It is also the reason 5.4 is no longer optional |
+| §18's pricing and paywall-timing A/B tests | Manual, across releases. §18 should be re-read against that constraint before it is treated as a plan |
+| Shipaton eligibility (requires the RevenueCat SDK to power a purchase) | **Forfeited, knowingly.** The 08-31 submission date was chosen independently and is earlier than Shipaton's window closes; nothing in the schedule depended on entering |
 
-Android returning as an intention does not re-open the rest of the iOS-only cascade.
-KMP stays rejected, SwiftData stays. But record the real cost honestly: **`KindlingCore`
-is Swift**, so an Android build means reimplementing the step engine and session state
-machine, not sharing them. RevenueCat makes *entitlements* cross-platform; it does
-nothing for the domain layer. Revisit only against a real demand signal, per §10.
+**The analytics gap is the one real cost, and it must not be quietly dropped.** §15's
+revenue model is explicitly labelled assumption rather than forecast ("3-6% freemium
+conversion, no ADHD-specific benchmark available"), and §15 names the number that
+actually matters — *what fraction of active users attempt a second task in their first
+month*. RevenueCat would have answered that on day one. `second_task_attempted` in Phase
+5.4 is now the only thing that will, which is why it is the first event to build.
+
+**A gain worth naming:** a local **StoreKit Configuration File** (`ios/Kindling.storekit`,
+wired to the Debug scheme) makes the paywall and every entitlement path testable *today*,
+without App Store Connect, a sandbox Apple ID, or the Paid Applications Agreement — the
+last of which is the single highest-latency blocker on the release critical path.
+
+### Implementation shape
+
+`EntitlementProviding`, `Entitlement`, and `ProductID` live in `KindlingCore` with **zero
+dependencies**, so the product-to-entitlement mapping and `ActiveTaskPolicy` are both
+unit-tested without a store account, a network, or a purchase.
+`StoreKitEntitlementStore` implements the protocol in the app target.
+
+Three things that are easy to get wrong and are therefore fixed by design:
+
+- **`Transaction.updates` must be listened to for the app's lifetime.** Without it an
+  Ask-to-Buy approval, a purchase made on another device, or a renewal never lands, and
+  *nothing in the purchase path looks broken*. The listener is owned by the store and
+  started from `KindlingApp`, not by a view's `.task`.
+- **Unverified transactions grant nothing**, and neither do revoked ones or products this
+  build does not recognise. Failing closed is safe here for the same reason it always was:
+  the free tier is complete, so the worst case is a paywall a paying user briefly sees,
+  never someone locked out of getting unstuck.
+- **"Nothing to restore" is not an error** (§13: no red, no alert box). It is the correct
+  answer for anyone who never purchased, which is most people who tap the button. The
+  three outcomes stay distinct.
 
 Either way: the free-tier ceiling is **one active task at a time** (§15) — enforce it in `KindlingCore` so the rule is unit-tested rather than scattered through view code.
 
@@ -223,7 +246,7 @@ Either way: the free-tier ceiling is **one active task at a time** (§15) — en
 - **Paywall UI** on second-task attempt only. Never during onboarding, never mid-session.
 - **Notifications** (§17): the single opted-in stepped-away nudge, capped at one per day.
 - **Local JSON data export** (§20).
-- **Privacy policy, terms, App Store privacy labels, non-diagnostic disclaimer.** §20 flags these as needing actual legal review — start that early, it has external latency. The processor list did **not** shrink as the original replan hoped: it is now TelemetryDeck **plus RevenueCat** (billing) **plus OpenAI** (optional AI steps, where the device cannot run them on-device). See `docs/ai-privacy-todo.md`.
+- **Privacy policy, terms, App Store privacy labels, non-diagnostic disclaimer.** §20 flags these as needing actual legal review — start that early, it has external latency. Two processors, not three: **TelemetryDeck** and **OpenAI** (optional AI steps, only where the device cannot run them on-device). Billing adds none — Apple is not a third-party processor here. See `docs/ai-privacy-todo.md`.
 - **App Review notes** explaining the non-medical, task-initiation-only positioning (§20 store-policy risk).
 
 Then: private alpha (5–10 people via TestFlight, hammering force-quit and backgrounding paths), public beta (20–50 people, 2–4 weeks, watching first-session completion and zero data loss on resume), launch per §21.
@@ -235,6 +258,8 @@ Then: private alpha (5–10 people via TestFlight, hammering force-quit and back
 Per §7 and the §4 anti-creep principles: no AI in v1, no calendar or day planning, no streaks, no accounts, no mandatory voice input, no multiple concurrent tasks in the free tier, no `Reminder` entity. Watch app, home-screen widget, and Patterns are v1.1/v1.5.
 
 **And no Android.** The budget the original plan reserved for a second native UI, a second timer surface, and a second accessibility pass is not reallocated to new features — it comes off the top. A narrower plan finishing sooner is the point.
+
+This is also the last word on the subject. The one time the plan hedged — keeping Android alive as an "intention" — it produced a billing decision that had to be made twice. Treat a second platform as out of scope, not as pending.
 
 ---
 

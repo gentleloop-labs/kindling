@@ -7,17 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01FC8CFAAF00C0061EC495A6 /* StoreKitEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFBBB4B94C1719752575492 /* StoreKitEntitlementStore.swift */; };
 		02168662529ABE3608263D56 /* NotificationAskScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */; };
 		134055E744A1E862D907E66A /* StepEngineFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F738D5F00F15FC3892A305 /* StepEngineFactory.swift */; };
 		1FDC5EB3645BC5E02661F0E1 /* SharedStoreProbeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */; };
 		366773EA53C8C09954F90BA7 /* FirstStepScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */; };
-		39AAF096C0F54B1DF90E3D6A /* RevenueCatEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */; };
 		4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */; };
 		4F9979C974D74E16FD9B3D5B /* SessionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBE096F95013E2CEDFC3C5 /* SessionScreen.swift */; };
 		524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */; };
 		56B2E12DCBAA98FD247B5425 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911150C168476C314DE306B /* SettingsScreen.swift */; };
 		5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31ECE7592EDAB135667C013 /* RescueFlowModel.swift */; };
-		726D192B410907BF2733EA33 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 6AB98BD919DEA229D4A3FFB0 /* RevenueCat */; };
 		72BA66291D0FA4D597A83E9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D42944AEF31FEA9C6C04D3A /* Assets.xcassets */; };
 		740436DB53E1F98FACDCA24B /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0D42B5EF7F0751E0A68DE8 /* LiveActivityController.swift */; };
 		7884AF181C1A4AFD4B6B270A /* OutcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */; };
@@ -87,11 +86,11 @@
 		8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAskScreen.swift; sourceTree = "<group>"; };
 		8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreFailureView.swift; sourceTree = "<group>"; };
 		A63E19B9754355B444F110AE /* SuccessScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessScreen.swift; sourceTree = "<group>"; };
-		AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatEntitlementStore.swift; sourceTree = "<group>"; };
 		B7B56A1F23E10FD5290A1743 /* KindlingUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingUI; path = Packages/KindlingUI; sourceTree = SOURCE_ROOT; };
 		B818C77AE0A91C6F333EDB6E /* KindlingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingApp.swift; sourceTree = "<group>"; };
 		B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstStepScreen.swift; sourceTree = "<group>"; };
 		BE9D91E34BB1A253961B0419 /* KindlingCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingCore; path = Packages/KindlingCore; sourceTree = SOURCE_ROOT; };
+		CDFBBB4B94C1719752575492 /* StoreKitEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitEntitlementStore.swift; sourceTree = "<group>"; };
 		D164A2A7A602A1D57B48B6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingSessionAttributes.swift; sourceTree = "<group>"; };
 		DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStoreProbeWidget.swift; sourceTree = "<group>"; };
@@ -109,7 +108,6 @@
 			files = (
 				B68BC8DD1BF934D0CDC52509 /* KindlingCore in Frameworks */,
 				FF8E87C429B4D1B87B44AD2B /* KindlingUI in Frameworks */,
-				726D192B410907BF2733EA33 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +146,7 @@
 		4388CC876BD9A7A9334EEACD /* Billing */ = {
 			isa = PBXGroup;
 			children = (
-				AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */,
+				CDFBBB4B94C1719752575492 /* StoreKitEntitlementStore.swift */,
 			);
 			path = Billing;
 			sourceTree = "<group>";
@@ -259,7 +257,6 @@
 			packageProductDependencies = (
 				58D1921A087A0F8D56F098A1 /* KindlingCore */,
 				1DD701D38A40467AA6AC70AB /* KindlingUI */,
-				6AB98BD919DEA229D4A3FFB0 /* RevenueCat */,
 			);
 			productName = Kindling;
 			productReference = 603C5CF979BF95CE5492E8E8 /* Kindling.app */;
@@ -314,7 +311,6 @@
 			mainGroup = FA7158F51DA7A8ABB07E2C3E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 				A558B33B8B8E65D08ED41D04 /* XCLocalSwiftPackageReference "Packages/KindlingCore" */,
 				78E77E7606B689E3C631D502 /* XCLocalSwiftPackageReference "Packages/KindlingUI" */,
 			);
@@ -366,13 +362,13 @@
 				AE70BC287AFC43D2028EBE57 /* PersistenceProbeView.swift in Sources */,
 				5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */,
 				B8BF2A20F3A54D9CB18A6EF1 /* RescueFlowView.swift in Sources */,
-				39AAF096C0F54B1DF90E3D6A /* RevenueCatEntitlementStore.swift in Sources */,
 				E199F2C635E9993DCDE327B1 /* RootView.swift in Sources */,
 				E3802559960FDB40E6D86308 /* ScreenScaffold.swift in Sources */,
 				4F9979C974D74E16FD9B3D5B /* SessionScreen.swift in Sources */,
 				56B2E12DCBAA98FD247B5425 /* SettingsScreen.swift in Sources */,
 				134055E744A1E862D907E66A /* StepEngineFactory.swift in Sources */,
 				9EB37C5E7D557642563D0ADF /* StoreFailureView.swift in Sources */,
+				01FC8CFAAF00C0061EC495A6 /* StoreKitEntitlementStore.swift in Sources */,
 				D15FD0E3C717BD614E8B7C6B /* SuccessScreen.swift in Sources */,
 				524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */,
 				4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */,
@@ -611,17 +607,6 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		1DD701D38A40467AA6AC70AB /* KindlingUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -638,11 +623,6 @@
 		58D1921A087A0F8D56F098A1 /* KindlingCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KindlingCore;
-		};
-		6AB98BD919DEA229D4A3FFB0 /* RevenueCat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */;
-			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
