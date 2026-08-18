@@ -1,0 +1,48 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "kindling-step",
+  "main": "src/index.ts",
+
+  // Pinned to a date the installed workerd supports. Setting this to "today"
+  // breaks `wrangler dev` ("newest date supported by this server binary is ...")
+  // even though `deploy` accepts it. Bump deliberately, with wrangler upgraded.
+  "compatibility_date": "2026-07-15",
+
+  "vars": {
+    // Change the model here and redeploy — no app update, no App Store review.
+    "MODEL": "gpt-5.2",
+    // Hard ceiling on how long a user waits before the app falls back to a
+    // template step. The app's own timeout is tighter, so it gives up first.
+    "UPSTREAM_TIMEOUT_MS": "7000",
+    // Reasoning tokens count against max_output_tokens, so this is a ceiling for
+    // thinking + answer, not just the sentence. Set "" for non-reasoning models
+    // like gpt-4o-mini, which reject the reasoning field.
+    //
+    // Measured 2026-08-17 across six real tasks:
+    //   gpt-5.2  effort=low   1.4-3.0s, 6/6 valid  <- chosen
+    //   gpt-5.2  effort default  1.8-7.5s, valid but too slow
+    //   gpt-5.2  effort=minimal/none -> 400 unsupported_value
+    //   gpt-5-nano effort=low  1.7-5.3s, only 2/6 valid (fails strict schema)
+    //   gpt-4o-mini            fast but weaker steps
+    "MAX_OUTPUT_TOKENS": "2000",
+    "REASONING_EFFORT": "low"
+  },
+
+  // Per-IP rate limit. The endpoint is public, so this is what stops a scraped
+  // APP_TOKEN turning the OpenAI key into a free API for the internet.
+  // `period` accepts only 10 or 60.
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": { "limit": 20, "period": 60 }
+    }
+  ],
+
+  // Logs in the dashboard and via `wrangler tail`. Sampling at 1 is fine at this
+  // volume, and the Worker deliberately logs no task text.
+  "observability": { "enabled": true, "head_sampling_rate": 1 }
+
+  // Secrets are NOT here — set with `wrangler secret put`:
+  //   OPENAI_API_KEY, APP_TOKEN
+}

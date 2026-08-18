@@ -1,10 +1,10 @@
 # Phase 0 validation results
 
-Status: **collecting evidence — Phase 1 is gated**
+Status: **gate overridden by owner decision — Phase 1 unblocked, evidence still outstanding**
 
-Decision: **not made**
+Decision: **`GO`, recorded 2026-08-17**
 
-Kindling should not proceed to native app engineering until the owner records an explicit `GO`, `REDIRECT`, or `STOP` decision here, supported by the evidence below.
+The original rule was that Kindling should not proceed to native app engineering until an explicit `GO`, `REDIRECT`, or `STOP` was recorded here and supported by the evidence below. That decision has now been made on owner judgement rather than on collected evidence. The metrics, interviews, and usability sessions below remain genuinely pending and are **not** retroactively treated as satisfied — see the decision record at the end of this document for what that costs.
 
 ## Hypothesis
 
@@ -54,13 +54,15 @@ Observe task-entry hesitation, sample-chip use, whether the suggested step feels
 
 ## Step-engine input set
 
-The prototype includes 20 synthetic test cases to exercise the initial rules. Replace or supplement them with anonymized wording collected in interviews before porting the engine to Kotlin. Never commit an interviewee's identifiable or sensitive task verbatim.
+The prototype includes 20 synthetic test cases to exercise the initial rules. Replace or supplement them with anonymized wording collected in interviews before porting the engine to Swift. Never commit an interviewee's identifiable or sensitive task verbatim.
 
 ## Decision record
 
-- Decision date: Pending
-- Decision: Pending (`GO`, `REDIRECT`, or `STOP`)
-- Evidence summary: Pending
-- Weakest signal / uncertainty: Pending
-- If `REDIRECT`, chosen direction: Pending (widget-only, Shortcut, web app, or another tested direction)
-- Owner: Pending
+- **Decision date:** 2026-08-17
+- **Decision:** `GO` — proceed to Phase 1 and scaffold `ios/`
+- **Basis:** owner judgement. The validation gate was deliberately overridden, not satisfied.
+- **Evidence summary:** none of the five gate metrics has a result. No interviews conducted, no usability sessions run, no landing traffic collected. The Phase 0 engineering assets (tokens, prototype, landing page) are complete, but the live validation they exist to enable has not been executed.
+- **Weakest signal / uncertainty:** the core assumption in the hypothesis above is entirely untested. Specifically unmeasured: whether anyone prefers a dedicated rescue app over a tool already at hand, and the sample-chip usage rate that `§14` names as the leading indicator for blank-page freeze — the biggest identified drop-off risk.
+- **What this means going forward:** Phase 0 is not cancelled, it is deferred. The landing page and prototype remain deployable and the playbook in `docs/phase-0-validation-playbook.md` remains valid. Running that validation after v1 is built recovers the evidence but loses the option value the gate existed to protect — a `REDIRECT` finding (widget-only, an iOS Shortcut, a web app) would arrive after the native work rather than instead of it.
+- **If `REDIRECT`:** not applicable; no redirect was chosen.
+- **Owner:** aftaab

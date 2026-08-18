@@ -1,0 +1,650 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02168662529ABE3608263D56 /* NotificationAskScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */; };
+		134055E744A1E862D907E66A /* StepEngineFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F738D5F00F15FC3892A305 /* StepEngineFactory.swift */; };
+		1FDC5EB3645BC5E02661F0E1 /* SharedStoreProbeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */; };
+		366773EA53C8C09954F90BA7 /* FirstStepScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */; };
+		39AAF096C0F54B1DF90E3D6A /* RevenueCatEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */; };
+		4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */; };
+		4F9979C974D74E16FD9B3D5B /* SessionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBE096F95013E2CEDFC3C5 /* SessionScreen.swift */; };
+		524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */; };
+		56B2E12DCBAA98FD247B5425 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911150C168476C314DE306B /* SettingsScreen.swift */; };
+		5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31ECE7592EDAB135667C013 /* RescueFlowModel.swift */; };
+		726D192B410907BF2733EA33 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 6AB98BD919DEA229D4A3FFB0 /* RevenueCat */; };
+		72BA66291D0FA4D597A83E9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D42944AEF31FEA9C6C04D3A /* Assets.xcassets */; };
+		740436DB53E1F98FACDCA24B /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0D42B5EF7F0751E0A68DE8 /* LiveActivityController.swift */; };
+		7884AF181C1A4AFD4B6B270A /* OutcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */; };
+		7D37BD1FC8A85C9142519E88 /* KindlingUI in Frameworks */ = {isa = PBXBuildFile; productRef = 48D2BF93D9DA7D7DAA9D673A /* KindlingUI */; };
+		80E4A37FEB621DDD65EA76FB /* KindlingWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F1ABE3FBC7E13AB2732A516F /* KindlingWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8F169F524CFF547A119126A7 /* KindlingCore in Frameworks */ = {isa = PBXBuildFile; productRef = 32C6DF913575C475DD459BCC /* KindlingCore */; };
+		95F29CA235C4B991C8B3AA59 /* KindlingSessionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */; };
+		9EB37C5E7D557642563D0ADF /* StoreFailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */; };
+		AE70BC287AFC43D2028EBE57 /* PersistenceProbeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22BF22B6FCD38E74758C6E /* PersistenceProbeView.swift */; };
+		B68BC8DD1BF934D0CDC52509 /* KindlingCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58D1921A087A0F8D56F098A1 /* KindlingCore */; };
+		B8BF2A20F3A54D9CB18A6EF1 /* RescueFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEBCCB321B8AB1E84614606 /* RescueFlowView.swift */; };
+		C31CF0D7A2A239520F471402 /* KindlingWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC7EF7113DE07E575EB93A /* KindlingWidgetBundle.swift */; };
+		D15FD0E3C717BD614E8B7C6B /* SuccessScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63E19B9754355B444F110AE /* SuccessScreen.swift */; };
+		E0C0C7FA3A918250D3C0A4CA /* KindlingSessionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDA78173DEB699CB144C69 /* KindlingSessionAttributes.swift */; };
+		E199F2C635E9993DCDE327B1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B94D42D4EA665A7B3EDBC66 /* RootView.swift */; };
+		E3802559960FDB40E6D86308 /* ScreenScaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98901B5106AE312DDC734F /* ScreenScaffold.swift */; };
+		E495C4C130D6C7FE4DBBC921 /* SessionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BDCEFD4CCF60982C27D792 /* SessionLiveActivity.swift */; };
+		E6A9330D60E8D944B882E86E /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082A05E34F11524CA112FD2A /* NotificationService.swift */; };
+		F8DB9B01D91A96A7F3CFFE6C /* KindlingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B818C77AE0A91C6F333EDB6E /* KindlingApp.swift */; };
+		FF8E87C429B4D1B87B44AD2B /* KindlingUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1DD701D38A40467AA6AC70AB /* KindlingUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0D235363F1DCD53D956658B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7B3FD276C7C288727E52DDE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F60912F5EE9E411110197E60;
+			remoteInfo = KindlingWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6778F424DF8E9063704425EF /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				80E4A37FEB621DDD65EA76FB /* KindlingWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		00F738D5F00F15FC3892A305 /* StepEngineFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepEngineFactory.swift; sourceTree = "<group>"; };
+		082A05E34F11524CA112FD2A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
+		08DDA78173DEB699CB144C69 /* KindlingSessionAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingSessionAttributes.swift; sourceTree = "<group>"; };
+		1B98901B5106AE312DDC734F /* ScreenScaffold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaffold.swift; sourceTree = "<group>"; };
+		1ED2A6745770F7D694991144 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		3AEBCCB321B8AB1E84614606 /* RescueFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescueFlowView.swift; sourceTree = "<group>"; };
+		3D42944AEF31FEA9C6C04D3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEntryScreen.swift; sourceTree = "<group>"; };
+		477FC4F1E061EA60BE76208E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		48ADA5D5C527D3669819E561 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		49AC7EF7113DE07E575EB93A /* KindlingWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingWidgetBundle.swift; sourceTree = "<group>"; };
+		4BD534BE36D0823AE752E08C /* KindlingWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KindlingWidget.entitlements; sourceTree = "<group>"; };
+		576A8011EAB484C910C91976 /* Kindling.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kindling.entitlements; sourceTree = "<group>"; };
+		603C5CF979BF95CE5492E8E8 /* Kindling.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Kindling.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		63FBE096F95013E2CEDFC3C5 /* SessionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionScreen.swift; sourceTree = "<group>"; };
+		6B0D42B5EF7F0751E0A68DE8 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		6B94D42D4EA665A7B3EDBC66 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomeScreen.swift; sourceTree = "<group>"; };
+		8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAskScreen.swift; sourceTree = "<group>"; };
+		8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreFailureView.swift; sourceTree = "<group>"; };
+		A63E19B9754355B444F110AE /* SuccessScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessScreen.swift; sourceTree = "<group>"; };
+		AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevenueCatEntitlementStore.swift; sourceTree = "<group>"; };
+		B7B56A1F23E10FD5290A1743 /* KindlingUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingUI; path = Packages/KindlingUI; sourceTree = SOURCE_ROOT; };
+		B818C77AE0A91C6F333EDB6E /* KindlingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingApp.swift; sourceTree = "<group>"; };
+		B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstStepScreen.swift; sourceTree = "<group>"; };
+		BE9D91E34BB1A253961B0419 /* KindlingCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingCore; path = Packages/KindlingCore; sourceTree = SOURCE_ROOT; };
+		D164A2A7A602A1D57B48B6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingSessionAttributes.swift; sourceTree = "<group>"; };
+		DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStoreProbeWidget.swift; sourceTree = "<group>"; };
+		E8BDCEFD4CCF60982C27D792 /* SessionLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLiveActivity.swift; sourceTree = "<group>"; };
+		EB22BF22B6FCD38E74758C6E /* PersistenceProbeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceProbeView.swift; sourceTree = "<group>"; };
+		F1ABE3FBC7E13AB2732A516F /* KindlingWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = KindlingWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F31ECE7592EDAB135667C013 /* RescueFlowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescueFlowModel.swift; sourceTree = "<group>"; };
+		F911150C168476C314DE306B /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B9F9515731243B2BC3E3212B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B68BC8DD1BF934D0CDC52509 /* KindlingCore in Frameworks */,
+				FF8E87C429B4D1B87B44AD2B /* KindlingUI in Frameworks */,
+				726D192B410907BF2733EA33 /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D969BEE1F76984B42CF37690 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F169F524CFF547A119126A7 /* KindlingCore in Frameworks */,
+				7D37BD1FC8A85C9142519E88 /* KindlingUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		24537EC6E0616185B38BB424 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				F31ECE7592EDAB135667C013 /* RescueFlowModel.swift */,
+				3AEBCCB321B8AB1E84614606 /* RescueFlowView.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		2D7CA16C34E7EDC859CFE8C9 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */,
+				6B0D42B5EF7F0751E0A68DE8 /* LiveActivityController.swift */,
+				082A05E34F11524CA112FD2A /* NotificationService.swift */,
+				00F738D5F00F15FC3892A305 /* StepEngineFactory.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4388CC876BD9A7A9334EEACD /* Billing */ = {
+			isa = PBXGroup;
+			children = (
+				AB5EE0D324CC572C5C426980 /* RevenueCatEntitlementStore.swift */,
+			);
+			path = Billing;
+			sourceTree = "<group>";
+		};
+		640AF3FB8FE1F0CEAC243D8F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				48ADA5D5C527D3669819E561 /* Debug.xcconfig */,
+				1ED2A6745770F7D694991144 /* Release.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		7D6211E982D0E8291987AF4B /* KindlingWidget */ = {
+			isa = PBXGroup;
+			children = (
+				477FC4F1E061EA60BE76208E /* Info.plist */,
+				08DDA78173DEB699CB144C69 /* KindlingSessionAttributes.swift */,
+				4BD534BE36D0823AE752E08C /* KindlingWidget.entitlements */,
+				49AC7EF7113DE07E575EB93A /* KindlingWidgetBundle.swift */,
+				E8BDCEFD4CCF60982C27D792 /* SessionLiveActivity.swift */,
+				DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */,
+			);
+			path = KindlingWidget;
+			sourceTree = "<group>";
+		};
+		A6B89C5183D516540D76F3BC /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				BE9D91E34BB1A253961B0419 /* KindlingCore */,
+				B7B56A1F23E10FD5290A1743 /* KindlingUI */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		B6B0C1AE643B9E312CEE0F2D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				603C5CF979BF95CE5492E8E8 /* Kindling.app */,
+				F1ABE3FBC7E13AB2732A516F /* KindlingWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EA58C002EC233366C5DC3206 /* Kindling */ = {
+			isa = PBXGroup;
+			children = (
+				3D42944AEF31FEA9C6C04D3A /* Assets.xcassets */,
+				D164A2A7A602A1D57B48B6F1 /* Info.plist */,
+				576A8011EAB484C910C91976 /* Kindling.entitlements */,
+				B818C77AE0A91C6F333EDB6E /* KindlingApp.swift */,
+				EB22BF22B6FCD38E74758C6E /* PersistenceProbeView.swift */,
+				6B94D42D4EA665A7B3EDBC66 /* RootView.swift */,
+				8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */,
+				4388CC876BD9A7A9334EEACD /* Billing */,
+				24537EC6E0616185B38BB424 /* Flow */,
+				F32865052B63427EC43CC915 /* Screens */,
+				2D7CA16C34E7EDC859CFE8C9 /* Services */,
+			);
+			path = Kindling;
+			sourceTree = "<group>";
+		};
+		F32865052B63427EC43CC915 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */,
+				8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */,
+				7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */,
+				1B98901B5106AE312DDC734F /* ScreenScaffold.swift */,
+				63FBE096F95013E2CEDFC3C5 /* SessionScreen.swift */,
+				F911150C168476C314DE306B /* SettingsScreen.swift */,
+				A63E19B9754355B444F110AE /* SuccessScreen.swift */,
+				4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */,
+				08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		FA7158F51DA7A8ABB07E2C3E = {
+			isa = PBXGroup;
+			children = (
+				640AF3FB8FE1F0CEAC243D8F /* Config */,
+				EA58C002EC233366C5DC3206 /* Kindling */,
+				7D6211E982D0E8291987AF4B /* KindlingWidget */,
+				A6B89C5183D516540D76F3BC /* Packages */,
+				B6B0C1AE643B9E312CEE0F2D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0953017A4CD01ABF90D5236F /* Kindling */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2303FE65021E24D89B53003C /* Build configuration list for PBXNativeTarget "Kindling" */;
+			buildPhases = (
+				4B86CA3E6C853F9734A87A26 /* Sources */,
+				8D11DD23C786F068B9767A39 /* Resources */,
+				B9F9515731243B2BC3E3212B /* Frameworks */,
+				6778F424DF8E9063704425EF /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3142C007AD7953616E5A143D /* PBXTargetDependency */,
+			);
+			name = Kindling;
+			packageProductDependencies = (
+				58D1921A087A0F8D56F098A1 /* KindlingCore */,
+				1DD701D38A40467AA6AC70AB /* KindlingUI */,
+				6AB98BD919DEA229D4A3FFB0 /* RevenueCat */,
+			);
+			productName = Kindling;
+			productReference = 603C5CF979BF95CE5492E8E8 /* Kindling.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F60912F5EE9E411110197E60 /* KindlingWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A55A961E57655EC57EDC798C /* Build configuration list for PBXNativeTarget "KindlingWidget" */;
+			buildPhases = (
+				01DE034300045D9FEA9F64A1 /* Sources */,
+				D969BEE1F76984B42CF37690 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KindlingWidget;
+			packageProductDependencies = (
+				32C6DF913575C475DD459BCC /* KindlingCore */,
+				48D2BF93D9DA7D7DAA9D673A /* KindlingUI */,
+			);
+			productName = KindlingWidget;
+			productReference = F1ABE3FBC7E13AB2732A516F /* KindlingWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A7B3FD276C7C288727E52DDE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0953017A4CD01ABF90D5236F = {
+						DevelopmentTeam = GVGJLY2H53;
+						ProvisioningStyle = Automatic;
+					};
+					F60912F5EE9E411110197E60 = {
+						DevelopmentTeam = GVGJLY2H53;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 22EA552C4DA3D33B398B6044 /* Build configuration list for PBXProject "Kindling" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FA7158F51DA7A8ABB07E2C3E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				A558B33B8B8E65D08ED41D04 /* XCLocalSwiftPackageReference "Packages/KindlingCore" */,
+				78E77E7606B689E3C631D502 /* XCLocalSwiftPackageReference "Packages/KindlingUI" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B6B0C1AE643B9E312CEE0F2D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0953017A4CD01ABF90D5236F /* Kindling */,
+				F60912F5EE9E411110197E60 /* KindlingWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D11DD23C786F068B9767A39 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72BA66291D0FA4D597A83E9B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		01DE034300045D9FEA9F64A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0C0C7FA3A918250D3C0A4CA /* KindlingSessionAttributes.swift in Sources */,
+				C31CF0D7A2A239520F471402 /* KindlingWidgetBundle.swift in Sources */,
+				E495C4C130D6C7FE4DBBC921 /* SessionLiveActivity.swift in Sources */,
+				1FDC5EB3645BC5E02661F0E1 /* SharedStoreProbeWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B86CA3E6C853F9734A87A26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				366773EA53C8C09954F90BA7 /* FirstStepScreen.swift in Sources */,
+				F8DB9B01D91A96A7F3CFFE6C /* KindlingApp.swift in Sources */,
+				95F29CA235C4B991C8B3AA59 /* KindlingSessionAttributes.swift in Sources */,
+				740436DB53E1F98FACDCA24B /* LiveActivityController.swift in Sources */,
+				02168662529ABE3608263D56 /* NotificationAskScreen.swift in Sources */,
+				E6A9330D60E8D944B882E86E /* NotificationService.swift in Sources */,
+				7884AF181C1A4AFD4B6B270A /* OutcomeScreen.swift in Sources */,
+				AE70BC287AFC43D2028EBE57 /* PersistenceProbeView.swift in Sources */,
+				5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */,
+				B8BF2A20F3A54D9CB18A6EF1 /* RescueFlowView.swift in Sources */,
+				39AAF096C0F54B1DF90E3D6A /* RevenueCatEntitlementStore.swift in Sources */,
+				E199F2C635E9993DCDE327B1 /* RootView.swift in Sources */,
+				E3802559960FDB40E6D86308 /* ScreenScaffold.swift in Sources */,
+				4F9979C974D74E16FD9B3D5B /* SessionScreen.swift in Sources */,
+				56B2E12DCBAA98FD247B5425 /* SettingsScreen.swift in Sources */,
+				134055E744A1E862D907E66A /* StepEngineFactory.swift in Sources */,
+				9EB37C5E7D557642563D0ADF /* StoreFailureView.swift in Sources */,
+				D15FD0E3C717BD614E8B7C6B /* SuccessScreen.swift in Sources */,
+				524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */,
+				4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3142C007AD7953616E5A143D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F60912F5EE9E411110197E60 /* KindlingWidget */;
+			targetProxy = 0D235363F1DCD53D956658B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0040932464731250C6302E00 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48ADA5D5C527D3669819E561 /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		180D31641C9486183826CF0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Kindling/Kindling.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Kindling/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.aftaab.kindling;
+				PRODUCT_NAME = Kindling;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3FF1F4B9A6B08A35E77FE84A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KindlingWidget/KindlingWidget.entitlements;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = KindlingWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.aftaab.kindling.widget;
+				PRODUCT_NAME = KindlingWidget;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7846A08542EF9FA1EA556CD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KindlingWidget/KindlingWidget.entitlements;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = KindlingWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.aftaab.kindling.widget;
+				PRODUCT_NAME = KindlingWidget;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		82365C44A8820FC2DBC41A33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1ED2A6745770F7D694991144 /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		A6FA6BDF215A26911A900397 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Kindling/Kindling.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Kindling/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.aftaab.kindling;
+				PRODUCT_NAME = Kindling;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		22EA552C4DA3D33B398B6044 /* Build configuration list for PBXProject "Kindling" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0040932464731250C6302E00 /* Debug */,
+				82365C44A8820FC2DBC41A33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2303FE65021E24D89B53003C /* Build configuration list for PBXNativeTarget "Kindling" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180D31641C9486183826CF0D /* Debug */,
+				A6FA6BDF215A26911A900397 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A55A961E57655EC57EDC798C /* Build configuration list for PBXNativeTarget "KindlingWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FF1F4B9A6B08A35E77FE84A /* Debug */,
+				7846A08542EF9FA1EA556CD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		78E77E7606B689E3C631D502 /* XCLocalSwiftPackageReference "Packages/KindlingUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/KindlingUI;
+		};
+		A558B33B8B8E65D08ED41D04 /* XCLocalSwiftPackageReference "Packages/KindlingCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/KindlingCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1DD701D38A40467AA6AC70AB /* KindlingUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KindlingUI;
+		};
+		32C6DF913575C475DD459BCC /* KindlingCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KindlingCore;
+		};
+		48D2BF93D9DA7D7DAA9D673A /* KindlingUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KindlingUI;
+		};
+		58D1921A087A0F8D56F098A1 /* KindlingCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KindlingCore;
+		};
+		6AB98BD919DEA229D4A3FFB0 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BFDDFC5D0BA7A047DDB9D555 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A7B3FD276C7C288727E52DDE /* Project object */;
+}

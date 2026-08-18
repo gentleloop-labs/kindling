@@ -1,11 +1,13 @@
 # Kindling
 
-Kindling is a local-first task-initiation tool for the moment someone knows what they need to do and cannot start. The current repository milestone is Phase 0 validation: a landing page, a seven-screen clickable prototype, and a documented evidence gate before native app engineering.
+Kindling is a local-first task-initiation tool for the moment someone knows what they need to do and cannot start. It is an **iOS app** — Swift, SwiftUI, iOS 17+, with no cross-platform layer and no Android build planned.
+
+The current repository milestone is Phase 0 validation: a landing page, a seven-screen clickable prototype, and a documented evidence gate before any app engineering begins.
 
 ## Repository
 
 - `docs/kindling-full-plan.md` — product source of truth
-- `IMPLEMENTATION.md` — phased engineering plan
+- `IMPLEMENTATION.md` — phased engineering plan for the iOS build
 - `design/tokens.css` — canonical cross-surface design tokens
 - `prototype/` — dependency-free validation flow
 - `landing/` — Astro static site; serves the prototype at `/try/`
@@ -40,3 +42,5 @@ cd landing && npm run check && npm run build
 ```
 
 Follow `docs/phase-0-runbook.md` for phone testing and evidence collection. Do not begin Phase 1 until `docs/validation-results.md` contains an explicit decision.
+
+For the complete deployment, recruitment, interview, usability-testing, measurement, and gate-decision process, use `docs/phase-0-validation-playbook.md`.

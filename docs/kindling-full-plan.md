@@ -123,25 +123,27 @@ Five concepts were developed (Ember, Snail, Sprout, Pebble, Bramble); **the Embe
 
 ## 10. Technical architecture
 
-**Recommendation: Kotlin Multiplatform for shared business logic, with fully native SwiftUI (iOS) and native Jetpack Compose (Android) UI** — not Flutter, not full Compose Multiplatform UI-sharing either, at least for v1.
+**Kindling is an iOS app: Swift and SwiftUI, one Xcode project, no cross-platform layer.** Minimum deployment target iOS 17. Android is not planned and would only be reconsidered against real post-launch demand, as a separate native build.
 
-**The finding that drove this:** widgets, Live Activities, and the Dynamic Island — core to this app's experience, not optional polish — cannot be rendered by Flutter's engine at all. Even with the community `live_activities` plugin, you still hand-write a native Swift Widget Extension and bridge to it. This holds regardless of which cross-platform framework is chosen, which means "simple app, few screens → Flutter" (a sound general rule) doesn't actually save native Swift work here — it *adds* a second, separate native codebase connected by a plugin bridge, on top of the Flutter app.
+*(This section replaces an earlier Kotlin Multiplatform recommendation. That recommendation existed to share logic between two native UIs; with one platform, the shared-module machinery is cost with no benefit. The reasoning that ruled out Flutter still stands and now applies more strongly, so it's kept below.)*
 
-**Why KMP instead:** the screen count really is small, so writing native UI twice is cheap and gets full native feel for free. The logic worth sharing (step-reduction rules, session state machine, data models) is exactly what KMP shares well, with zero UI-framework tax. Because widgets/Live Activities are native regardless, KMP avoids the plugin-bridge layer entirely since the main app UI is already native. Compose Multiplatform's iOS support is now stable (May 2025) if a future version needs to migrate toward shared UI — KMP doesn't foreclose that path the way starting in Flutter would have.
+**Why native rather than any cross-platform framework:** widgets, Live Activities, and the Dynamic Island — core to this app's experience, not optional polish — cannot be rendered by Flutter's engine at all. Even with the community `live_activities` plugin, you still hand-write a native Swift Widget Extension and bridge to it. So "simple app, few screens → Flutter" (a sound general rule) doesn't save Swift work here; it adds a bridge layer on top of Swift you'd write anyway. With Android off the table, there is nothing on the other side of that trade at all.
 
-**Where "few screens → Flutter" remains good advice:** for an app whose UI isn't leaning on OS-native surfaces as a core feature. It's specifically Kindling's widget/Live-Activity/Watch requirements that flip the calculus.
+**Structure:** the app target, a widget extension for the Live Activity (and the v1.1 home-screen widget), and a local Swift package holding the domain layer — data models, the template step engine, and the session state machine. The package is importable by both targets and testable without launching the app, which is the whole reason it exists.
 
-**Payments: RevenueCat, via its Kotlin Multiplatform SDK (`purchases-kmp`).** This turns out to fit the KMP decision unusually well — RevenueCat's KMP SDK reached a stable v1 in 2024 and shipped a v3.0.0 in May 2026 that removed the old iOS pain point entirely (no more separate Podfile/PurchasesHybridCommon dependency to keep in sync with the Gradle build — the iOS integration is now a single Gradle dependency, same as Android). Purchase logic, restore, and entitlement checks (e.g. "is the multi-task tier unlocked") can live in the shared `commonMain` module and be called from both native UIs, rather than being a second thing written twice on top of native StoreKit and Play Billing. This is a genuine extension of §10's core argument: the parts of this app that can be shared, should be, and payments turns out to be one more of them.
+**Persistence: SwiftData**, in an App Group container shared with the widget extension. See §11.
+
+**Payments: decided at build time, not here.** The original choice of RevenueCat rested on cross-platform entitlement state — one check answering "is the multi-task tier unlocked" regardless of which store the purchase came from. That reason is gone. StoreKit 2 handles one non-consumable and two subscriptions directly, with no dependency and no fee on top of Apple's 15%. The counterargument is §18's assumption that RevenueCat's paywall experimentation tools would run the pricing and paywall-timing tests. `IMPLEMENTATION.md` Phase 5 carries the trade-off; the call is made before purchase code is written.
 
 ---
 
 ## 11. Data models & local storage
 
-**Storage engine: Room (Kotlin Multiplatform)**, not SQLDelight — Room shipped full KMP support (Room 3.0) and fits naturally alongside native Jetpack Compose on Android (same annotations, Google-backed, built-in migrations less error-prone to maintain solo than SQLDelight's hand-written SQL migration files).
+**Storage engine: SwiftData** — Apple-native, minimal code, integrates directly with SwiftUI, and its `VersionedSchema` / `SchemaMigrationPlan` types cover the additive migrations this schema will actually need. *(Supersedes an earlier Room KMP choice, which existed only to serve the abandoned cross-platform stack.)*
 
-**Where the data lives:** a single local SQLite file in each platform's private app-sandboxed storage. Not synced to any server. Included in the OS's own device backup by default (still local-first — it only ever leaves the device inside the user's own backup), with a settings toggle to exclude it for anyone who wants that.
+**Where the data lives:** a single local SQLite file in an **App Group container**, so the widget extension can read it — not the default app-sandbox path. Not synced to any server. Included in the OS's own device backup by default (still local-first — it only ever leaves the device inside the user's own backup), with a settings toggle that sets `isExcludedFromBackup` on the store file for anyone who wants that.
 
-**Five tables, deliberately minimal:**
+**Five entities, deliberately minimal** (described as tables below; they map one-to-one onto `@Model` types):
 
 **`Task`** — `id`, `title`, `status` (active/stepped_away/done/discarded), `source` (typed/voice), `obstacle_tag` (nullable), `last_first_step_id` (nullable FK), `created_at`, `updated_at`. Index on `status`. **Sensitive** — task titles can incidentally reveal health/financial/relationship information; local-only by default.
 
@@ -155,9 +157,11 @@ Five concepts were developed (Ember, Snail, Sprout, Pebble, Bramble); **the Embe
 
 **Deliberately not in the schema:** `Reminder` (feature not built yet — don't pre-build the table), a persisted mascot state (fully derivable from `Task`/`StarterSession` at render time — persisting it would create a second source of truth that can drift), `SubscriptionEntitlement` (pricing model is decided now, but this can be added as its own low-risk migration whenever billing integration is actually built), a separate `Reflection`/`Interruption` table (`outcome = 'distracted'` already covers what v1 needs).
 
-**Migration strategy:** Room's versioned `@Database` + `Migration` classes; additive changes (new nullable columns, new tables) get Room auto-migration with no hand-written SQL. TEXT-enum columns (`status`, `outcome`) don't need a schema migration to add a new value, since SQLite doesn't enforce enum constraints at the column level — just an app-level validation update.
+**Migration strategy:** a `VersionedSchema` per shipped schema plus a `SchemaMigrationPlan`, both established at v1 with nothing yet to migrate — the scaffolding is what makes later lightweight migrations free. Additive changes (new optional properties, new entities) migrate lightweight with no hand-written work. String-backed enums (`status`, `outcome`) don't need a schema migration to gain a new value, just an app-level validation update.
 
-**Retention:** no automatic deletion by default. `done`/`discarded` tasks stay until the user clears them via an explicit settings action. `AiRequestLog` rows cascade-delete with their parent `Task`.
+**Retention:** no automatic deletion by default. `done`/`discarded` tasks stay until the user clears them via an explicit settings action. `FirstStep`, `StarterSession`, and `AiRequestLog` cascade-delete with their parent `Task` — set the delete rules explicitly rather than relying on defaults.
+
+**One naming note:** `Task` collides with Swift's concurrency type. Namespace it or rename it (`AvoidedTask`) before it spreads through the codebase.
 
 ---
 
@@ -182,7 +186,7 @@ Warm, calm, a little worn-in — not a wellness-app purple gradient, not a corpo
 
 No red anywhere in the system, including the timer's final seconds — the no-failure-state principle applies to color, not just copy.
 
-**Type:** platform-native system fonts (SF Pro Rounded on iOS, a comparable clean rounded option on Android) — free, and gets full Dynamic Type accessibility support with zero extra engineering.
+**Type:** SF Pro Rounded — free, native, and gets full Dynamic Type accessibility support with zero extra engineering.
 
 **Spacing/radius/motion:** 8pt grid; one consistent 18px corner-radius token everywhere (mixed radii read as un-intentional design); soft ease-in-out motion, no springy overshoot except a single subtle instance on the celebration screen; full reduced-motion fallback (opacity fades replace movement).
 
@@ -232,9 +236,9 @@ No red anywhere in the system, including the timer's final seconds — the no-fa
 
 **Pricing:** Monthly $3.99 (offered, not default); **Annual $19.99/yr (default)** — meaningfully undercuts Tiimo (~$54-80/yr), Finch (~$40-70/yr), Llama Life ($39/yr); **Lifetime $44.99 one-time** — the real differentiator, since none of the direct competitors researched offer one, and it directly answers the subscription-fatigue complaint that shows up repeatedly in their own reviews. 7-day trial. Regional pricing via Apple's/Google's built-in PPP tiers, no custom logic. Skip student pricing for v1. Native family sharing enabled at no extra build cost.
 
-**Store fees, confirmed current:** both Apple (via the Small Business Program, automatic for new developers under $1M/year) and Google Play (15% on the first $1M, no enrollment needed) charge **15%**, not the standard 30%. RevenueCat's own fee sits on top of that (standard tier is free up to a monthly tracked-revenue threshold, then a small percentage — worth confirming the current threshold and rate directly before finalizing the revenue math in §15, since that's a RevenueCat pricing detail rather than an Apple/Google one).
+**Store fees, confirmed current:** Apple charges **15%**, not the standard 30%, via the Small Business Program (automatic for new developers under $1M/year). If RevenueCat is chosen over StoreKit 2 (§10), its own fee sits on top of that — standard tier is free up to a monthly tracked-revenue threshold, then a small percentage; confirm the current threshold and rate directly before finalizing the revenue math, since that's a RevenueCat pricing detail rather than an Apple one. Regional pricing note above still applies; the Google Play half of it is moot.
 
-**Payments infrastructure: RevenueCat**, wrapping both StoreKit and Play Billing behind one API — handles receipt validation, cross-platform entitlement state (so "is the multi-task tier unlocked" is a single check regardless of which store the purchase came from), subscription renewal/cancellation webhooks, and restore purchases, none of which need to be hand-built. Per §10, its KMP SDK means this logic lives in the shared module rather than being written twice.
+**Payments infrastructure: RESOLVED — RevenueCat (2026-08-18).** Required for Shipaton eligibility; see `IMPLEMENTATION.md` Phase 5 for why this overrode the technical recommendation below, which is left in place as the record of the original reasoning. ~~The default is **StoreKit 2 directly**~~ — one non-consumable and two subscriptions is a small surface, and Apple handles receipt validation, renewal, and restore natively. RevenueCat remains a reasonable alternative if its paywall experimentation tooling (§18) is judged worth a dependency and an added fee; its original justification, cross-platform entitlement state, no longer applies to a single-platform app.
 
 **Paywall timing:** shown when someone tries to start a second concurrent task, from a settings "Upgrade" entry always available, and a single soft tease of "Patterns" once there's enough session history (5-7 sessions) for it to say something real. Never during onboarding, never mid-session.
 
@@ -276,13 +280,13 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 ## 18. Analytics
 
-**Tool: TelemetryDeck** — privacy-first, open-source SDK, EU-hosted, no IPs or personal identifiers by design, native Swift/Kotlin SDKs — fits the local-first posture better than Firebase without the ops burden of self-hosting Matomo/PostHog solo. *(Check current pricing directly before committing — not independently re-verified as current at time of writing this consolidated version.)*
+**Tool: TelemetryDeck** — privacy-first, open-source SDK, EU-hosted, no IPs or personal identifiers by design, a native Swift SDK — fits the local-first posture better than Firebase without the ops burden of self-hosting Matomo/PostHog solo. *(Check current pricing directly before committing — not independently re-verified as current at time of writing this consolidated version.)*
 
 **Event taxonomy** (no task or step text in any event, ever): `task_entered`, `first_step_shown`, `step_regenerated`, `session_started`, `session_outcome`, **`second_task_attempted`** (the single most important event — the direct signal on whether the monetization boundary is landing), `paywall_shown`, `upgrade_completed`, `patterns_viewed`, `notification_permission_result`, `notification_opened`.
 
 **Funnel:** `onboarding_started` → `task_entered` → `first_step_shown` → `session_started` → `session_outcome` → (days later) `second_task_attempted` → `paywall_shown` → `upgrade_completed`.
 
-**Experiment framework:** RevenueCat's own paywall experimentation tools (now that it's the confirmed payments SDK, per §10/§15) cover the pricing/paywall-timing tests directly; a simple remote-config flag covers the rest (headline framing, sample-chip presence, timer length) — no need for a separate experimentation platform at this scale.
+**Experiment framework:** a simple remote-config flag covers headline framing, sample-chip presence, and timer length. The pricing and paywall-timing tests depend on the §10/§15 billing decision: RevenueCat would cover them with its own paywall experimentation tools, whereas StoreKit 2 means running them manually across releases — the main thing given up by dropping the dependency, and worth weighing deliberately rather than by default.
 
 ---
 
@@ -294,7 +298,7 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 **Usability testing:** 3-5 unmoderated sessions on a working prototype, watching time-to-first-session and sample-chip usage specifically.
 
-**Beta:** TestFlight + Play Console closed testing, ~20-50 people, 2-4 weeks, watching the timer/Live Activity/widget plumbing closely — the most technically fragile part of the build per §10.
+**Beta:** TestFlight, ~20-50 people, 2-4 weeks, watching the timer/Live Activity/widget plumbing closely — the most technically fragile part of the build per §10.
 
 ---
 
@@ -304,7 +308,7 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 **Needs an actual lawyer:** the privacy policy and terms of use (straightforward to draft given how simple the local-first data flows are, but should still get real review — ADHD-adjacent framing brushes against health-app-adjacent scrutiny in some jurisdictions, e.g. EU/UK, even for a product that explicitly isn't a medical device); the exact legal phrasing and placement of the non-diagnostic disclaimer; the App Store/Play Store age-rating questionnaire, filled out against final content.
 
-**Straightforward, because the architecture makes it true rather than just claimed:** local-only storage by default, deletion via the existing "clear finished tasks" action (no server copy to also delete), a simple local-data export option worth adding for portability, payments handled by Apple/Google via RevenueCat (no PCI burden — RevenueCat never touches card data, only purchase/subscription metadata; it does need its own line in the privacy policy as a data processor, alongside TelemetryDeck below), no cloud sync in v1 (needs its own privacy review whenever it's added), voice input deferred (needs mic-usage disclosure and a retention statement when it ships).
+**Straightforward, because the architecture makes it true rather than just claimed:** local-only storage by default, deletion via the existing "clear finished tasks" action (no server copy to also delete), a simple local-data export option worth adding for portability, payments handled entirely by Apple (no PCI burden; if RevenueCat is used it needs its own line in the privacy policy as a data processor, alongside TelemetryDeck below, and if StoreKit 2 is used the processor list may reduce to TelemetryDeck alone), no cloud sync in v1 (needs its own privacy review whenever it's added), voice input deferred (needs mic-usage disclosure and a retention statement when it ships).
 
 **Needs disclosure once built:** any third-party AI provider used for AI-assist (disclose that a task's text is sent for that single request; verify the provider's *current* data-retention/training-use terms before launch, not assumed from today); TelemetryDeck/analytics collection (declared accurately in privacy policy and store privacy labels, even though it's privacy-first); any crash reporting tool, configured to scrub PII and verified not to capture task text in stack traces.
 
@@ -330,26 +334,27 @@ Deferred (needs the `Reminder` table, not in v1 schema): a scheduled task-start 
 
 ## 22. Implementation roadmap
 
-**Validation prototype** → landing page + clickable onboarding mock, tested against the core assumption in §2. **Design prototype** → stage-13 tokens built out in Figma or directly in native previews, Ember rendered at every required size to confirm it holds up small. **Technical foundation** → KMP scaffolding, Room schema, native SwiftUI + Compose shells, an (initially empty) native iOS Widget Extension target — this is where the KMP/Room/native-widget integration either proves smooth or reveals friction, and deserves real budgeted time rather than assumed smoothness. **MVP** → the full v1 feature set in §7, built. **Private alpha** (5-10 people) → stress-test the Live Activity/backgrounding/force-quit paths specifically. **Public beta** (20-50 people, 2-4 weeks) → first-session completion, sample-chip usage, zero data-loss in resume. **v1 launch** → per §21. **v1.1** → AI-assisted steps (now that the template core has proven itself), home-screen widget, Watch app. **v1.5** → Patterns, obstacle-aware suggestions, richer history. **v2** → deliberately left open, to be justified by real v1/v1.1 usage data rather than guessed here.
+**Validation prototype** → landing page + clickable onboarding mock, tested against the core assumption in §2. **Design prototype** → stage-13 tokens built out directly in SwiftUI previews, Ember rendered at every required size to confirm it holds up small. **Technical foundation** → Xcode project, SwiftData schema in a local Swift package, SwiftUI app shell, and an (initially empty) Widget Extension target sharing an App Group — this is where the SwiftData/extension-sandbox integration either proves smooth or reveals friction, and deserves real budgeted time rather than assumed smoothness. **MVP** → the full v1 feature set in §7, built. **Private alpha** (5-10 people) → stress-test the Live Activity/backgrounding/force-quit paths specifically. **Public beta** (20-50 people, 2-4 weeks) → first-session completion, sample-chip usage, zero data-loss in resume. **v1 launch** → per §21. **v1.1** → AI-assisted steps (now that the template core has proven itself), home-screen widget, Watch app. **v1.5** → Patterns, obstacle-aware suggestions, richer history. **v2** → deliberately left open, to be justified by real v1/v1.1 usage data rather than guessed here.
+
+The executable form of this roadmap, with phase gates and exit criteria, is `IMPLEMENTATION.md`.
 
 ### Engineering backlog (MVP scope)
 
 | Epic | Story | Priority | Complexity | Platform |
 |---|---|---|---|---|
-| Data layer | Persist all five tables per §11 | P0 | M | Shared (KMP/Room) |
-| Onboarding | Welcome → real task entry → first step (§14) | P0 | S | Native ×2 |
-| Step engine | Template-based first-step generation, offline | P0 | M | Shared |
-| Session core | Timer, three-choice end screen | P0 | M | Native ×2 |
-| Live Activity | Lock screen / Dynamic Island timer | P0 | **L — highest-risk item in the backlog** | Native iOS |
-| Android equivalent | Ongoing-notification timer surface | P0 | M | Native Android |
-| Resume | Pick up the stepped-away task | P0 | M | Native ×2 |
-| Entitlement + IAP | RevenueCat KMP SDK integration — purchase, restore, cross-platform entitlement check, all in shared code | P0 | M | Shared (KMP) |
-| Paywall UI | Second-task upgrade prompt screen | P0 | S | Native ×2 |
-| Notifications | Single stepped-away nudge, no task text | P1 | S | Native ×2 |
-| Analytics | Event taxonomy, TelemetryDeck | P1 | S | Shared |
-| Settings | Haptics, notification opt-in, clear tasks | P1 | S | Native ×2 |
-| Data export | Local JSON export | P2 | S | Native ×2 |
-| Accessibility pass | Dynamic Type, VoiceOver/TalkBack, reduced motion | P1 | M | Native ×2 |
+| Data layer | Persist all five entities per §11 | P0 | M | KindlingCore (SwiftData) |
+| Onboarding | Welcome → real task entry → first step (§14) | P0 | S | App |
+| Step engine | Template-based first-step generation, offline | P0 | M | KindlingCore |
+| Session core | Timer, three-choice end screen | P0 | M | App + KindlingCore |
+| Live Activity | Lock screen / Dynamic Island timer | P0 | **L — highest-risk item in the backlog** | Widget extension |
+| Resume | Pick up the stepped-away task | P0 | M | App |
+| Entitlement + IAP | Purchase, restore, entitlement check; free ceiling of one active task enforced in KindlingCore | P0 | M | App + KindlingCore |
+| Paywall UI | Second-task upgrade prompt screen | P0 | S | App |
+| Notifications | Single stepped-away nudge, no task text | P1 | S | App |
+| Analytics | Event taxonomy, TelemetryDeck | P1 | S | KindlingCore |
+| Settings | Haptics, notification opt-in, clear tasks | P1 | S | App |
+| Data export | Local JSON export | P2 | S | App |
+| Accessibility pass | Dynamic Type, VoiceOver, reduced motion | P1 | M | App |
 
 Timelines aren't set here deliberately — complexity ratings are the honest input for building a schedule against actual available hours, which this document can't responsibly guess at.
 
@@ -368,7 +373,7 @@ Timelines aren't set here deliberately — complexity ratings are the honest inp
 - Exact AI provider for v1.1's AI-assist, and their current data-retention/training-use terms — not resolved here, needs a check at build time, not launch-planning time.
 - Whether the one-task-free / multi-task-paid boundary actually converts as intended — genuinely unknown until `second_task_attempted` data exists.
 - Whether the design system's color palette passes real WCAG contrast checks as specified, or needs adjustment.
-- The exact Android equivalent for the Live Activity experience — RemoteViews-based ongoing notifications were the direction identified, but the fully polished approach needs its own design pass.
+- StoreKit 2 or RevenueCat for billing (§10/§15) — the trade is the paywall-experimentation tooling in §18 against a dependency and an added fee. Decide before purchase code is written.
 - Whether TelemetryDeck's current pricing still fits a pre-revenue solo budget — not reconfirmed since the initial check.
 
 ## 25. Final recommendation

@@ -1,6 +1,7 @@
 ---
 import "../styles/tokens.css";
 import "../styles/global.css";
+import Analytics from "@vercel/analytics/astro";
 import Ember from "../components/Ember.astro";
 
 interface Props {
@@ -27,6 +28,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:card" content="summary" />
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
+    <Analytics />
     <script is:inline>
       // Set before first paint so revealed sections never flash in and back out.
       if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

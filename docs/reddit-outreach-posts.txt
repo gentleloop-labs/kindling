@@ -1,0 +1,335 @@
+KINDLING — REDDIT OUTREACH PACK
+Updated: 12 August 2026
+
+
+SHORT ANSWER
+
+Yes, Reddit can help validate Kindling and attract early testers. The useful goal is
+not the largest possible waitlist. It is finding people who try the prototype,
+explain what does or does not work, and then choose to join the waitlist.
+
+Do not paste the same sales pitch into several communities. Post in one community,
+reply thoughtfully for a day or two, learn from it, improve the page, and only then
+post a version tailored to the next community.
+
+
+BEFORE POSTING
+
+1. Replace every URL below with the actual live URL if this domain is not connected:
+   https://kindling.maskedsyntax.com
+
+2. Open the prototype on your phone and submit a test waitlist email first.
+
+3. Re-read each subreddit's rules immediately before posting. Rules change.
+
+4. Disclose that you are building Kindling. Do not pose as an ordinary user who
+   happened to discover it.
+
+5. Do not say you have ADHD unless that is genuinely true. You do not need to share
+   a diagnosis to explain why you are building the product.
+
+6. Describe Kindling as a practical task-starting tool, not ADHD treatment, medical
+   advice, or a cure.
+
+7. Use one source label per community so traffic can be separated:
+   r/SideProject:       ?ref=reddit_sideproject
+   r/indiehackers:      ?ref=reddit_indiehackers
+   r/alphaandbetausers: ?ref=reddit_alpha_beta
+   r/ADHD_Programmers:  ?ref=reddit_adhd_programmers
+   r/EntrepreneurRideAlong: ?ref=reddit_ridealong
+
+
+DO NOT POST KINDLING IN THESE COMMUNITIES
+
+r/ADHD
+Its current Rule 8 bans apps, self-promotion, feedback requests, validation posts,
+and even free products. It says there are no exceptions and violations can result
+in a permanent ban. Do not post or send a promotional modmail.
+
+r/adhdwomen
+Its current rules prohibit advertisements, solicitation, and research requests.
+The community also prohibits AI-generated posts. Do not use this pack there.
+
+
+RECOMMENDED POSTING ORDER
+
+1. r/SideProject
+2. r/alphaandbetausers
+3. r/indiehackers — use the Self Promotion flair; current rules permit one post
+4. r/EntrepreneurRideAlong
+5. r/ADHD_Programmers — only after moderators explicitly approve it
+
+Wait at least two days between posts. Change the landing page if the same confusion
+appears repeatedly. Do not post all five merely to collect links.
+
+
+======================================================================
+POST 1 — r/SideProject
+======================================================================
+
+TITLE
+
+I built a 2-minute task-starting prototype — is this useful or just another timer?
+
+BODY
+
+I am validating a small product called Kindling for the moment when you already
+know what you need to do, but cannot get yourself to begin.
+
+The loop is deliberately narrow:
+
+- name the task you are avoiding
+- get one small, concrete first action
+- work on only that action for two minutes
+- choose “keep going,” “enough for now,” or “I got distracted” without streaks or
+  failure states
+
+It is not a planner, habit tracker, or ADHD treatment. The first-step suggestions
+currently use simple offline rules rather than an AI service, so task text does not
+need to leave the device.
+
+I made a browser prototype before spending months building the native app:
+https://kindling.maskedsyntax.com/?ref=reddit_sideproject
+
+I would especially value blunt feedback on three questions:
+
+1. Does the suggested first step actually reduce the resistance to starting?
+2. Does the two-minute session feel supportive or gimmicky?
+3. Is there enough value here to justify a dedicated phone app?
+
+There is an optional waitlist for people who want to test the native version, but
+trying the prototype and telling me where it falls apart is more useful right now.
+
+
+======================================================================
+POST 2 — r/alphaandbetausers
+======================================================================
+
+TITLE
+
+Looking for 10 testers for a no-account, 2-minute task-starting prototype
+
+BODY
+
+I am looking for early testers for Kindling, a small tool designed for the specific
+moment when a known task feels difficult to start.
+
+The prototype asks for the task, suggests one concrete first action, and holds that
+step on screen during a two-minute timer. It has no account, streaks, day planning,
+or productivity score. It is not a medical or treatment product.
+
+Test link:
+https://kindling.maskedsyntax.com/?ref=reddit_alpha_beta
+
+The test takes about three minutes. Afterward, I would love a comment or message
+answering any one of these:
+
+- At which screen did you hesitate or want to leave?
+- Was the first step specific enough to act on?
+- Would you use this when genuinely stuck, or would you ignore another app?
+
+You can also join the optional waitlist on the page if you want an early native-app
+invite. Please do not share private task details in the comments.
+
+
+======================================================================
+POST 3 — r/indiehackers
+======================================================================
+
+POSTING NOTE
+
+Use the Self Promotion flair. The current rule allows one self-promotional product
+post for feedback and critique, not repeated advertising.
+
+TITLE
+
+Validating the riskiest assumption before I build: would anyone install this?
+
+BODY
+
+I am building Kindling, a focused task-initiation app. The problem is not choosing
+what to do; it is the short but painful gap between knowing the task and starting it.
+
+My riskiest assumption is that this deserves a dedicated native app. People can
+already open a timer or ask a general-purpose AI tool for smaller steps, so I built
+a web prototype and waitlist before writing the iOS app.
+
+The proposed loop is:
+
+1. Type the avoided task.
+2. Receive one tiny first step using an offline rules engine.
+3. Stay with it for two minutes.
+4. End with three neutral outcomes—continue, stop for now, or note a distraction.
+
+Prototype:
+https://kindling.maskedsyntax.com/?ref=reddit_indiehackers
+
+I am measuring prototype completion, waitlist conversion, and whether people return
+for a second task. My current build/no-build gate is qualitative too: I want 5–8
+interviews and several usability sessions before committing to native development.
+
+What would convince you that the dedicated-app assumption is valid? I would also
+appreciate criticism of the positioning or validation approach.
+
+
+======================================================================
+POST 4 — r/EntrepreneurRideAlong
+======================================================================
+
+TITLE
+
+Ride-along: testing an ADHD-friendly task starter before writing the native app
+
+BODY
+
+I have started validating Kindling, a deliberately small task-initiation product.
+It is meant for the moment when a person knows the task but still cannot begin—not
+for planning the whole day.
+
+Instead of immediately building the iOS app, I shipped a landing page and working
+browser prototype. It turns a task into one small first action, runs a two-minute
+session, and treats continuing, stopping, and getting distracted as neutral outcomes.
+There are no accounts, streaks, or AI API calls in the prototype.
+
+You can try it here:
+https://kindling.maskedsyntax.com/?ref=reddit_ridealong
+
+My Phase 0 questions are:
+
+- Will people complete the first session?
+- Will they join a waitlist after experiencing the loop?
+- Do they want this as a dedicated app instead of a website, timer, or general AI?
+
+I would value feedback on the experiment itself. Am I measuring the right signal,
+and what evidence would you require before building the native version?
+
+I will share the numbers and decision after the first validation round.
+
+
+======================================================================
+POST 5 — r/ADHD_Programmers (ASK MODERATORS FIRST)
+======================================================================
+
+MODMAIL SUBJECT
+
+Permission to request feedback on a free task-initiation prototype?
+
+MODMAIL BODY
+
+Hi moderators,
+
+I am building Kindling, a small, non-medical tool for the moment someone knows what
+task to do but is stuck starting it. I have a free browser prototype that suggests
+one offline first step and runs a two-minute session. It collects no task text and
+has an optional email waitlist.
+
+Would you permit one clearly disclosed post asking members to test the flow and
+critique whether it would be useful for programming tasks? I would not repost it,
+make treatment claims, or ask anyone to disclose diagnosis or private task details.
+
+If this is outside the community rules, no problem—I will not post it.
+
+Thank you.
+
+
+ONLY USE THE FOLLOWING POST AFTER AN EXPLICIT YES FROM THE MODERATORS
+
+TITLE
+
+Could a two-minute “first action” tool help with starting coding tasks?
+
+BODY
+
+Moderator-approved feedback request.
+
+I am testing Kindling, a small task-initiation prototype for the gap between knowing
+the coding task and actually touching it. It asks what you are avoiding, suggests
+one concrete first action, and keeps that action visible during a two-minute session.
+
+It is not a project manager or ADHD treatment. The current suggestions come from a
+simple offline rules engine rather than an AI service, and task text is not submitted
+to a backend.
+
+Prototype:
+https://kindling.maskedsyntax.com/?ref=reddit_adhd_programmers
+
+For programming tasks specifically, I would like to know:
+
+- What is the smallest action that reliably gets you moving?
+- Would a generic suggestion such as “open the project and locate the relevant
+  file” help, or would it feel too obvious?
+- Would you install a dedicated app for this, or is an editor command/browser tool
+  the more natural form?
+
+There is an optional waitlist, but critical feedback is the main reason for posting.
+Please do not share private code, employer details, or sensitive task text.
+
+
+======================================================================
+OPTIONAL FIRST COMMENT FOR ANY APPROVED POST
+======================================================================
+
+Builder here. A couple of clarifications so the post does not overstate the product:
+
+- Kindling is not intended to diagnose or treat ADHD.
+- The prototype does not use an AI API; the suggestions are simple offline rules.
+- Task text stays in the browser. The optional waitlist sends only the submitted
+  email address to Formspark, as described on the privacy page.
+- I am specifically testing whether this deserves to become a dedicated app.
+
+I am happy to answer implementation questions, and negative feedback is useful.
+
+
+======================================================================
+SHORT REPLIES TO LIKELY COMMENTS
+======================================================================
+
+“Isn't this just a timer?”
+
+The timer is one part. The hypothesis is that choosing a small enough first action
+before the timer—and removing scores or failure states—reduces the friction to begin.
+The prototype exists to find out whether that difference is meaningful or not.
+
+
+“Why not just use ChatGPT/Goblin Tools/a normal timer?”
+
+That may be the correct answer for some people. Kindling is testing whether a faster,
+private, single-purpose flow is useful enough to earn a place on the phone. If people
+prefer existing tools, that is important validation too.
+
+
+“Does it use AI?”
+
+Not currently. The first-step suggestions use a small offline rules engine. A future
+on-device model is possible, but only if it clearly improves suggestions without
+sending task text away or making the experience slower.
+
+
+“Are you claiming this treats ADHD?”
+
+No. Kindling is a practical task-starting tool, not a diagnostic or treatment product.
+
+
+“Why do you need my email?”
+
+You do not need to provide it to try the prototype. The waitlist is optional and is
+only for occasional product updates and early-testing invitations.
+
+
+AFTER EACH POST
+
+1. Stay available for the first two hours and answer every good-faith comment.
+2. Record repeated objections in docs/validation-results.md.
+3. Track visits, prototype completions, and waitlist signups separately.
+4. Invite a small number of thoughtful commenters to a usability call only if they
+   express interest; do not cold-message everyone.
+5. Post a brief follow-up with what changed when the community rules allow it.
+6. Stop if posts produce clicks but almost nobody completes the prototype. Fix the
+   experience before seeking more traffic.
+
+
+SUCCESS IS NOT “LOTS OF EMAILS”
+
+A stronger signal is a smaller group that finishes the prototype, can describe when
+they would use it, and asks to test the native version. A large waitlist built from a
+generic promotional post can look encouraging while teaching almost nothing.

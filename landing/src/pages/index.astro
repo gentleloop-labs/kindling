@@ -117,8 +117,9 @@ const formConfigured = waitlistAction.startsWith("https://");
         <button class="button button--primary" type="submit">Join the waitlist</button>
       </div>
       <input type="hidden" name="tag" value="kindling-phase-0" />
+      <input class="honeypot" type="text" name="_honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <p class="form-status" role="status"></p>
-      <p class="fine-print">Your email is handled by the hosted form provider configured for this site. See <a href="/privacy/">privacy</a>.</p>
+      <p class="fine-print">Your email is handled by Formspark for the Kindling waitlist. See <a href="/privacy/">privacy</a>.</p>
     </form>
   </section>
 
@@ -142,15 +143,37 @@ const formConfigured = waitlistAction.startsWith("https://");
     });
 
     const form = document.querySelector(".waitlist-form");
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
       const status = form.querySelector(".form-status");
+      const button = form.querySelector('button[type="submit"]');
       if (form.dataset.configured !== "true") {
-        event.preventDefault();
         status.textContent = "The waitlist endpoint still needs to be configured before launch.";
         return;
       }
-      track("waitlist_submitted");
-      status.textContent = "Sending you to the secure signup confirmation…";
+
+      status.textContent = "Joining the waitlist…";
+      button.disabled = true;
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(Object.fromEntries(new FormData(form)))
+        });
+        if (!response.ok) throw new Error(`Waitlist request failed with ${response.status}`);
+
+        track("waitlist_submitted");
+        form.reset();
+        button.textContent = "You're on the list";
+        status.textContent = "Thanks — we'll only send occasional Kindling updates and early-testing invitations.";
+      } catch {
+        button.disabled = false;
+        status.textContent = "That didn't go through. Please check your connection and try again.";
+      }
     });
   </script>
 </BaseLayout>

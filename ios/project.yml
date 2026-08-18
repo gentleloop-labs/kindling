@@ -1,0 +1,74 @@
+name: Kindling
+options:
+  bundleIdPrefix: dev.aftaab
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+configs:
+  Debug: debug
+  Release: release
+
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+
+packages:
+  KindlingCore:
+    path: Packages/KindlingCore
+  KindlingUI:
+    path: Packages/KindlingUI
+  # Billing. Required for Shipaton eligibility; see IMPLEMENTATION.md Phase 5 for
+  # why this overrode the StoreKit 2 recommendation.
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: 5.0.0
+
+targets:
+  Kindling:
+    type: application
+    platform: iOS
+    sources:
+      - path: Kindling
+    dependencies:
+      - package: KindlingCore
+      - package: KindlingUI
+      - package: RevenueCat
+        product: RevenueCat
+      - target: KindlingWidget
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.aftaab.kindling
+        PRODUCT_NAME: Kindling
+        INFOPLIST_FILE: Kindling/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Kindling/Kindling.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_PREVIEWS: YES
+
+  KindlingWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: KindlingWidget
+    dependencies:
+      - package: KindlingCore
+      - package: KindlingUI
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.aftaab.kindling.widget
+        PRODUCT_NAME: KindlingWidget
+        INFOPLIST_FILE: KindlingWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: KindlingWidget/KindlingWidget.entitlements
+        ENABLE_PREVIEWS: YES
+
+schemes:
+  Kindling:
+    build:
+      targets:
+        Kindling: all
+    run:
+      config: Debug
+    archive:
+      config: Release

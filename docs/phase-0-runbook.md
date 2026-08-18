@@ -2,11 +2,13 @@
 
 ## Deploy
 
-1. Create a hosted form in Buttondown, Formspark, or an equivalent provider.
+1. Create a waitlist form in Formspark and copy its `https://submit-form.com/...` action URL.
 2. Set `PUBLIC_WAITLIST_FORM_ACTION` to the provider's HTTPS submission endpoint.
 3. Optionally set `PUBLIC_ANALYTICS_ENDPOINT` to a first-party endpoint that accepts the privacy-safe event envelope. Without it, events remain in the browser's local buffer and can be copied out during research.
 4. Run `npm install` and `npm run build` from `landing/`.
-5. Deploy `landing/dist/` to Cloudflare Pages or Netlify and map `kindling.maskedsyntax.com`.
+5. Import the repository into Vercel with `landing` as the Root Directory, `npm run build` as the build command, and `dist` as the output directory.
+6. Keep Vercel's **Include source files outside of the Root Directory in the Build Step** setting enabled; the build syncs source assets from the repository root.
+7. Map `kindling.maskedsyntax.com` in the Vercel project's Domains settings and enable Vercel Web Analytics.
 
 The build syncs the no-build prototype into `landing/public/try/`, so `/try/` is included in the same static deployment.
 

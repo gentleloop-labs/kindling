@@ -1,0 +1,46 @@
+// Shared build settings. Kept here rather than in the project file so config
+// changes review as readable diffs.
+
+IPHONEOS_DEPLOYMENT_TARGET = 17.0
+SWIFT_VERSION = 6.0
+SWIFT_STRICT_CONCURRENCY = complete
+SWIFT_UPCOMING_FEATURE_CONCURRENCY = YES
+
+TARGETED_DEVICE_FAMILY = 1
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+SUPPORTS_MACCATALYST = NO
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+KINDLING_BUNDLE_PREFIX = dev.aftaab.kindling
+KINDLING_APP_GROUP = group.dev.aftaab.kindling
+
+// Required for device builds and for the Live Activity work in Phase 4.
+// Simulator builds sign ad-hoc and ignore this.
+DEVELOPMENT_TEAM = GVGJLY2H53
+CODE_SIGN_STYLE = Automatic
+
+// AI step generation (§12 v1.1). The OpenAI key lives in the Cloudflare Worker,
+// never here — these two values are only the endpoint and a rotatable app token.
+// NOTE: xcconfig treats "//" as a comment, so the scheme is NOT stored here.
+// The host is combined with https:// in Swift.
+KINDLING_STEP_HOST = kindling-step.maskedsyntax.workers.dev
+
+// APP_TOKEN lives in Local.xcconfig, which is gitignored. It ships in the app
+// binary either way, so treat it as rotatable rather than secret — but keeping it
+// out of version control means a public repo can't hand someone your OpenAI spend.
+// `#include?` is the optional form: the build still works without the file, and
+// the app simply stays local-only.
+KINDLING_APP_TOKEN =
+
+// RevenueCat public SDK key. Safe to ship in the binary — it is the key RevenueCat
+// intends clients to carry, unlike a secret API key. Lives in Local.xcconfig for
+// now so it is not committed before the account exists.
+KINDLING_REVENUECAT_KEY =
+
+#include? "Local.xcconfig"
+
+CLANG_ENABLE_MODULES = YES
+ENABLE_USER_SCRIPT_SANDBOXING = YES
+GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR
