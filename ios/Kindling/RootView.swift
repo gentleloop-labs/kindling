@@ -89,6 +89,10 @@ struct RootView: View {
                 if ProcessInfo.processInfo.environment["KINDLING_OPEN_SETTINGS"] == "1" {
                     showingSettings = true
                 }
+                if ProcessInfo.processInfo.environment["KINDLING_OPEN_PAYWALL"] == "1" {
+                    analytics.track(.paywallDisplayed(source: .settings))
+                    showingPaywall = true
+                }
             }
         #endif
         #if DEBUG
