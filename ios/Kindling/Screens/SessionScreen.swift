@@ -24,17 +24,17 @@ struct SessionScreen: View {
                 VStack(spacing: Space.s4) {
                     Spacer()
 
-                    TimerRing(
-                        progress: SessionRuntime.progress(of: snapshot, clock: clock),
-                        emberState: .focusing,
-                        diameter: 240
-                    )
-                    .overlay(alignment: .bottom) {
+                    VStack(spacing: Space.s3) {
+                        TimerRing(
+                            progress: SessionRuntime.progress(of: snapshot, clock: clock),
+                            emberState: .focusing,
+                            diameter: 240
+                        )
+
                         Text(Self.format(remaining))
                             .font(.kindlingTitle)
                             .monospacedDigit()
                             .foregroundStyle(KindlingColor.textPrimary)
-                            .offset(y: Space.s3)
                     }
                     .accessibilityElement()
                     .accessibilityLabel("\(Self.spoken(remaining)) remaining")

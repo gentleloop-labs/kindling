@@ -13,13 +13,20 @@ struct OutcomeScreen: View {
 
     var body: some View {
         ScreenScaffold {
-            VStack(spacing: Space.s3) {
+            VStack(spacing: 0) {
                 Spacer()
 
-                Text("How did that go?")
-                    .font(.kindlingTitle)
-                    .foregroundStyle(KindlingColor.textPrimary)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(spacing: Space.s4) {
+                    EmberView(state: .ready, size: 112)
+
+                    Text("How did that go?")
+                        .font(.kindlingTitle)
+                        .foregroundStyle(KindlingColor.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, Space.s6)
 
                 Spacer()
             }

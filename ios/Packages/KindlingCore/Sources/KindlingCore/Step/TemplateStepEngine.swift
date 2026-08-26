@@ -38,7 +38,7 @@ public struct TemplateStepEngine: StepSuggesting {
             "friend", "mum", "mom", "dad", "partner", "boss", "landlord"
         ], steps: [
             "Write down the first sentence you want to say.",
-            "Decide how you'll reach them—call, message, or in person—and pick one.",
+            "Decide how you'll reach them: call, message, or in person. Then pick one.",
             "Open their name on your phone and just look at it."
         ]),
         Rule(keywords: ["write", "essay", "report", "proposal", "article", "draft", "document"], steps: [
@@ -68,7 +68,7 @@ public struct TemplateStepEngine: StepSuggesting {
         ]),
         Rule(keywords: ["pay", "bill", "invoice", "tax", "bank"], steps: [
             "Open the bill or payment page.",
-            "Find the amount and due date—nothing else yet.",
+            "Find the amount and due date. Nothing else yet.",
             "Put your payment details within reach."
         ]),
         Rule(keywords: ["shop", "shopping", "groceries", "buy", "errand", "parcel", "returns"], steps: [

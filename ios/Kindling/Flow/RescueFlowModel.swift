@@ -146,7 +146,7 @@ final class RescueFlowModel {
         defer { isGeneratingStep = false }
 
         let suggestion = await engine.suggestFirstStep(for: draftTitle, attempt: attempt)
-        suggestedStep = suggestion.text
+        suggestedStep = Self.cleanStepCopy(suggestion.text)
         lastStepOrigin = suggestion.origin
         let origin = AnalyticsGenerationOrigin(
             stepOrigin: suggestion.origin,
@@ -174,6 +174,21 @@ final class RescueFlowModel {
 
     var echoedTask: String {
         TemplateStepEngine.normalize(draftTitle)
+    }
+
+    private static func cleanStepCopy(_ text: String) -> String {
+        switch text {
+        case "Decide how you'll reach them—call, message, or in person—and pick one.":
+            return "Decide how you'll reach them: call, message, or in person. Then pick one."
+        case "Find the amount and due date—nothing else yet.":
+            return "Find the amount and due date. Nothing else yet."
+        default:
+            return text
+                .replacingOccurrences(of: " — ", with: ", ")
+                .replacingOccurrences(of: "—", with: ", ")
+                .replacingOccurrences(of: " – ", with: " - ")
+                .replacingOccurrences(of: "–", with: "-")
+        }
     }
 
     // MARK: - Screen 3 → 4: starting a session
@@ -321,9 +336,10 @@ final class RescueFlowModel {
         draftTitle = task.title
 
         let latest = task.sessions.sorted { $0.startedAt > $1.startedAt }.first
-        suggestedStep = latest?.firstStep?.text
+        let rawStep = latest?.firstStep?.text
             ?? task.firstSteps.sorted { $0.createdAt > $1.createdAt }.first?.text
             ?? TemplateStepEngine().suggestFirstStep(for: task.title, attempt: 0)
+        suggestedStep = Self.cleanStepCopy(rawStep)
 
         if let latest, latest.endedAt == nil {
             let snapshot = SessionSnapshot(

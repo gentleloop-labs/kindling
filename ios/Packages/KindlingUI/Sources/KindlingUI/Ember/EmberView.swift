@@ -1,11 +1,9 @@
 import SwiftUI
 
-/// A small, round, glowing coal — not a flame.
+/// Kindling's Ember mascot, shared by the app, widgets, and Live Activities.
 ///
-/// The shape is deliberately the simplest thing that works at every size it has to
-/// survive: app icon, widget, Live Activity, and later a watch face. State is
-/// carried by glow intensity and expression, never by adding detail, which is what
-/// lets it stay legible when it is 24pt across.
+/// State is carried by glow, warmth, and motion so the same character remains
+/// recognizable everywhere it appears.
 ///
 /// It lives in `KindlingUI` rather than the app target because the widget
 /// extension needs it too.
@@ -22,11 +20,11 @@ public struct EmberView: View {
     }
 
     public var body: some View {
-        ZStack {
-            glow
-            body_
-            eyes
-        }
+        mascot
+            .scaleEffect(pulseScale)
+            .opacity(flickerOpacity)
+            .animation(pulseAnimation, value: animating)
+            .animation(KindlingMotion.standard(reduceMotion: reduceMotion), value: state)
         .frame(width: size, height: size)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(state.accessibilityLabel)
@@ -34,46 +32,18 @@ public struct EmberView: View {
         .onChange(of: state) { _, _ in animating = true }
     }
 
-    // MARK: - Layers
+    // MARK: - Mascot
 
-    /// Decorative only. It may disappear entirely without changing what the screen
-    /// means — every state also has its label, and nearby copy uses text tokens.
-    private var glow: some View {
-        Circle()
-            .fill(
-                RadialGradient(
-                    colors: [glowColor.opacity(glowOpacity), .clear],
-                    center: .center,
-                    startRadius: size * 0.2,
-                    endRadius: size * glowRadius
-                )
+    private var mascot: some View {
+        Image("EmberMascot", bundle: .module)
+            .resizable()
+            .scaledToFit()
+            .saturation(state == .resting ? 0.45 : 1)
+            .brightness(state == .resting ? -0.12 : 0)
+            .shadow(
+                color: glowColor.opacity(glowOpacity),
+                radius: size * glowRadius
             )
-            .scaleEffect(pulseScale)
-            .opacity(flickerOpacity)
-            .animation(pulseAnimation, value: animating)
-            .animation(KindlingMotion.standard(reduceMotion: reduceMotion), value: state)
-    }
-
-    private var body_: some View {
-        Circle()
-            .fill(state == .resting ? KindlingColor.textSecondary.opacity(0.45) : KindlingColor.ember)
-            .frame(width: size * 0.52, height: size * 0.52)
-            .animation(KindlingMotion.standard(reduceMotion: reduceMotion), value: state)
-    }
-
-    /// Two dots. Expression comes from their spacing and size, nothing more.
-    private var eyes: some View {
-        HStack(spacing: size * 0.11) {
-            eye
-            eye
-        }
-        .offset(y: -size * 0.03)
-    }
-
-    private var eye: some View {
-        Circle()
-            .fill(KindlingColor.accentInk.opacity(state == .resting ? 0.5 : 0.85))
-            .frame(width: max(2, size * 0.05), height: max(2, size * 0.05))
     }
 
     // MARK: - State → appearance
@@ -87,20 +57,20 @@ public struct EmberView: View {
     private var glowOpacity: Double {
         switch state {
         case .resting: 0
-        case .ready: 0.55
-        case .focusing: 0.8
-        case .distracted: 0.5
-        case .celebrating: 0.9
+        case .ready: 0.18
+        case .focusing: 0.28
+        case .distracted: 0.16
+        case .celebrating: 0.38
         }
     }
 
     private var glowRadius: CGFloat {
         switch state {
-        case .resting: 0.3
-        case .ready: 0.45
-        case .focusing: 0.55
-        case .distracted: 0.42
-        case .celebrating: 0.72
+        case .resting: 0
+        case .ready: 0.06
+        case .focusing: 0.09
+        case .distracted: 0.06
+        case .celebrating: 0.12
         }
     }
 

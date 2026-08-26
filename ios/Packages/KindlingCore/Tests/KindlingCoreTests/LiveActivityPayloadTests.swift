@@ -89,7 +89,7 @@ struct SessionEndNotificationTests {
     @Test("both outcomes are named as wins — no implied wrong answer")
     func noShame() {
         let body = SessionEndNotification.body(forDurationSeconds: 120)
-        #expect(body.contains("both are wins"))
+        #expect(body.lowercased().contains("both are wins"))
         for shaming in ["failed", "missed", "should", "only"] {
             #expect(!body.lowercased().contains(shaming))
         }

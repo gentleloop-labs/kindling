@@ -8,21 +8,25 @@ struct WelcomeScreen: View {
 
     var body: some View {
         ScreenScaffold {
-            VStack(spacing: Space.s4) {
+            VStack(spacing: 0) {
                 Spacer()
 
-                EmberView(state: .resting, size: 140)
+                VStack(spacing: Space.s3) {
+                    EmberView(state: .ready, size: 128)
 
-                VStack(spacing: Space.s2) {
-                    Text("Kindling doesn't plan your day.")
-                        .font(.kindlingTitle)
-                        .foregroundStyle(KindlingColor.textPrimary)
-                    Text("It just helps you start the one thing you're avoiding.")
-                        .font(.kindlingBody)
-                        .foregroundStyle(KindlingColor.textSecondary)
+                    VStack(spacing: Space.s2) {
+                        Text("Kindling doesn't plan your day.")
+                            .font(.kindlingTitle)
+                            .foregroundStyle(KindlingColor.textPrimary)
+                        Text("It just helps you start the one thing you're avoiding.")
+                            .font(.kindlingBody)
+                            .foregroundStyle(KindlingColor.textSecondary)
+                    }
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                 }
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, Space.s6)
 
                 Spacer()
             }

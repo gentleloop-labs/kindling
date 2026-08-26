@@ -8,16 +8,20 @@ struct SuccessScreen: View {
 
     var body: some View {
         ScreenScaffold {
-            VStack(spacing: Space.s4) {
+            VStack(spacing: 0) {
                 Spacer()
 
-                EmberView(state: .celebrating, size: 160)
+                VStack(spacing: Space.s4) {
+                    EmberView(state: .celebrating, size: 144)
 
-                Text("You started. That's the whole game.")
-                    .font(.kindlingTitle)
-                    .foregroundStyle(KindlingColor.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text("You started. That's the whole game.")
+                        .font(.kindlingTitle)
+                        .foregroundStyle(KindlingColor.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, Space.s6)
 
                 Spacer()
             }

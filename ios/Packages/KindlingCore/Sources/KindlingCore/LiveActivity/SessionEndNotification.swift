@@ -17,6 +17,6 @@ public enum SessionEndNotification {
         let minutes = max(1, seconds / 60)
         // Both choices are named as wins, deliberately: the notification must not
         // imply that stopping was the wrong answer.
-        return "Your \(minutes) minutes are up. Keep going, or that's enough for today — both are wins."
+        return "Your \(minutes) minutes are up. Keep going, or that's enough for today. Both are wins."
     }
 }

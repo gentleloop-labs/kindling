@@ -12,16 +12,20 @@ struct NotificationAskScreen: View {
 
     var body: some View {
         ScreenScaffold {
-            VStack(spacing: Space.s4) {
+            VStack(spacing: 0) {
                 Spacer()
 
-                EmberView(state: .ready, size: 120)
+                VStack(spacing: Space.s4) {
+                    EmberView(state: .ready, size: 112)
 
-                Text("Want a nudge if this is still hanging around tomorrow?")
-                    .font(.kindlingTitle)
-                    .foregroundStyle(KindlingColor.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                    Text("Want a nudge if this is still hanging around tomorrow?")
+                        .font(.kindlingTitle)
+                        .foregroundStyle(KindlingColor.textPrimary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, Space.s6)
 
                 Spacer()
             }

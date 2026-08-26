@@ -66,7 +66,7 @@ struct SettingsScreen: View {
 
                 Section {
                     if entitlements.hasMultiTask {
-                        Label("Kindling Plus — Active", systemImage: "checkmark.circle.fill")
+                        Label("Kindling Plus: Active", systemImage: "checkmark.circle.fill")
                             .foregroundStyle(KindlingColor.textPrimary)
                         Button("Manage subscription") {
                             showingSubscriptionManagement = true
