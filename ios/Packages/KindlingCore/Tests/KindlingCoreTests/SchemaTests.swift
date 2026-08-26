@@ -90,6 +90,23 @@ struct SchemaTests {
         #expect(try context.fetch(FetchDescriptor<UserPreference>()).first?.value == "true")
     }
 
+    @Test("hosted AI is denied until versioned consent is explicitly allowed")
+    func hostedAIConsent() throws {
+        let context = try makeContext()
+        let preferences = PreferencesStore(context: context)
+
+        #expect(preferences.hostedAIConsent() == .notAsked)
+        preferences.setHostedAIConsent(.declined)
+        #expect(preferences.hostedAIConsent() == .declined)
+        preferences.setHostedAIConsent(.allowed)
+        #expect(preferences.hostedAIConsent() == .allowed)
+
+        let row = try context.fetch(FetchDescriptor<UserPreference>(
+            predicate: #Predicate { $0.key == "hosted_ai_consent_v1" }
+        )).first
+        #expect(row?.value == "allowed")
+    }
+
     @Test("the shipped schema declares exactly the five §11 entities")
     func schemaShape() {
         #expect(SchemaV1.models.count == 5)

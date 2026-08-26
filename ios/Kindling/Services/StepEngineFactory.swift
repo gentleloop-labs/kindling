@@ -11,7 +11,10 @@ import KindlingCore
 ///    leaves the device.
 /// 3. **Template** — the floor, inside `StepEngineChain`. Never skipped.
 enum StepEngineFactory {
-    static func make(aiEnabled: Bool) -> any AsyncStepSuggesting {
+    static func make(
+        aiEnabled: Bool,
+        hostedAIConsent: HostedAIConsent
+    ) -> any AsyncStepSuggesting {
         guard aiEnabled else {
             // Opted out: local template only. No generators, so no chance of a call.
             return LocalStepEngine()
@@ -25,7 +28,7 @@ enum StepEngineFactory {
             generators.append(OnDeviceStepGenerator())
         }
 
-        if let configuration = remoteConfiguration() {
+        if hostedAIConsent == .allowed, let configuration = remoteConfiguration() {
             generators.append(RemoteStepGenerator(configuration: configuration))
         }
 

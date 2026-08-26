@@ -13,15 +13,19 @@
 		1FDC5EB3645BC5E02661F0E1 /* SharedStoreProbeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */; };
 		366773EA53C8C09954F90BA7 /* FirstStepScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */; };
 		4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */; };
+		4E32CF014B27D3076607B98A /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976DB60F61F80F8449262829 /* AppAnalytics.swift */; };
 		4F9979C974D74E16FD9B3D5B /* SessionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FBE096F95013E2CEDFC3C5 /* SessionScreen.swift */; };
 		524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */; };
 		56B2E12DCBAA98FD247B5425 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911150C168476C314DE306B /* SettingsScreen.swift */; };
 		5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31ECE7592EDAB135667C013 /* RescueFlowModel.swift */; };
+		637A7C811DACA27A2825EA07 /* PaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EF62A7683EC1F5A8A3DE7 /* PaywallScreen.swift */; };
+		726D192B410907BF2733EA33 /* TelemetryDeck in Frameworks */ = {isa = PBXBuildFile; productRef = 577FA12F6676BCC704B957F5 /* TelemetryDeck */; };
 		72BA66291D0FA4D597A83E9B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D42944AEF31FEA9C6C04D3A /* Assets.xcassets */; };
 		740436DB53E1F98FACDCA24B /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B0D42B5EF7F0751E0A68DE8 /* LiveActivityController.swift */; };
 		7884AF181C1A4AFD4B6B270A /* OutcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */; };
 		7D37BD1FC8A85C9142519E88 /* KindlingUI in Frameworks */ = {isa = PBXBuildFile; productRef = 48D2BF93D9DA7D7DAA9D673A /* KindlingUI */; };
 		80E4A37FEB621DDD65EA76FB /* KindlingWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F1ABE3FBC7E13AB2732A516F /* KindlingWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8229604AA35E1A7BC515ECC6 /* TaskShelfScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBECEBCD5E41A0005640237B /* TaskShelfScreen.swift */; };
 		8F169F524CFF547A119126A7 /* KindlingCore in Frameworks */ = {isa = PBXBuildFile; productRef = 32C6DF913575C475DD459BCC /* KindlingCore */; };
 		95F29CA235C4B991C8B3AA59 /* KindlingSessionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */; };
 		9EB37C5E7D557642563D0ADF /* StoreFailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */; };
@@ -85,14 +89,17 @@
 		7DE28610948D944A8D9AD87C /* OutcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomeScreen.swift; sourceTree = "<group>"; };
 		8A3FD49A3987B750C728A9E8 /* NotificationAskScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAskScreen.swift; sourceTree = "<group>"; };
 		8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreFailureView.swift; sourceTree = "<group>"; };
+		976DB60F61F80F8449262829 /* AppAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
 		A63E19B9754355B444F110AE /* SuccessScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessScreen.swift; sourceTree = "<group>"; };
 		B7B56A1F23E10FD5290A1743 /* KindlingUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingUI; path = Packages/KindlingUI; sourceTree = SOURCE_ROOT; };
 		B818C77AE0A91C6F333EDB6E /* KindlingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingApp.swift; sourceTree = "<group>"; };
 		B9BDE1BE90642E385948B4AE /* FirstStepScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstStepScreen.swift; sourceTree = "<group>"; };
 		BE9D91E34BB1A253961B0419 /* KindlingCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KindlingCore; path = Packages/KindlingCore; sourceTree = SOURCE_ROOT; };
+		C10EF62A7683EC1F5A8A3DE7 /* PaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreen.swift; sourceTree = "<group>"; };
 		CDFBBB4B94C1719752575492 /* StoreKitEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitEntitlementStore.swift; sourceTree = "<group>"; };
 		D164A2A7A602A1D57B48B6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D6493DF08464A945C9405D17 /* KindlingSessionAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindlingSessionAttributes.swift; sourceTree = "<group>"; };
+		DBECEBCD5E41A0005640237B /* TaskShelfScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskShelfScreen.swift; sourceTree = "<group>"; };
 		DD6D90CF5743FD66CC6816B7 /* SharedStoreProbeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStoreProbeWidget.swift; sourceTree = "<group>"; };
 		E8BDCEFD4CCF60982C27D792 /* SessionLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionLiveActivity.swift; sourceTree = "<group>"; };
 		EB22BF22B6FCD38E74758C6E /* PersistenceProbeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceProbeView.swift; sourceTree = "<group>"; };
@@ -108,6 +115,7 @@
 			files = (
 				B68BC8DD1BF934D0CDC52509 /* KindlingCore in Frameworks */,
 				FF8E87C429B4D1B87B44AD2B /* KindlingUI in Frameworks */,
+				726D192B410907BF2733EA33 /* TelemetryDeck in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +140,14 @@
 			path = Flow;
 			sourceTree = "<group>";
 		};
+		298DAB57AE979A13EF8BB2B0 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				976DB60F61F80F8449262829 /* AppAnalytics.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		2D7CA16C34E7EDC859CFE8C9 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +162,7 @@
 		4388CC876BD9A7A9334EEACD /* Billing */ = {
 			isa = PBXGroup;
 			children = (
+				C10EF62A7683EC1F5A8A3DE7 /* PaywallScreen.swift */,
 				CDFBBB4B94C1719752575492 /* StoreKitEntitlementStore.swift */,
 			);
 			path = Billing;
@@ -201,6 +218,7 @@
 				EB22BF22B6FCD38E74758C6E /* PersistenceProbeView.swift */,
 				6B94D42D4EA665A7B3EDBC66 /* RootView.swift */,
 				8E1E4F3064105C622BAB8B4C /* StoreFailureView.swift */,
+				298DAB57AE979A13EF8BB2B0 /* Analytics */,
 				4388CC876BD9A7A9334EEACD /* Billing */,
 				24537EC6E0616185B38BB424 /* Flow */,
 				F32865052B63427EC43CC915 /* Screens */,
@@ -220,6 +238,7 @@
 				F911150C168476C314DE306B /* SettingsScreen.swift */,
 				A63E19B9754355B444F110AE /* SuccessScreen.swift */,
 				4321D74D0C931DFDFCD60A2E /* TaskEntryScreen.swift */,
+				DBECEBCD5E41A0005640237B /* TaskShelfScreen.swift */,
 				08BDAC2D5EC4424A9AC629F4 /* WelcomeScreen.swift */,
 			);
 			path = Screens;
@@ -257,6 +276,7 @@
 			packageProductDependencies = (
 				58D1921A087A0F8D56F098A1 /* KindlingCore */,
 				1DD701D38A40467AA6AC70AB /* KindlingUI */,
+				577FA12F6676BCC704B957F5 /* TelemetryDeck */,
 			);
 			productName = Kindling;
 			productReference = 603C5CF979BF95CE5492E8E8 /* Kindling.app */;
@@ -311,6 +331,7 @@
 			mainGroup = FA7158F51DA7A8ABB07E2C3E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				BF283606E18395ACDA760728 /* XCRemoteSwiftPackageReference "SwiftSDK" */,
 				A558B33B8B8E65D08ED41D04 /* XCLocalSwiftPackageReference "Packages/KindlingCore" */,
 				78E77E7606B689E3C631D502 /* XCLocalSwiftPackageReference "Packages/KindlingUI" */,
 			);
@@ -352,6 +373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E32CF014B27D3076607B98A /* AppAnalytics.swift in Sources */,
 				366773EA53C8C09954F90BA7 /* FirstStepScreen.swift in Sources */,
 				F8DB9B01D91A96A7F3CFFE6C /* KindlingApp.swift in Sources */,
 				95F29CA235C4B991C8B3AA59 /* KindlingSessionAttributes.swift in Sources */,
@@ -359,6 +381,7 @@
 				02168662529ABE3608263D56 /* NotificationAskScreen.swift in Sources */,
 				E6A9330D60E8D944B882E86E /* NotificationService.swift in Sources */,
 				7884AF181C1A4AFD4B6B270A /* OutcomeScreen.swift in Sources */,
+				637A7C811DACA27A2825EA07 /* PaywallScreen.swift in Sources */,
 				AE70BC287AFC43D2028EBE57 /* PersistenceProbeView.swift in Sources */,
 				5907A08AEB66164D73A2F294 /* RescueFlowModel.swift in Sources */,
 				B8BF2A20F3A54D9CB18A6EF1 /* RescueFlowView.swift in Sources */,
@@ -371,6 +394,7 @@
 				01FC8CFAAF00C0061EC495A6 /* StoreKitEntitlementStore.swift in Sources */,
 				D15FD0E3C717BD614E8B7C6B /* SuccessScreen.swift in Sources */,
 				524C771176AAACF26C837A75 /* TaskEntryScreen.swift in Sources */,
+				8229604AA35E1A7BC515ECC6 /* TaskShelfScreen.swift in Sources */,
 				4A93EA5BA8F634DDC0B47CD1 /* WelcomeScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,6 +631,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		BF283606E18395ACDA760728 /* XCRemoteSwiftPackageReference "SwiftSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TelemetryDeck/SwiftSDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.10;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		1DD701D38A40467AA6AC70AB /* KindlingUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -619,6 +654,11 @@
 		48D2BF93D9DA7D7DAA9D673A /* KindlingUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KindlingUI;
+		};
+		577FA12F6676BCC704B957F5 /* TelemetryDeck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF283606E18395ACDA760728 /* XCRemoteSwiftPackageReference "SwiftSDK" */;
+			productName = TelemetryDeck;
 		};
 		58D1921A087A0F8D56F098A1 /* KindlingCore */ = {
 			isa = XCSwiftPackageProductDependency;

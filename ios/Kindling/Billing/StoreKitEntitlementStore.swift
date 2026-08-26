@@ -3,6 +3,15 @@ import KindlingCore
 import Observation
 import StoreKit
 
+/// The four StoreKit answers the UI needs to distinguish. Cancellation and
+/// Ask-to-Buy are expected states, not errors.
+enum PurchaseOutcome: Equatable {
+    case purchased
+    case pending
+    case cancelled
+    case failed
+}
+
 /// Entitlement state, backed by StoreKit 2.
 ///
 /// Lives in the app target so `KindlingCore` keeps zero dependencies and its rules —
@@ -104,30 +113,34 @@ final class StoreKitEntitlementStore: EntitlementProviding {
         }
     }
 
-    /// - Returns: true when the purchase completed and the entitlement is now active.
-    ///   A user cancellation returns false and is **not** an error — it is a normal,
-    ///   expected answer, and must never be surfaced as a failure.
-    func purchase(_ product: Product) async -> Bool {
+    func purchase(_ product: Product) async -> PurchaseOutcome {
         do {
             switch try await product.purchase() {
             case .success(let verification):
-                guard case .verified(let transaction) = verification else { return false }
+                guard case .verified(let transaction) = verification else { return .failed }
                 await transaction.finish()
                 await refresh()
-                return hasMultiTask
+                return hasMultiTask ? .purchased : .failed
             case .userCancelled:
-                return false
+                return .cancelled
             case .pending:
                 // Ask-to-Buy, awaiting a parent's approval. Not a failure and not a
                 // success — the `Transaction.updates` listener picks it up if and
                 // when it is approved.
-                return false
+                return .pending
             @unknown default:
-                return false
+                return .failed
             }
         } catch {
-            return false
+            return .failed
         }
+    }
+
+    /// StoreKit decides eligibility from the customer's subscription history.
+    /// Lifetime is not a subscription and therefore never has a trial.
+    func isEligibleForIntroOffer(_ product: Product) async -> Bool {
+        guard let subscription = product.subscription else { return false }
+        return await subscription.isEligibleForIntroOffer
     }
 
     /// Outcome of a restore attempt.

@@ -45,10 +45,12 @@ no Xcode change, no App Store review.
 ## Privacy
 
 The task title is the most sensitive thing Kindling handles. In this Worker it is
-forwarded to OpenAI and then dropped: never logged, never stored, never echoed in
-an error response. Every `console.log` is content-free by design — check that any
-line you add keeps that true, and note that an upstream error body can contain the
-prompt, which is why only the status code is logged.
+forwarded to OpenAI and then dropped: never logged or stored by Kindling or the
+Worker, and never echoed in an error response. The Responses request sets
+`store: false`, but OpenAI's default abuse-monitoring logs may still retain API
+content for up to 30 days. Every `console.log` is content-free by design — check
+that any line you add keeps that true, and note that an upstream error body can
+contain the prompt, which is why only the status code is logged.
 
 **This changes Kindling's privacy posture, and the policy has to say so.** With
 the toggle on, task text leaves the device and OpenAI becomes a data processor.

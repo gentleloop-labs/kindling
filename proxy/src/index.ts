@@ -7,8 +7,9 @@
  *
  * PRIVACY — the one rule this file exists to keep:
  * the task text is the most sensitive thing Kindling handles. It is forwarded to
- * OpenAI and then dropped. It is never logged, never stored, and never included
- * in an error response. Every console line below is deliberately content-free.
+ * OpenAI and then dropped by this Worker. It is never logged or stored by Kindling
+ * or the Worker, and never included in an error response. OpenAI may retain API
+ * content in abuse-monitoring logs for up to 30 days; the app discloses that.
  */
 
 interface Env {
@@ -106,6 +107,10 @@ export default {
         },
         body: JSON.stringify({
           model: env.MODEL,
+          // Responses are used once and discarded. This disables application
+          // state storage; OpenAI's separate abuse-monitoring retention still
+          // applies and is disclosed in the app and privacy policy.
+          store: false,
           // max_output_tokens INCLUDES reasoning tokens on the gpt-5 series, so a
           // tight cap here starves the visible answer and the response comes back
           // `incomplete` with no text at all. Generous ceiling; we are billed for

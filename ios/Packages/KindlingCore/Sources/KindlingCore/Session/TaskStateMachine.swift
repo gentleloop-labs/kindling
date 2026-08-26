@@ -49,6 +49,16 @@ public enum TaskStateMachine {
 public enum ActiveTaskPolicy {
     public static let freeTierActiveLimit = 1
 
+    /// Both a task in progress and one deliberately parked occupy the free slot.
+    /// Finished and discarded work never does.
+    public static func countsTowardLimit(_ status: TaskStatus) -> Bool {
+        status == .active || status == .steppedAway
+    }
+
+    public static func currentActiveCount<S: Sequence>(in statuses: S) -> Int where S.Element == TaskStatus {
+        statuses.lazy.filter(countsTowardLimit).count
+    }
+
     public static func canStartAnotherTask(currentActiveCount: Int, hasMultiTaskEntitlement: Bool) -> Bool {
         hasMultiTaskEntitlement || currentActiveCount < freeTierActiveLimit
     }

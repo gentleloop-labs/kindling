@@ -1,6 +1,6 @@
 # Implementation status
 
-Updated: 2026-08-18
+Updated: 2026-08-26
 
 ## Phase 0 — Validation
 
@@ -51,7 +51,7 @@ State: **code complete; simulator-verified. Device verification of the Live Acti
 | Live Activity | Code complete | Activity created and `active` on simulator, adopted by SpringBoard and chronod (confirmed in the ActivityKit log) |
 | Accessibility | Complete for Dynamic Type | Largest accessibility size on every screen with no clipping or truncation |
 
-Automated verification: **67 tests in `KindlingCore`, passing, with no simulator required.**
+Automated verification: **72 tests in `KindlingCore`, passing, with no simulator required.**
 
 Run them with `cd ios/Packages/KindlingCore && swift test`.
 
@@ -111,12 +111,14 @@ authority for this phase; this table is the summary.
 | Item | State | Evidence / next action |
 |---|---|---|
 | Billing decision | **Settled 2026-08-18 — StoreKit 2** | Resolved after a reversal to RevenueCat and back; Android was the whole basis for the reversal. Reasoning in `IMPLEMENTATION.md` Phase 5 |
+| App Store Connect record | Complete 2026-08-26 | `Kindling: Just Start`, app ID `6805423597`, bundle ID `dev.aftaab.kindling`, SKU `KINDLING-IOS-2026` |
 | 5.1 StoreKit 2 plumbing | Complete | `ProductID` + `EntitlementProviding` in `KindlingCore` (zero dependencies); `StoreKitEntitlementStore` in the app target with a lifetime `Transaction.updates` listener. Debug and signed Release both build clean |
 | Local purchase testing | Complete | `ios/Kindling.storekit` wired to the Debug scheme — purchases testable without App Store Connect or the Paid Applications Agreement |
 | 5.2a Restore Purchases | Complete | Settings row on `AppStore.sync()`, three outcomes kept distinct, always visible |
-| 5.2 Paywall UI | Not started | Build against `Kindling.storekit`; no external dependency |
-| 5.3 Second-task trigger | Not started | `ActiveTaskPolicy` already encodes the boundary and is unit-tested; the paywall attaches where it is enforced |
-| 5.4 TelemetryDeck + §18 events | Not started | **Promoted in importance.** With RevenueCat gone this is the *only* source of subscription and conversion data; `second_task_attempted` first |
-| 5.5 Legal + store assets | Not started, **blocking, external latency** | Two processors: TelemetryDeck + OpenAI. See `docs/ai-privacy-todo.md` — including the still-open question of whether the hosted AI tier is worth keeping at all |
+| 5.2 Paywall UI | Code complete; StoreKit walkthrough pending | Custom warm-paper monthly/annual/lifetime paywall, annual preselection, StoreKit trial eligibility, restore/legal/loading/retry/pending/cancelled states, Settings upgrade/active/manage controls, and automatic post-purchase continuation compile in Debug and Release |
+| 5.3 Second-task trigger | Code complete; UI walkthrough pending | Your tasks sheet resumes, completes, or discards active/stepped-away work; both statuses count toward the free slot; `ActiveTaskPolicy` gates Start something else; new-task reset no longer overwrites the selected task |
+| 5.4 TelemetryDeck + §18 events | Complete; funnel walkthrough pending | TelemetryDeck 2.14.2 is wired through xcconfig with Debug test mode and an empty-ID no-op; fixed event/parameter taxonomy covers the funnel and cannot accept task/step text. Local app ID, embedded build, and dashboard receipt of `onboarding_started` verified 2026-08-26 |
+| Hosted-AI consent | Code complete; policy review pending | Versioned consent gates the remote generator, decline retains on-device/templates, the required 30-day disclosure is shown, and the Worker Responses request sends `store: false`; Worker dry-run passes |
+| 5.5 Legal + store assets | In progress, **blocking, external latency** | Production Ember app icon added 2026-08-26. Privacy/terms, processor decision, privacy labels, screenshots, metadata, and review notes remain. See `docs/ai-privacy-todo.md` |
 | 5.6 TestFlight → submit | Not started | Target: submission 2026-08-31 |
 | Local JSON export (§20) | Not started | |

@@ -141,6 +141,26 @@ struct ActiveTaskPolicyTests {
     func paidTier() {
         #expect(ActiveTaskPolicy.canStartAnotherTask(currentActiveCount: 5, hasMultiTaskEntitlement: true))
     }
+
+    @Test("active and stepped-away tasks both occupy the free slot")
+    func countedStatuses() {
+        #expect(ActiveTaskPolicy.countsTowardLimit(.active))
+        #expect(ActiveTaskPolicy.countsTowardLimit(.steppedAway))
+        #expect(!ActiveTaskPolicy.countsTowardLimit(.done))
+        #expect(!ActiveTaskPolicy.countsTowardLimit(.discarded))
+        #expect(ActiveTaskPolicy.currentActiveCount(in: TaskStatus.allCases) == 2)
+    }
+
+    @Test("finishing or discarding releases the free slot")
+    func terminalStatusesReleaseSlot() {
+        for status in [TaskStatus.done, .discarded] {
+            let count = ActiveTaskPolicy.currentActiveCount(in: [status])
+            #expect(ActiveTaskPolicy.canStartAnotherTask(
+                currentActiveCount: count,
+                hasMultiTaskEntitlement: false
+            ))
+        }
+    }
 }
 
 struct ProductIDTests {

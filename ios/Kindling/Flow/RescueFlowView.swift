@@ -9,9 +9,14 @@ import SwiftUI
 struct RescueFlowView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.analyticsTracker) private var analytics
 
     /// Lets the shell hide its chrome for the duration of a session.
     @Binding var chromeVisible: Bool
+    @Binding var requestedTaskID: UUID?
+    @Binding var releasedTaskID: UUID?
+    @Binding var newTaskRequest: UUID?
+    @Binding var aiConfigurationRevision: UUID
     @State private var model: RescueFlowModel?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -25,16 +30,22 @@ struct RescueFlowView: View {
         }
         .task {
             if model == nil {
-                var aiEnabled = PreferencesStore(context: context)
-                    .bool(PreferenceKey.aiStepsEnabled, default: false)
+                let preferences = PreferencesStore(context: context)
+                var aiEnabled = preferences.bool(PreferenceKey.aiStepsEnabled, default: false)
+                var hostedAIConsent = preferences.hostedAIConsent()
                 #if DEBUG
                 if ProcessInfo.processInfo.environment["KINDLING_FORCE_AI"] == "1" {
                     aiEnabled = true
+                    hostedAIConsent = .allowed
                 }
                 #endif
                 let created = RescueFlowModel(
                     context: context,
-                    engine: StepEngineFactory.make(aiEnabled: aiEnabled)
+                    engine: StepEngineFactory.make(
+                        aiEnabled: aiEnabled,
+                        hostedAIConsent: hostedAIConsent
+                    ),
+                    analytics: analytics
                 )
                 #if DEBUG
                 await created.applyDebugScreenOverride()
@@ -43,6 +54,9 @@ struct RescueFlowView: View {
                 // reopens with nothing to re-enter.
                 if created.screen == .welcome {
                     created.restoreInterruptedWork()
+                }
+                if created.screen == .welcome {
+                    analytics.track(.onboardingStarted)
                 }
                 if created.screen == .taskEntry {
                     created.engine.prewarm()
@@ -56,6 +70,29 @@ struct RescueFlowView: View {
         .onChange(of: model?.screen) { _, screen in
             // Nothing but the step, the timer, and Stop during a session.
             chromeVisible = screen != .session
+        }
+        .onChange(of: requestedTaskID) { _, id in
+            guard let id else { return }
+            model?.resumeTask(id: id)
+            requestedTaskID = nil
+        }
+        .onChange(of: releasedTaskID) { _, id in
+            guard let id else { return }
+            model?.handleReleasedTask(id: id)
+            releasedTaskID = nil
+        }
+        .onChange(of: newTaskRequest) { _, request in
+            guard request != nil else { return }
+            model?.beginNewTask()
+            newTaskRequest = nil
+        }
+        .onChange(of: aiConfigurationRevision) { _, _ in
+            guard let model else { return }
+            let preferences = PreferencesStore(context: context)
+            model.engine = StepEngineFactory.make(
+                aiEnabled: preferences.bool(PreferenceKey.aiStepsEnabled, default: false),
+                hostedAIConsent: preferences.hostedAIConsent()
+            )
         }
     }
 
@@ -94,7 +131,11 @@ struct RescueFlowView: View {
                 OutcomeScreen(onChoose: model.record(outcome:))
             case .success:
                 SuccessScreen(onContinue: {
-                    model.screen = model.notificationAskAnswered ? .taskEntry : .notificationAsk
+                    if model.notificationAskAnswered {
+                        model.beginNewTask()
+                    } else {
+                        model.screen = .notificationAsk
+                    }
                 })
             case .notificationAsk:
                 NotificationAskScreen(
@@ -102,15 +143,19 @@ struct RescueFlowView: View {
                         model.notificationAskAnswered = true
                         Task {
                             let granted = await NotificationService.requestAuthorization()
+                            analytics.track(.notificationPermission(
+                                granted ? .allowed : .declined
+                            ))
                             PreferencesStore(context: context)
                                 .set(PreferenceKey.notificationsOptIn, granted)
-                            model.screen = .taskEntry
+                            model.beginNewTask()
                         }
                     },
                     onDecline: {
+                        analytics.track(.notificationPermission(.declined))
                         // No guilt copy, and no second ask this session.
                         model.notificationAskAnswered = true
-                        model.screen = .taskEntry
+                        model.beginNewTask()
                     }
                 )
             }

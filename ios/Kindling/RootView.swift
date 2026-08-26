@@ -1,4 +1,6 @@
+import KindlingCore
 import KindlingUI
+import SwiftData
 import SwiftUI
 
 /// The app shell.
@@ -9,15 +11,31 @@ import SwiftUI
 /// that control **disappears during a session**: mid-session the screen offers the
 /// step, the timer, and Stop, and nothing else to look at.
 struct RootView: View {
+    @Environment(StoreKitEntitlementStore.self) private var entitlements
+    @Environment(\.analyticsTracker) private var analytics
+    @Query private var tasks: [AvoidedTask]
+
     @State private var showingSettings = false
+    @State private var showingTasks = false
+    @State private var showingPaywall = false
     @State private var chromeVisible = true
+    @State private var requestedTaskID: UUID?
+    @State private var releasedTaskID: UUID?
+    @State private var newTaskRequest: UUID?
+    @State private var aiConfigurationRevision = UUID()
 
     #if DEBUG
     @State private var showingDebug = false
     #endif
 
     var body: some View {
-        RescueFlowView(chromeVisible: $chromeVisible)
+        RescueFlowView(
+            chromeVisible: $chromeVisible,
+            requestedTaskID: $requestedTaskID,
+            releasedTaskID: $releasedTaskID,
+            newTaskRequest: $newTaskRequest,
+            aiConfigurationRevision: $aiConfigurationRevision
+        )
             .overlay(alignment: .topTrailing) {
                 if chromeVisible {
                     HStack(spacing: Space.s1) {
@@ -30,6 +48,13 @@ struct RootView: View {
                         .accessibilityLabel("Developer tools")
                         #endif
 
+                        Button { showingTasks = true } label: {
+                            Image(systemName: "square.stack.3d.up")
+                                .foregroundStyle(KindlingColor.textSecondary)
+                                .kindlingTapTarget()
+                        }
+                        .accessibilityLabel("Your tasks")
+
                         Button { showingSettings = true } label: {
                             Image(systemName: "gearshape")
                                 .foregroundStyle(KindlingColor.textSecondary)
@@ -40,8 +65,22 @@ struct RootView: View {
                     .padding(.trailing, Space.s2)
                 }
             }
-            .sheet(isPresented: $showingSettings) {
+            .sheet(isPresented: $showingSettings, onDismiss: {
+                aiConfigurationRevision = UUID()
+            }) {
                 SettingsScreen()
+            }
+            .sheet(isPresented: $showingTasks) {
+                TaskShelfScreen(
+                    onResume: { requestedTaskID = $0 },
+                    onStartNew: attemptStartNewTask,
+                    onRelease: { releasedTaskID = $0 }
+                )
+            }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallScreen(source: .taskShelf) {
+                    newTaskRequest = UUID()
+                }
             }
         #if DEBUG
             // Lets Settings be inspected from the command line, since it is behind a
@@ -57,6 +96,20 @@ struct RootView: View {
                 DebugToolsView()
             }
         #endif
+    }
+
+    private func attemptStartNewTask() {
+        analytics.track(.secondTaskAttempted)
+        let count = ActiveTaskPolicy.currentActiveCount(in: tasks.map(\.status))
+        if ActiveTaskPolicy.canStartAnotherTask(
+            currentActiveCount: count,
+            hasMultiTaskEntitlement: entitlements.hasMultiTask
+        ) {
+            newTaskRequest = UUID()
+        } else {
+            analytics.track(.paywallDisplayed(source: .taskShelf))
+            showingPaywall = true
+        }
     }
 }
 

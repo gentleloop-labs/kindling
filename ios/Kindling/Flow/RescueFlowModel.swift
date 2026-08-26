@@ -46,18 +46,21 @@ final class RescueFlowModel {
     /// resolves to *something*, this can never hang on a failure.
     var isGeneratingStep = false
 
-    let engine: any AsyncStepSuggesting
+    var engine: any AsyncStepSuggesting
     let clock: SessionClock
+    private let analytics: any AnalyticsTracking
     private let context: ModelContext
 
     init(
         context: ModelContext,
         engine: any AsyncStepSuggesting = LocalStepEngine(),
-        clock: SessionClock = .system
+        clock: SessionClock = .system,
+        analytics: any AnalyticsTracking = NoOpAnalyticsTracker()
     ) {
         self.context = context
         self.engine = engine
         self.clock = clock
+        self.analytics = analytics
         self.durationSeconds = PreferencesStore(context: context)
             .int(PreferenceKey.lastDurationSeconds, default: SessionDuration.default)
     }
@@ -87,6 +90,20 @@ final class RescueFlowModel {
     // MARK: - Screen 1 → 2
 
     func beginRescue() {
+        analytics.track(.onboardingCompleted)
+        beginNewTask()
+    }
+
+    /// Starts a genuinely new flow. Clearing the selected model is essential:
+    /// otherwise `startSession()` edits the previous task's title in place.
+    func beginNewTask() {
+        task = nil
+        session = nil
+        lastOutcome = nil
+        draftTitle = ""
+        suggestedStep = ""
+        stepAttempt = 0
+        lastStepOrigin = .template
         screen = .taskEntry
         // Load the on-device model while they type, not while they wait.
         engine.prewarm()
@@ -108,6 +125,7 @@ final class RescueFlowModel {
 
     func showFirstStep() async {
         guard canContinueFromTaskEntry else { return }
+        analytics.track(.taskEntered)
         stepAttempt = 0
         // Move to the step screen first, then fill it in. The user sees progress
         // immediately instead of a frozen entry screen while a request is in flight.
@@ -130,6 +148,13 @@ final class RescueFlowModel {
         let suggestion = await engine.suggestFirstStep(for: draftTitle, attempt: attempt)
         suggestedStep = suggestion.text
         lastStepOrigin = suggestion.origin
+        let origin = AnalyticsGenerationOrigin(
+            stepOrigin: suggestion.origin,
+            provider: suggestion.provider
+        )
+        analytics.track(attempt == 0
+                        ? .firstStepDisplayed(origin: origin)
+                        : .stepRegenerated(origin: origin))
 
         // §11: latency and outcome only. There is nowhere in this row to put the
         // task or the step, which is what makes leaking them impossible.
@@ -159,7 +184,7 @@ final class RescueFlowModel {
     /// force-quit, a reboot, or the app being closed entirely.
     func startSession() {
         let task: AvoidedTask
-        if let existing = self.task {
+        if let existing = self.task, existing.status != .discarded {
             task = existing
             task.title = echoedTask
             task.updatedAt = clock.now()
@@ -188,6 +213,9 @@ final class RescueFlowModel {
         self.task = task
         self.session = session
         screen = .session
+        analytics.track(.sessionStarted(
+            duration: AnalyticsDurationBucket(durationSeconds: durationSeconds)
+        ))
 
         let snapshot = SessionSnapshot(
             durationSeconds: session.durationSeconds,
@@ -238,6 +266,7 @@ final class RescueFlowModel {
     /// All three land somewhere legitimate. `TaskStateMachine` owns where, so the
     /// rule is unit-tested rather than decided in a view.
     func record(outcome: SessionOutcome) {
+        analytics.track(.sessionOutcome(outcome))
         lastOutcome = outcome
         session?.outcome = outcome
 
@@ -266,6 +295,28 @@ final class RescueFlowModel {
         descriptor.fetchLimit = 1
 
         guard let task = try? context.fetch(descriptor).first else { return }
+        resume(task)
+    }
+
+    /// Selects a specific item from Your tasks rather than always choosing the
+    /// most recently updated one.
+    func resumeTask(id: UUID) {
+        var descriptor = FetchDescriptor<AvoidedTask>(predicate: #Predicate { $0.id == id })
+        descriptor.fetchLimit = 1
+        guard let task = try? context.fetch(descriptor).first,
+              ActiveTaskPolicy.countsTowardLimit(task.status)
+        else { return }
+        resume(task)
+    }
+
+    /// If the shelf finishes the task currently shown behind the sheet, clear the
+    /// flow as well so a discarded task cannot be accidentally revived.
+    func handleReleasedTask(id: UUID) {
+        guard task?.id == id else { return }
+        beginNewTask()
+    }
+
+    private func resume(_ task: AvoidedTask) {
         self.task = task
         draftTitle = task.title
 
@@ -291,6 +342,7 @@ final class RescueFlowModel {
                 screen = .session
             }
         } else {
+            session = latest
             screen = .firstStep
         }
     }

@@ -19,6 +19,9 @@ packages:
     path: Packages/KindlingCore
   KindlingUI:
     path: Packages/KindlingUI
+  TelemetryDeck:
+    url: https://github.com/TelemetryDeck/SwiftSDK
+    from: 2.9.10
 
 targets:
   Kindling:
@@ -29,6 +32,8 @@ targets:
     dependencies:
       - package: KindlingCore
       - package: KindlingUI
+      - package: TelemetryDeck
+        product: TelemetryDeck
       - target: KindlingWidget
         embed: true
     settings:

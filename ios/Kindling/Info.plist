@@ -16,6 +16,8 @@
 	<string>$(KINDLING_STEP_HOST)</string>
 	<key>KindlingAppToken</key>
 	<string>$(KINDLING_APP_TOKEN)</string>
+	<key>KindlingTelemetryDeckAppID</key>
+	<string>$(KINDLING_TELEMETRYDECK_APP_ID)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Kindling</string>
 	<key>CFBundleShortVersionString</key>

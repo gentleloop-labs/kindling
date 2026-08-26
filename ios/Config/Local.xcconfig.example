@@ -2,3 +2,4 @@
 //   wrangler secret put APP_TOKEN
 // Without this, the app runs template-only and the AI toggle stays hidden.
 KINDLING_APP_TOKEN = paste-your-app-token-here
+KINDLING_TELEMETRYDECK_APP_ID = paste-your-telemetrydeck-app-id-here

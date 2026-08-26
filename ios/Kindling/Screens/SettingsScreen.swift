@@ -1,5 +1,6 @@
 import KindlingCore
 import KindlingUI
+import StoreKit
 import SwiftData
 import SwiftUI
 
@@ -9,11 +10,16 @@ import SwiftUI
 struct SettingsScreen: View {
     @Environment(\.modelContext) private var context
     @Environment(StoreKitEntitlementStore.self) private var entitlements
+    @Environment(\.analyticsTracker) private var analytics
 
     @State private var isRestoring = false
+    @State private var showingPaywall = false
+    @State private var showingSubscriptionManagement = false
     @State private var restoreOutcome: StoreKitEntitlementStore.RestoreResult?
     @State private var haptics = true
     @State private var aiStepsEnabled = false
+    @State private var hostedAIConsent: HostedAIConsent = .notAsked
+    @State private var showingHostedAIConsent = false
     @State private var notificationsOptIn = false
     @State private var excludeFromBackup = false
     @State private var backupToggleError: String?
@@ -31,11 +37,24 @@ struct SettingsScreen: View {
                     Section {
                         Toggle("Smarter first steps", isOn: $aiStepsEnabled)
                             .onChange(of: aiStepsEnabled) { _, value in
-                                store.set(PreferenceKey.aiStepsEnabled, value)
+                                if value,
+                                   StepEngineFactory.isRemoteConfigured,
+                                   hostedAIConsent == .notAsked {
+                                    showingHostedAIConsent = true
+                                } else {
+                                    store.set(PreferenceKey.aiStepsEnabled, value)
+                                }
                             }
                         if let status = StepEngineFactory.onDeviceStatus {
                             // An ineligible device says why, rather than looking broken.
                             Text(status)
+                                .font(.kindlingCaption)
+                                .foregroundStyle(KindlingColor.textSecondary)
+                        }
+                        if StepEngineFactory.isRemoteConfigured, hostedAIConsent != .notAsked {
+                            Text(hostedAIConsent == .allowed
+                                 ? "Cloud fallback is allowed."
+                                 : "Cloud fallback is off; on-device and template steps still work.")
                                 .font(.kindlingCaption)
                                 .foregroundStyle(KindlingColor.textSecondary)
                         }
@@ -45,10 +64,20 @@ struct SettingsScreen: View {
                     }
                 }
 
-                // Always shown. Under StoreKit 2 there is no SDK to configure and no
-                // key that can be missing, so unlike the AI toggle there is no state
-                // in which this control exists but cannot work.
                 Section {
+                    if entitlements.hasMultiTask {
+                        Label("Kindling Plus — Active", systemImage: "checkmark.circle.fill")
+                            .foregroundStyle(KindlingColor.textPrimary)
+                        Button("Manage subscription") {
+                            showingSubscriptionManagement = true
+                        }
+                    } else {
+                        Button("Upgrade") {
+                            analytics.track(.paywallDisplayed(source: .settings))
+                            showingPaywall = true
+                        }
+                    }
+
                     Button("Restore purchases") { Task { await restore() } }
                         .disabled(isRestoring)
 
@@ -61,8 +90,12 @@ struct SettingsScreen: View {
                             .font(.kindlingCaption)
                             .foregroundStyle(KindlingColor.textSecondary)
                     }
+                } header: {
+                    Text("Kindling Plus")
                 } footer: {
-                    Text("Already bought Kindling on this Apple ID? This brings it back — on a new phone, or after reinstalling.")
+                    Text(entitlements.hasMultiTask
+                         ? "Manage renewals with Apple, or restore a purchase made on another device."
+                         : "Keep more than one task warm, or restore a purchase made on another device.")
                 }
 
                 Section {
@@ -70,7 +103,12 @@ struct SettingsScreen: View {
                         .onChange(of: notificationsOptIn) { _, value in
                             store.set(PreferenceKey.notificationsOptIn, value)
                             if value {
-                                Task { _ = await NotificationService.requestAuthorization() }
+                                Task {
+                                    let granted = await NotificationService.requestAuthorization()
+                                    analytics.track(.notificationPermission(
+                                        granted ? .allowed : .declined
+                                    ))
+                                }
                             }
                         }
                 } footer: {
@@ -100,6 +138,24 @@ struct SettingsScreen: View {
             .navigationTitle("Settings")
         }
         .task { load() }
+        .sheet(isPresented: $showingPaywall) {
+            PaywallScreen(source: .settings)
+        }
+        .manageSubscriptionsSheet(isPresented: $showingSubscriptionManagement)
+        .alert("Allow cloud fallback?", isPresented: $showingHostedAIConsent) {
+            Button("Allow cloud fallback") {
+                hostedAIConsent = .allowed
+                store.setHostedAIConsent(.allowed)
+                store.set(PreferenceKey.aiStepsEnabled, true)
+            }
+            Button("Keep it on this iPhone") {
+                hostedAIConsent = .declined
+                store.setHostedAIConsent(.declined)
+                store.set(PreferenceKey.aiStepsEnabled, true)
+            }
+        } message: {
+            Text("On this iPhone, smarter steps may send only the task title to Kindling's Cloudflare Worker and OpenAI. Kindling and the Worker do not store it. OpenAI may retain API content for abuse monitoring for up to 30 days. You can use on-device and template steps without this.")
+        }
     }
 
     /// The honest version depends on what this device can actually do: on a
@@ -107,13 +163,10 @@ struct SettingsScreen: View {
     /// otherwise in either direction.
     private var aiFooter: String {
         let onDeviceWorks = StepEngineFactory.onDeviceStatus == nil
-        if onDeviceWorks && !StepEngineFactory.isRemoteConfigured {
-            return "Off by default. When on, steps are written by Apple Intelligence on this iPhone — nothing you type leaves the device, and it works offline."
-        }
         if onDeviceWorks {
-            return "Off by default. Steps are written by Apple Intelligence on this iPhone whenever possible, so nothing you type leaves the device. If that isn't available, the words you type are sent to OpenAI to suggest a step and then discarded."
+            return "When on, Apple Intelligence writes steps on this iPhone whenever possible. Cloud fallback is used only with your separate permission; templates always work offline."
         }
-        return "Off by default. When on, the words you type are sent to OpenAI to suggest a step, then discarded — they are not stored by Kindling. Kindling works fully offline without this."
+        return "When on, templates always work offline. Cloud fallback is used only with your separate permission."
     }
 
     /// Asks Apple what this Apple ID owns. Needs no account and no login — Apple is
@@ -141,6 +194,7 @@ struct SettingsScreen: View {
     private func load() {
         haptics = store.bool(PreferenceKey.haptics, default: true)
         aiStepsEnabled = store.bool(PreferenceKey.aiStepsEnabled, default: false)
+        hostedAIConsent = store.hostedAIConsent()
         notificationsOptIn = store.bool(PreferenceKey.notificationsOptIn, default: false)
         excludeFromBackup = (try? KindlingStore.isExcludedFromBackup()) ?? false
     }

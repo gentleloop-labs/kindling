@@ -12,6 +12,15 @@ public enum PreferenceKey {
     /// §12: AI-assisted steps are opt-in and default to off. Turning this on is
     /// the moment task text starts leaving the device.
     public static let aiStepsEnabled = "ai_steps_enabled"
+    /// Versioned because a future processor or retention change requires a new
+    /// affirmative choice rather than silently reusing an old one.
+    public static let hostedAIConsentV1 = "hosted_ai_consent_v1"
+}
+
+public enum HostedAIConsent: String, Sendable {
+    case notAsked = "not_asked"
+    case allowed
+    case declined
 }
 
 /// Thin typed wrapper over `UserPreference`. Lives in `KindlingCore` so defaults are
@@ -32,6 +41,14 @@ public struct PreferencesStore {
     public func int(_ key: String, default defaultValue: Int) -> Int {
         guard let raw = value(key), let parsed = Int(raw) else { return defaultValue }
         return parsed
+    }
+
+    public func hostedAIConsent() -> HostedAIConsent {
+        value(PreferenceKey.hostedAIConsentV1).flatMap(HostedAIConsent.init(rawValue:)) ?? .notAsked
+    }
+
+    public func setHostedAIConsent(_ consent: HostedAIConsent) {
+        set(PreferenceKey.hostedAIConsentV1, consent.rawValue)
     }
 
     public func set(_ key: String, _ newValue: Bool) {
