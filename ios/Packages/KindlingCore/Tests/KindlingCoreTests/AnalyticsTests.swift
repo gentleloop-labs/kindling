@@ -15,6 +15,9 @@ struct AnalyticsTests {
         #expect(AnalyticsEvent.paywallDisplayed(source: .taskShelf).parameters == [
             "paywall_source": "task_shelf"
         ])
+        #expect(AnalyticsEvent.paywallDisplayed(source: .postSession).parameters == [
+            "paywall_source": "post_session"
+        ])
         #expect(AnalyticsEvent.upgradeCompleted(period: .lifetime).parameters == [
             "product_period": "lifetime"
         ])

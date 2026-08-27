@@ -10,6 +10,7 @@ struct RescueFlowView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.analyticsTracker) private var analytics
+    @Environment(StoreKitEntitlementStore.self) private var entitlements
 
     /// Lets the shell hide its chrome for the duration of a session.
     @Binding var chromeVisible: Bool
@@ -17,7 +18,9 @@ struct RescueFlowView: View {
     @Binding var releasedTaskID: UUID?
     @Binding var newTaskRequest: UUID?
     @Binding var aiConfigurationRevision: UUID
+    let onShowPlus: (AnalyticsPaywallSource) -> Void
     @State private var model: RescueFlowModel?
+    @State private var showsPostSuccessPlusNudge = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -48,11 +51,14 @@ struct RescueFlowView: View {
                     analytics: analytics
                 )
                 #if DEBUG
+                let hasDebugScreenOverride = ProcessInfo.processInfo.environment["KINDLING_SCREEN"] != nil
                 await created.applyDebugScreenOverride()
+                #else
+                let hasDebugScreenOverride = false
                 #endif
                 // Resume before the first frame the user sees, so a parked task
                 // reopens with nothing to re-enter.
-                if created.screen == .welcome {
+                if !hasDebugScreenOverride {
                     created.restoreInterruptedWork()
                 }
                 if created.screen == .welcome {
@@ -61,6 +67,7 @@ struct RescueFlowView: View {
                 if created.screen == .taskEntry {
                     created.engine.prewarm()
                 }
+                chromeVisible = created.screen != .session && created.screen != .welcome
                 model = created
             }
         }
@@ -69,7 +76,26 @@ struct RescueFlowView: View {
         }
         .onChange(of: model?.screen) { _, screen in
             // Nothing but the step, the timer, and Stop during a session.
-            chromeVisible = screen != .session
+            chromeVisible = screen != .session && screen != .welcome
+            if screen == .success {
+                let preferences = PreferencesStore(context: context)
+                let now = Date()
+                showsPostSuccessPlusNudge = PlusNudgePolicy.shouldShow(
+                    after: model?.lastOutcome,
+                    hasPlus: entitlements.hasMultiTask,
+                    valueMomentCount: preferences.int(
+                        PreferenceKey.plusValueMomentCountV1,
+                        default: 0
+                    ),
+                    lastShownAt: preferences.date(PreferenceKey.plusNudgeLastShownAtV1),
+                    now: now
+                )
+                if showsPostSuccessPlusNudge {
+                    preferences.set(PreferenceKey.plusNudgeLastShownAtV1, now)
+                }
+            } else {
+                showsPostSuccessPlusNudge = false
+            }
         }
         .onChange(of: requestedTaskID) { _, id in
             guard let id else { return }
@@ -130,13 +156,17 @@ struct RescueFlowView: View {
             case .outcome:
                 OutcomeScreen(onChoose: model.record(outcome:))
             case .success:
-                SuccessScreen(onContinue: {
-                    if model.notificationAskAnswered {
-                        model.beginNewTask()
-                    } else {
-                        model.screen = .notificationAsk
-                    }
-                })
+                SuccessScreen(
+                    showsPlusNudge: showsPostSuccessPlusNudge,
+                    onContinue: {
+                        if model.notificationAskAnswered {
+                            model.beginNewTask()
+                        } else {
+                            model.screen = .notificationAsk
+                        }
+                    },
+                    onShowPlus: { onShowPlus(.postSession) }
+                )
             case .notificationAsk:
                 NotificationAskScreen(
                     onAllow: {

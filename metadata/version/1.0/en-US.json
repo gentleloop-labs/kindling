@@ -1,5 +1,7 @@
 {
   "description": "Kindling is a gentle productivity tool for ADHD and neurodivergent minds who get stuck in procrastination, overwhelm, or task paralysis.\n\nName the task. Kindling gives you one tiny, concrete first step and a short focus timer so you can begin without planning your whole day. Unlike a daily planner or to-do list, Kindling focuses only on helping you start.\n\nBuilt for low-pressure momentum:\n• Break an avoided task into a tiny first action\n• Start a short, focused timer\n• Keep going, stop for now, or recover after getting distracted\n• Use reminders and Live Activities to stay connected to the task\n• Skip streaks, guilt, and complicated planning systems\n\nKindling works without an account. Your tasks stay on your device by default. Optional smarter suggestions are clearly disclosed and can be turned off at any time.\n\nKindling Plus lets you keep multiple tasks ready and choose what to start next.\n\nKindling is not medical advice, diagnosis, or treatment.\n\nTerms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/",
   "keywords": "focus,timer,productivity,procrastination,overwhelm,neurodivergent,reminder,momentum,avoidance",
-  "promotionalText": "Stuck on one thing? Kindling turns it into a tiny first step and a short, no-pressure focus session."
+  "marketingUrl": "https://kindling.gentlelooplabs.com/",
+  "promotionalText": "Stuck on one thing? Kindling turns it into a tiny first step and a short, no-pressure focus session.",
+  "supportUrl": "https://kindling.gentlelooplabs.com/support/"
 }

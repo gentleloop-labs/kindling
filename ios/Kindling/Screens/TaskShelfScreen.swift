@@ -6,7 +6,6 @@ import SwiftUI
 /// A small switcher, not a dashboard. It exposes only the decisions needed to
 /// return to work or release a slot.
 struct TaskShelfScreen: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @Query(sort: \AvoidedTask.updatedAt, order: .reverse) private var tasks: [AvoidedTask]
     @State private var deletionCandidateID: UUID?
@@ -38,7 +37,6 @@ struct TaskShelfScreen: View {
 
                 Section {
                     Button("Start something else") {
-                        dismiss()
                         onStartNew()
                     }
                     .font(.kindlingButton)
@@ -49,11 +47,6 @@ struct TaskShelfScreen: View {
             .scrollContentBackground(.hidden)
             .background(KindlingColor.background)
             .navigationTitle("Your tasks")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
-                }
-            }
         }
         .confirmationDialog(
             "Delete this task permanently?",
@@ -75,7 +68,6 @@ struct TaskShelfScreen: View {
     private func taskRow(_ task: AvoidedTask) -> some View {
         VStack(alignment: .leading, spacing: Space.s1) {
             Button {
-                dismiss()
                 onResume(task.id)
             } label: {
                 VStack(alignment: .leading, spacing: Space.s1) {

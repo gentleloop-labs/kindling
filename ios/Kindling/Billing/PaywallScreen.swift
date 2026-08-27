@@ -7,6 +7,7 @@ struct PaywallScreen: View {
     enum Source {
         case taskShelf
         case settings
+        case discovery
     }
 
     @Environment(\.dismiss) private var dismiss
@@ -62,8 +63,8 @@ struct PaywallScreen: View {
                     .disabled(isRestoring || isPurchasing)
 
                     HStack(spacing: Space.s3) {
-                        Link("Terms", destination: URL(string: "https://kindling.maskedsyntax.com/terms/")!)
-                        Link("Privacy", destination: URL(string: "https://kindling.maskedsyntax.com/privacy/")!)
+                        Link("Terms", destination: URL(string: "https://kindling.gentlelooplabs.com/terms/")!)
+                        Link("Privacy", destination: URL(string: "https://kindling.gentlelooplabs.com/privacy/")!)
                     }
                     .font(.kindlingCaption)
                     .foregroundStyle(KindlingColor.textSecondary)

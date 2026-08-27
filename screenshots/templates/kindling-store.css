@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #2b2420;
+  --muted: #796f67;
+  --paper: #faf6f1;
+  --accent: #a9471c;
+  --frame: #2b2420;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", sans-serif;
+  background: var(--paper);
+}
+
+.store-shot {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 82% 22% at 50% 100%, rgba(232, 112, 58, 0.16) 0%, rgba(232, 112, 58, 0.06) 48%, transparent 78%),
+    var(--paper);
+}
+
+.copy {
+  position: absolute;
+  z-index: 2;
+  top: 4.1%;
+  left: 5.5%;
+  width: 89%;
+  text-align: center;
+}
+
+h1 {
+  max-width: 1120px;
+  margin: 0 auto;
+  font-size: 86px;
+  font-weight: 760;
+  letter-spacing: 0;
+  line-height: 1.02;
+}
+
+h1 span,
+h1 em {
+  display: inline;
+}
+
+h1 em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.copy p {
+  max-width: 1080px;
+  margin: 28px auto 0;
+  color: var(--muted);
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.app-frame {
+  position: absolute;
+  z-index: 1;
+  top: 18.2%;
+  left: 11.4%;
+  width: 77.2%;
+  height: 77.5%;
+  overflow: hidden;
+  border-radius: 76px;
+  background: var(--paper);
+  clip-path: inset(0 round 76px);
+  box-shadow: 0 35px 85px rgba(70, 51, 38, 0.16);
+}
+
+.app-frame::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border: 5px solid var(--frame);
+  border-radius: 76px;
+  content: "";
+  pointer-events: none;
+}
+
+.app-frame img {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.variant-name h1 {
+  max-width: 1040px;
+}
+
+.variant-name .app-frame {
+  top: 18.8%;
+}
+
+.variant-step .app-frame,
+.variant-timer .app-frame,
+.variant-celebrate .app-frame,
+.variant-outcome .app-frame {
+  top: 19.5%;
+}
+
+.variant-outcome h1 {
+  max-width: 1050px;
+}

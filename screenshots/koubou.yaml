@@ -1,0 +1,66 @@
+project:
+  name: Kindling App Store screenshots
+  device: iPhone 17 Pro Max - Deep Blue - Portrait
+  output_dir: framed/en-US
+  output_size: iPhone6_5
+
+screenshots:
+  01-name-it:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/01-name-it.png
+    variables:
+      variant: name
+      headline_before: Name the
+      headline_accent: thing
+      headline_after: "you're avoiding."
+      supporting: No lists. No planning. Just name the thing.
+
+  02-start-small:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/02-start-small.png
+    variables:
+      variant: step
+      headline_before: Stuck? Start with one
+      headline_accent: tiny step.
+      headline_after: ""
+      supporting: One concrete first move. You never see the whole plan.
+
+  03-two-minutes:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/03-two-minutes.png
+    variables:
+      variant: timer
+      headline_before: Two minutes. One
+      headline_accent: clear action.
+      headline_after: ""
+      supporting: No pressure. No red. Stop at any time.
+
+  04-starting-counts:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/04-starting-counts.png
+    variables:
+      variant: celebrate
+      headline_before: Starting counts as a
+      headline_accent: win.
+      headline_after: ""
+      supporting: Beginning is enough. No streaks, scores, or pressure.
+
+  05-no-guilt:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/05-no-guilt.png
+    variables:
+      variant: outcome
+      headline_before: Keep going—or stop
+      headline_accent: without guilt.
+      headline_after: ""
+      supporting: Keep going, stop for now, or say you got distracted.

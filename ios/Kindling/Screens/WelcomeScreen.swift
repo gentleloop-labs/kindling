@@ -11,30 +11,39 @@ struct WelcomeScreen: View {
             VStack(spacing: 0) {
                 Spacer()
 
-                VStack(spacing: Space.s3) {
-                    EmberView(state: .ready, size: 128)
-
-                    VStack(spacing: Space.s2) {
-                        Text("Kindling doesn't plan your day.")
-                            .font(.kindlingTitle)
-                            .foregroundStyle(KindlingColor.textPrimary)
-                        Text("It just helps you start the one thing you're avoiding.")
-                            .font(.kindlingBody)
-                            .foregroundStyle(KindlingColor.textSecondary)
-                    }
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                }
+                purposePage
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, Space.s6)
 
                 Spacer()
             }
         } actions: {
-            Button("Show me.", action: onContinue)
+            Button("Start with one thing", action: onContinue)
                 .buttonStyle(.kindlingPrimary)
+        }
+    }
+
+    private var purposePage: some View {
+        VStack(spacing: Space.s3) {
+            EmberView(state: .ready, size: 128)
+
+            VStack(spacing: Space.s2) {
+                Text("Kindling doesn't plan your day.")
+                    .font(.kindlingTitle)
+                    .foregroundStyle(KindlingColor.textPrimary)
+                Text("It turns the thing you're avoiding into one tiny step and a short focus session.")
+                    .font(.kindlingBody)
+                    .foregroundStyle(KindlingColor.textSecondary)
+
+                Text("Free for one active task. If you need more room later, Plus keeps unlimited tasks ready for you.")
+                    .font(.kindlingCaption)
+                    .foregroundStyle(KindlingColor.textSecondary)
+                    .padding(.top, Space.s1)
+            }
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
 
-#Preview { WelcomeScreen {} }
+#Preview { WelcomeScreen(onContinue: {}) }

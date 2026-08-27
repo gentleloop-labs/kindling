@@ -31,6 +31,9 @@ enum PurchaseOutcome: Equatable {
 final class StoreKitEntitlementStore: EntitlementProviding {
     /// Cached so the paywall check does not wait on the network mid-flow.
     private(set) var hasMultiTask = false
+    /// Prevents a paid user seeing a brief free-tier upsell while StoreKit is still
+    /// taking its first entitlement reading at launch.
+    private(set) var hasLoadedEntitlements = false
 
     /// Products, loaded once and reused by the paywall.
     private(set) var products: [Product] = []
@@ -85,6 +88,7 @@ final class StoreKitEntitlementStore: EntitlementProviding {
             }
         }
         hasMultiTask = entitled
+        hasLoadedEntitlements = true
     }
 
     nonisolated func isActive(_ entitlement: Entitlement) async -> Bool {

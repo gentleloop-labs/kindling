@@ -61,8 +61,12 @@ final class RescueFlowModel {
         self.engine = engine
         self.clock = clock
         self.analytics = analytics
-        self.durationSeconds = PreferencesStore(context: context)
+        let preferences = PreferencesStore(context: context)
+        self.durationSeconds = preferences
             .int(PreferenceKey.lastDurationSeconds, default: SessionDuration.default)
+        self.screen = preferences.bool(PreferenceKey.onboardingCompletedV1, default: false)
+            ? .taskEntry
+            : .welcome
     }
 
     /// §6: the last timer choice is remembered, so the user re-decides nothing.
@@ -90,6 +94,7 @@ final class RescueFlowModel {
     // MARK: - Screen 1 → 2
 
     func beginRescue() {
+        PreferencesStore(context: context).set(PreferenceKey.onboardingCompletedV1, true)
         analytics.track(.onboardingCompleted)
         beginNewTask()
     }
@@ -285,6 +290,12 @@ final class RescueFlowModel {
         lastOutcome = outcome
         session?.outcome = outcome
 
+        if PlusNudgePolicy.countsAsValueMoment(outcome) {
+            let preferences = PreferencesStore(context: context)
+            let count = preferences.int(PreferenceKey.plusValueMomentCountV1, default: 0)
+            preferences.set(PreferenceKey.plusValueMomentCountV1, count + 1)
+        }
+
         if let task {
             let next = TaskStateMachine.status(after: outcome, from: task.status)
             if TaskStateMachine.canTransition(from: task.status, to: next) {
@@ -408,7 +419,7 @@ final class RescueFlowModel {
         suggestedStep = TemplateStepEngine().suggestFirstStep(for: draftTitle, attempt: 0)
 
         switch name {
-        case "welcome": screen = .welcome
+        case "welcome", "welcomePlus": screen = .welcome
         case "taskEntry": screen = .taskEntry
         case "firstStep":
             // Route through the real engine so this actually tests the chain,

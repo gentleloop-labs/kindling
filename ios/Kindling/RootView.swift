@@ -3,21 +3,17 @@ import KindlingUI
 import SwiftData
 import SwiftUI
 
-/// The app shell.
-///
-/// The rescue flow is the whole app — there is no tab bar, no home screen, and no
-/// dashboard, because every one of those would be a screen that does not get someone
-/// into a first step faster. Settings sits behind a single unobtrusive control, and
-/// that control **disappears during a session**: mid-session the screen offers the
-/// step, the timer, and Stop, and nothing else to look at.
+/// The app shell. Start remains the default destination, while saved tasks and
+/// settings are stable places in the tab bar instead of transient sheets. The bar
+/// disappears during onboarding and a session so those moments stay single-purpose.
 struct RootView: View {
     @Environment(StoreKitEntitlementStore.self) private var entitlements
     @Environment(\.analyticsTracker) private var analytics
     @Query private var tasks: [AvoidedTask]
 
-    @State private var showingSettings = false
-    @State private var showingTasks = false
+    @State private var selectedTab: AppTab = .start
     @State private var showingPaywall = false
+    @State private var paywallSource: PaywallScreen.Source = .discovery
     @State private var chromeVisible = true
     @State private var requestedTaskID: UUID?
     @State private var releasedTaskID: UUID?
@@ -29,12 +25,73 @@ struct RootView: View {
     #endif
 
     var body: some View {
+        TabView(selection: $selectedTab) {
+            startTab
+                .toolbar(chromeVisible ? .visible : .hidden, for: .tabBar)
+                .toolbarBackground(KindlingColor.background, for: .tabBar)
+                .toolbarBackground(chromeVisible ? .visible : .hidden, for: .tabBar)
+                .tabItem {
+                    Label("Start", systemImage: "flame")
+                }
+                .tag(AppTab.start)
+
+            TaskShelfScreen(
+                onResume: resumeTask,
+                onStartNew: attemptStartNewTask,
+                onRelease: { releasedTaskID = $0 }
+            )
+            .tabItem {
+                Label("Tasks", systemImage: "square.stack.3d.up")
+            }
+            .tag(AppTab.tasks)
+
+            SettingsScreen()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape")
+                }
+                .tag(AppTab.settings)
+        }
+        .tint(KindlingColor.accent)
+        .onChange(of: selectedTab) { previous, _ in
+            if previous == .settings {
+                aiConfigurationRevision = UUID()
+            }
+        }
+        .sheet(isPresented: $showingPaywall) {
+            PaywallScreen(source: paywallSource) {
+                if paywallSource == .taskShelf {
+                    newTaskRequest = UUID()
+                    selectedTab = .start
+                }
+            }
+        }
+        #if DEBUG
+        .task {
+            if ProcessInfo.processInfo.environment["KINDLING_OPEN_TASKS"] == "1" {
+                selectedTab = .tasks
+            }
+            if ProcessInfo.processInfo.environment["KINDLING_OPEN_SETTINGS"] == "1" {
+                selectedTab = .settings
+            }
+            if ProcessInfo.processInfo.environment["KINDLING_OPEN_PAYWALL"] == "1" {
+                analytics.track(.paywallDisplayed(source: .settings))
+                showingPaywall = true
+            }
+        }
+        .sheet(isPresented: $showingDebug) {
+            DebugToolsView()
+        }
+        #endif
+    }
+
+    private var startTab: some View {
         RescueFlowView(
             chromeVisible: $chromeVisible,
             requestedTaskID: $requestedTaskID,
             releasedTaskID: $releasedTaskID,
             newTaskRequest: $newTaskRequest,
-            aiConfigurationRevision: $aiConfigurationRevision
+            aiConfigurationRevision: $aiConfigurationRevision,
+            onShowPlus: presentPaywall
         )
             .safeAreaInset(edge: .top, spacing: 0) {
                 if chromeVisible {
@@ -51,17 +108,21 @@ struct RootView: View {
                         }
                         #endif
 
-                        Button { showingTasks = true } label: {
-                            Image(systemName: "square.stack.3d.up")
-                                .kindlingChromeIcon()
+                        if entitlements.hasLoadedEntitlements && !entitlements.hasMultiTask {
+                            Button { presentPaywall(source: .home) } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "sparkles")
+                                    Text("Plus")
+                                }
+                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                .foregroundStyle(KindlingColor.accent)
+                                .padding(.horizontal, Space.s1)
+                                .frame(height: KindlingLayout.minTapTarget)
+                                .contentShape(Rectangle())
+                            }
+                            .accessibilityLabel("Kindling Plus")
                         }
-                        .accessibilityLabel("Your tasks")
 
-                        Button { showingSettings = true } label: {
-                            Image(systemName: "gearshape")
-                                .kindlingChromeIcon()
-                        }
-                        .accessibilityLabel("Settings")
                     }
                     .buttonStyle(.plain)
                     .padding(.horizontal, Space.s3)
@@ -69,41 +130,11 @@ struct RootView: View {
                     .background(KindlingColor.background)
                 }
             }
-            .sheet(isPresented: $showingSettings, onDismiss: {
-                aiConfigurationRevision = UUID()
-            }) {
-                SettingsScreen()
-            }
-            .sheet(isPresented: $showingTasks) {
-                TaskShelfScreen(
-                    onResume: { requestedTaskID = $0 },
-                    onStartNew: attemptStartNewTask,
-                    onRelease: { releasedTaskID = $0 }
-                )
-            }
-            .sheet(isPresented: $showingPaywall) {
-                PaywallScreen(source: .taskShelf) {
-                    newTaskRequest = UUID()
-                }
-            }
-        #if DEBUG
-            // Lets Settings be inspected from the command line, since it is behind a
-            // tap. Debug-only; never compiled into a release.
-            .task {
-                if ProcessInfo.processInfo.environment["KINDLING_OPEN_SETTINGS"] == "1" {
-                    showingSettings = true
-                }
-                if ProcessInfo.processInfo.environment["KINDLING_OPEN_PAYWALL"] == "1" {
-                    analytics.track(.paywallDisplayed(source: .settings))
-                    showingPaywall = true
-                }
-            }
-        #endif
-        #if DEBUG
-            .sheet(isPresented: $showingDebug) {
-                DebugToolsView()
-            }
-        #endif
+    }
+
+    private func resumeTask(_ id: UUID) {
+        requestedTaskID = id
+        selectedTab = .start
     }
 
     private func attemptStartNewTask() {
@@ -114,11 +145,23 @@ struct RootView: View {
             hasMultiTaskEntitlement: entitlements.hasMultiTask
         ) {
             newTaskRequest = UUID()
+            selectedTab = .start
         } else {
-            analytics.track(.paywallDisplayed(source: .taskShelf))
-            showingPaywall = true
+            presentPaywall(source: .taskShelf)
         }
     }
+
+    private func presentPaywall(source: AnalyticsPaywallSource) {
+        paywallSource = source == .taskShelf ? .taskShelf : .discovery
+        analytics.track(.paywallDisplayed(source: source))
+        showingPaywall = true
+    }
+}
+
+private enum AppTab: Hashable {
+    case start
+    case tasks
+    case settings
 }
 
 private extension Image {

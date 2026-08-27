@@ -4,6 +4,15 @@ import SwiftData
 /// Keys for the §11 key/value preference table. Adding a setting never needs a
 /// schema change, which is the whole reason that table is shaped this way.
 public enum PreferenceKey {
+    /// The first-run introduction is versioned so a future onboarding rewrite can
+    /// be shown deliberately instead of silently reusing an unrelated old flag.
+    public static let onboardingCompletedV1 = "onboarding_completed_v1"
+    /// Counts self-reported moments where Kindling helped the user move forward.
+    /// A distracted session remains legitimate, but it is not a moment to sell.
+    public static let plusValueMomentCountV1 = "plus_value_moment_count_v1"
+    /// The proactive invitation is deliberately infrequent. The permanent Plus
+    /// entry remains available while this timestamp enforces the quiet period.
+    public static let plusNudgeLastShownAtV1 = "plus_nudge_last_shown_at_v1"
     public static let haptics = "haptics"
     public static let notificationsOptIn = "notifications_opt_in"
     public static let excludeFromBackup = "exclude_from_backup"
@@ -47,6 +56,10 @@ public struct PreferencesStore {
         value(PreferenceKey.hostedAIConsentV1).flatMap(HostedAIConsent.init(rawValue:)) ?? .notAsked
     }
 
+    public func date(_ key: String) -> Date? {
+        value(key).flatMap(TimeInterval.init).map(Date.init(timeIntervalSince1970:))
+    }
+
     public func setHostedAIConsent(_ consent: HostedAIConsent) {
         set(PreferenceKey.hostedAIConsentV1, consent.rawValue)
     }
@@ -66,6 +79,10 @@ public struct PreferencesStore {
             context.insert(UserPreference(key: key, value: newValue))
         }
         try? context.save()
+    }
+
+    public func set(_ key: String, _ newValue: Date) {
+        set(key, String(newValue.timeIntervalSince1970))
     }
 
     private func value(_ key: String) -> String? {

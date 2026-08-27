@@ -1,8 +1,8 @@
 import KindlingUI
 import SwiftUI
 
-/// §14 screen 3. The task comes back in the user's own words, and the step is the
-/// largest thing on screen — it is the only thing they have to do.
+/// §14 screen 3. The step is the largest thing on screen — it is the only thing
+/// the user has to do.
 struct FirstStepScreen: View {
     let echoedTask: String
     let step: String
@@ -13,36 +13,48 @@ struct FirstStepScreen: View {
 
     var body: some View {
         ScreenScaffold {
-            VStack(alignment: .leading, spacing: Space.s3) {
-                VStack(alignment: .leading, spacing: Space.s1) {
-                    Text("You said")
+            VStack(spacing: 0) {
+                Spacer(minLength: 0)
+
+                VStack(spacing: Space.s3) {
+                    // Focusing while a step is being generated: the Ember is already
+                    // the app's "working" signal, so there is no spinner to add.
+                    EmberView(state: isGenerating ? .focusing : .ready, size: 112)
+
+                    Text("For: \(echoedTask)")
                         .font(.kindlingCaption)
                         .foregroundStyle(KindlingColor.textSecondary)
-                    Text(echoedTask)
-                        .font(.kindlingBody)
-                        .foregroundStyle(KindlingColor.textPrimary)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .padding(.horizontal, Space.s2)
+                        .padding(.vertical, Space.s1)
+                        .background(
+                            KindlingColor.surface,
+                            in: RoundedRectangle(
+                                cornerRadius: KindlingLayout.radius,
+                                style: .continuous
+                            )
+                        )
+                        .accessibilityLabel("For task: \(echoedTask)")
+
+                    if isGenerating && step.isEmpty {
+                        Text("Finding the smallest first step…")
+                            .font(.kindlingTitle)
+                            .foregroundStyle(KindlingColor.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityLabel("Finding the smallest first step")
+                    } else {
+                        Text(step)
+                            .font(.kindlingDisplay)
+                            .foregroundStyle(KindlingColor.textPrimary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
+                .frame(maxWidth: .infinity)
 
-                // Focusing while a step is being generated: the Ember is already
-                // the app's "working" signal, so there is no spinner to add.
-                EmberView(state: isGenerating ? .focusing : .ready, size: 96)
-                    .frame(maxWidth: .infinity, alignment: .center)
-
-                if isGenerating && step.isEmpty {
-                    Text("Finding the smallest first step…")
-                        .font(.kindlingTitle)
-                        .foregroundStyle(KindlingColor.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityLabel("Finding the smallest first step")
-                } else {
-                    Text(step)
-                        .font(.kindlingDisplay)
-                        .foregroundStyle(KindlingColor.textPrimary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                Spacer()
+                Spacer(minLength: 0)
             }
         } actions: {
             VStack(spacing: Space.s2) {

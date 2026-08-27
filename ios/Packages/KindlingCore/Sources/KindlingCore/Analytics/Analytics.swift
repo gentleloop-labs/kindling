@@ -80,6 +80,8 @@ public enum AnalyticsDurationBucket: String, Sendable {
 public enum AnalyticsPaywallSource: String, Sendable {
     case taskShelf = "task_shelf"
     case settings
+    case home
+    case postSession = "post_session"
 }
 
 public enum AnalyticsProductPeriod: String, Sendable {
