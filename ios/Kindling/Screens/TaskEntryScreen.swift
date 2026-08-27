@@ -45,7 +45,12 @@ struct TaskEntryScreen: View {
         // Set in `.task`, not `onAppear`: the cursor has to survive the first layout
         // pass, or the keyboard appears without the field actually being focused.
         .task {
-            fieldFocused = true
+            // Screenshot captures use a seeded task and need the product surface,
+            // not the simulator's first-run keyboard tutorial. Normal launches
+            // still focus the field immediately.
+            if ProcessInfo.processInfo.environment["KINDLING_SCREEN"] == nil {
+                fieldFocused = true
+            }
         }
     }
 }

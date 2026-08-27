@@ -23,7 +23,15 @@ struct ScreenScaffold<Content: View, Actions: View>: View {
                     content
                         .padding(.horizontal, Space.s3)
                         .padding(.top, Space.s4)
-                        .frame(minHeight: proxy.size.height, alignment: .top)
+                        // A vertical ScrollView sizes its child to the child's
+                        // intrinsic width unless we claim the viewport. Centered
+                        // screens would otherwise be centered inside their
+                        // longest line of text instead of the device.
+                        .frame(
+                            maxWidth: .infinity,
+                            minHeight: proxy.size.height,
+                            alignment: .top
+                        )
                 }
                 .scrollBounceBehavior(.basedOnSize)
             }

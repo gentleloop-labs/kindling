@@ -36,33 +36,37 @@ struct RootView: View {
             newTaskRequest: $newTaskRequest,
             aiConfigurationRevision: $aiConfigurationRevision
         )
-            .overlay(alignment: .topTrailing) {
+            .safeAreaInset(edge: .top, spacing: 0) {
                 if chromeVisible {
                     HStack(spacing: Space.s1) {
+                        Spacer()
+
                         #if DEBUG
-                        Button { showingDebug = true } label: {
-                            Image(systemName: "hammer")
-                                .foregroundStyle(KindlingColor.textSecondary)
-                                .kindlingTapTarget()
+                        if ProcessInfo.processInfo.environment["KINDLING_SCREEN"] == nil {
+                            Button { showingDebug = true } label: {
+                                Image(systemName: "hammer")
+                                    .kindlingChromeIcon()
+                            }
+                            .accessibilityLabel("Developer tools")
                         }
-                        .accessibilityLabel("Developer tools")
                         #endif
 
                         Button { showingTasks = true } label: {
                             Image(systemName: "square.stack.3d.up")
-                                .foregroundStyle(KindlingColor.textSecondary)
-                                .kindlingTapTarget()
+                                .kindlingChromeIcon()
                         }
                         .accessibilityLabel("Your tasks")
 
                         Button { showingSettings = true } label: {
                             Image(systemName: "gearshape")
-                                .foregroundStyle(KindlingColor.textSecondary)
-                                .kindlingTapTarget()
+                                .kindlingChromeIcon()
                         }
                         .accessibilityLabel("Settings")
                     }
-                    .padding(.trailing, Space.s2)
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, Space.s3)
+                    .frame(height: KindlingLayout.minTapTarget)
+                    .background(KindlingColor.background)
                 }
             }
             .sheet(isPresented: $showingSettings, onDismiss: {
@@ -114,6 +118,20 @@ struct RootView: View {
             analytics.track(.paywallDisplayed(source: .taskShelf))
             showingPaywall = true
         }
+    }
+}
+
+private extension Image {
+    /// Normalizes symbols with different intrinsic bounds so the app chrome
+    /// reads as one aligned control group instead of two floating glyphs.
+    func kindlingChromeIcon() -> some View {
+        font(.system(size: 20, weight: .medium))
+            .foregroundStyle(KindlingColor.textSecondary)
+            .frame(
+                width: KindlingLayout.minTapTarget,
+                height: KindlingLayout.minTapTarget
+            )
+            .contentShape(Rectangle())
     }
 }
 
