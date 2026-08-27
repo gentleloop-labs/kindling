@@ -59,7 +59,7 @@ npm install
 npm run dev
 ```
 
-`npm run build` syncs the shared design tokens and production app artwork, then produces the static site in `landing/dist/`. Set `SITE_URL` only when a preview build needs a canonical URL other than `https://kindling.maskedsyntax.com`.
+`npm run build` syncs the shared design tokens and production app artwork, then produces the static site in `landing/dist/`. Set `SITE_URL` only when a preview build needs a canonical URL other than `https://kindling.gentlelooplabs.com`.
 
 ## Verify Phase 0
 

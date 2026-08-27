@@ -11,7 +11,8 @@ interface Props {
 const { title, description } = Astro.props;
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalURL = new URL(path, Astro.site);
-const socialImageURL = new URL("/assets/kindling-app-icon.png", Astro.site);
+const socialImageURL = new URL("/assets/kindling-social-card.png", Astro.site);
+const socialImageAlt = "Kindling helps you start an avoided task with one tiny first step and a short timer";
 ---
 
 <!doctype html>
@@ -29,13 +30,17 @@ const socialImageURL = new URL("/assets/kindling-app-icon.png", Astro.site);
     <meta property="og:site_name" content="Kindling" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:image" content={socialImageURL} />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
-    <meta property="og:image:alt" content="Kindling app icon featuring Ember, the glowing mascot" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image:url" content={socialImageURL} />
+    <meta property="og:image:secure_url" content={socialImageURL} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={socialImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href="/assets/kindling-app-icon.png" type="image/png" />
     <link rel="apple-touch-icon" href="/assets/kindling-app-icon.png" />
