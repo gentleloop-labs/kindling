@@ -9,6 +9,8 @@ struct TaskShelfScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @Query(sort: \AvoidedTask.updatedAt, order: .reverse) private var tasks: [AvoidedTask]
+    @State private var deletionCandidateID: UUID?
+    @State private var deletionFailed = false
 
     let onResume: (UUID) -> Void
     let onStartNew: () -> Void
@@ -53,6 +55,21 @@ struct TaskShelfScreen: View {
                 }
             }
         }
+        .confirmationDialog(
+            "Delete this task permanently?",
+            isPresented: isConfirmingDeletion,
+            titleVisibility: .visible
+        ) {
+            Button("Delete task", role: .destructive) { deleteCandidate() }
+            Button("Cancel", role: .cancel) { deletionCandidateID = nil }
+        } message: {
+            Text("This removes the task and its saved steps, sessions, and AI request logs from this iPhone. This cannot be undone.")
+        }
+        .alert("That didn't work", isPresented: $deletionFailed) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("The task is still here. Please try deleting it again.")
+        }
     }
 
     private func taskRow(_ task: AvoidedTask) -> some View {
@@ -79,6 +96,8 @@ struct TaskShelfScreen: View {
             HStack(spacing: Space.s2) {
                 Button("Mark done") { finish(task, as: .done) }
                 Button("Discard") { finish(task, as: .discarded) }
+                Button("Delete") { deletionCandidateID = task.id }
+                    .accessibilityHint("Permanently deletes this task after confirmation")
             }
             .font(.kindlingCaption)
             .foregroundStyle(KindlingColor.accent)
@@ -93,5 +112,31 @@ struct TaskShelfScreen: View {
         task.updatedAt = .now
         try? context.save()
         onRelease(task.id)
+    }
+
+    private var isConfirmingDeletion: Binding<Bool> {
+        Binding(
+            get: { deletionCandidateID != nil },
+            set: { if !$0 { deletionCandidateID = nil } }
+        )
+    }
+
+    private func deleteCandidate() {
+        guard let id = deletionCandidateID,
+              let task = tasks.first(where: { $0.id == id })
+        else {
+            deletionCandidateID = nil
+            return
+        }
+
+        do {
+            try TaskDataDeletion.delete(task, from: context)
+            deletionCandidateID = nil
+            onRelease(id)
+        } catch {
+            context.rollback()
+            deletionCandidateID = nil
+            deletionFailed = true
+        }
     }
 }

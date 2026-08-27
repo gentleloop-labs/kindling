@@ -1,0 +1,16 @@
+{
+  "name": "Kindling",
+  "short_name": "Kindling",
+  "description": "A gentle task starter for the one thing you are avoiding.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#faf6f1",
+  "theme_color": "#faf6f1",
+  "icons": [
+    {
+      "src": "/assets/kindling-app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -2,28 +2,132 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Privacy — Kindling" description="Kindling's Phase 0 privacy notice.">
+<BaseLayout
+  title="Kindling Privacy Policy"
+  description="How Kindling stores local task data and handles optional AI, analytics, purchases, notifications, and diagnostics."
+>
   <article class="legal section-shell">
-    <p class="eyebrow">Draft for validation</p>
-    <h1>Privacy</h1>
-    <p class="legal-notice">Last updated August 12, 2026. This is a pre-launch draft and requires legal review before app-store release.</p>
+    <header class="legal-header">
+      <p class="eyebrow">Privacy policy</p>
+      <h1>Your task deserves privacy.</h1>
+      <p class="legal-notice">Effective August 27, 2026</p>
+      <p>Kindling is local first and does not require an account. This policy explains what stays on your device, what can leave it, why processing happens, and how long data is kept.</p>
+    </header>
 
-    <h2>The short version</h2>
-    <p>The prototype keeps the task and suggested step in the current browser tab. They are not placed in analytics events or sent to Kindling. Anonymous interaction events are buffered in your browser for research export.</p>
+    <nav class="legal-toc" aria-label="Privacy policy contents">
+      <a href="#summary">Summary</a>
+      <a href="#local-data">Local data</a>
+      <a href="#ai">Optional AI</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#choices">Your choices</a>
+    </nav>
 
-    <h2>Waitlist email</h2>
-    <p>If you join the waitlist, Formspark receives and stores your email address on Kindling's behalf so we can manage early-access invitations and occasional product updates. We do not ask Formspark to receive task text. You may ask to be removed from the waitlist or unsubscribe from any future marketing message.</p>
+    <section id="summary">
+      <h2>1. What Kindling processes</h2>
+      <div class="data-table" role="table" aria-label="Kindling data summary">
+        <div role="row" class="data-row data-row--head"><span role="columnheader">Data</span><span role="columnheader">Purpose and destination</span><span role="columnheader">Retention</span></div>
+        <div role="row" class="data-row"><strong role="cell">Tasks, steps, sessions, settings</strong><span role="cell">App functionality, stored on your device</span><span role="cell">Until you delete tasks or the app</span></div>
+        <div role="row" class="data-row"><strong role="cell">Task title for hosted AI</strong><span role="cell">Optional first-step generation through Cloudflare and OpenAI</span><span role="cell">Not stored by Kindling or its Worker; OpenAI abuse monitoring may retain content for up to 30 days</span></div>
+        <div role="row" class="data-row"><strong role="cell">Product interaction analytics</strong><span role="cell">Understand app use through TelemetryDeck</span><span role="cell">Three months in routine analysis, deleted within 12 months</span></div>
+        <div role="row" class="data-row"><strong role="cell">Purchase status</strong><span role="cell">Unlock and restore Kindling Plus through Apple StoreKit</span><span role="cell">Apple retains transaction records under its policies; Kindling reads current entitlement status</span></div>
+      </div>
+    </section>
 
-    <h2>Prototype events</h2>
-    <p>The prototype records event names, timestamps, a random session identifier, and limited choices such as the session outcome. Events never contain the task or first-step text. By default they remain in local browser storage until you copy them for a research session or clear them.</p>
+    <section id="local-data">
+      <h2>2. Data stored on your device</h2>
+      <p>Kindling stores task titles, generated first steps, task status, session duration and outcome, settings, and limited AI request logs. An AI request log contains the provider, request time, latency, and success status. It has no field for the prompt or response text.</p>
+      <p>This data is stored with SwiftData in an App Group container shared with the Kindling Live Activity extension. It is not synced to a Kindling account because Kindling has no account system.</p>
+      <p>Local data is included in your device backup by default. You can turn on Exclude my data from device backups in Kindling Settings. Apple controls the storage and retention of device backups.</p>
+    </section>
 
-    <h2>Website analytics</h2>
-    <p>The deployed website may use Vercel Web Analytics to measure aggregate visitors, page views, devices, and referrers. Vercel describes this analytics service as anonymous and cookie-free. Kindling does not place task or first-step text in page URLs or analytics properties.</p>
+    <section id="ai">
+      <h2>3. Optional smarter first steps</h2>
+      <p>Smarter first steps are off by default. Local templates always work offline and do not transmit task text.</p>
+      <p>When smarter steps are enabled, Kindling first tries on-device Apple Intelligence on eligible devices. That processing stays on the iPhone. If on-device generation is unavailable and hosted AI is configured, Kindling presents a separate consent choice before any cloud fallback can be used.</p>
+      <p>If you allow cloud fallback, Kindling sends only the task title and a retry count over HTTPS to a Kindling-operated Cloudflare Worker. The Worker forwards the request to OpenAI and returns a first step. It does not receive step history, session history, local task identifiers, purchase information, or the TelemetryDeck installation identifier.</p>
+      <p>The Worker does not log or store task text. It logs content-free operational information such as success or error category, timing, and retry count. It uses the request IP transiently for rate limiting through Cloudflare. The OpenAI request sets storage off, but OpenAI may retain API content in abuse-monitoring logs for up to 30 days, and longer if legally required. OpenAI states that API data is not used to train its models unless the API customer opts in.</p>
+      <p>You can decline cloud fallback and still use on-device generation where available and local templates everywhere.</p>
+    </section>
 
-    <h2>Your choices</h2>
-    <p>You can clear the prototype's event buffer from the Research mode panel. You can also clear site data through your browser. To request removal from the waitlist, reply to a Kindling email or use its unsubscribe link.</p>
+    <section id="analytics">
+      <h2>4. App analytics</h2>
+      <p>Kindling release builds use TelemetryDeck to understand whether the starting flow works and where it needs improvement. The app sends fixed event names for onboarding, task entry, step display or regeneration, session start and outcome, attempts to add another task, paywall display, completed upgrades, notification permission, and notification opens.</p>
+      <p>Event properties are limited to fixed categories such as two or five minute duration, outcome, generation origin, paywall source, and monthly, annual, or lifetime purchase period. Kindling does not send task text, step text, task IDs, SwiftData IDs, email addresses, purchase receipts, or free-form error messages to TelemetryDeck.</p>
+      <p>The TelemetryDeck SDK supplies an app-installation identifier and standard device metadata such as app version, operating system version, device type, language, and whether the build came from the App Store or TestFlight. Kindling does not set a custom user identifier. TelemetryDeck says it hashes identifiers on the device and does not store IP addresses.</p>
+      <p>Kindling does not use analytics for advertising, profiling, or decisions about an individual. We use a three-month live query window for routine product analysis and keep analytics events for no more than 12 months in total. TelemetryDeck may move events outside the live query window into cold storage rather than delete them automatically, so we delete or request deletion of those events when the 12-month limit is reached.</p>
+      <p>Kindling does not currently include an analytics opt-out. Because TelemetryDeck anonymizes identifiers before ingestion, we generally cannot identify and delete events belonging to one person. You can still contact us with a privacy question or objection.</p>
+    </section>
 
-    <h2>Medical disclaimer</h2>
-    <p>Kindling is a productivity tool. It does not diagnose, monitor, or treat ADHD or any medical condition, and it is not a substitute for professional care.</p>
+    <section>
+      <h2>5. Purchases and Apple</h2>
+      <p>Kindling Plus purchases use Apple's StoreKit. Apple processes payment, Apple Account, billing, tax, refund, subscription, and transaction information under Apple's policies. Kindling asks StoreKit for available products and current entitlements so it can show purchase choices, unlock Plus, restore purchases, and respond to renewals, refunds, or revocations.</p>
+      <p>Kindling does not operate a purchase server and does not receive your payment card number. A fixed analytics event can record that an upgrade completed and whether it was monthly, annual, or lifetime, but it does not include a receipt, price, or Apple Account.</p>
+    </section>
+
+    <section>
+      <h2>6. Notifications and Live Activities</h2>
+      <p>Notifications are optional and require iOS permission. Kindling can schedule a local alert when a timer ends while the app is not in front. The alert uses fixed text and does not include the task title.</p>
+      <p>A Live Activity can show a fixed session headline and countdown on the Lock Screen and Dynamic Island. Its payload includes the timer date range and fixed headline only. It does not contain task or step text. Apple processes notification permissions, delivery, and Live Activity behavior as part of iOS.</p>
+    </section>
+
+    <section>
+      <h2>7. Diagnostics</h2>
+      <p>The app code does not include a separate crash-reporting SDK or a feature that uploads diagnostic logs to Kindling. If you choose to share iPhone analytics with app developers in iOS Settings, Apple may provide crash and performance information under Apple's settings and privacy terms. Support requests are user initiated. Email only the details needed to investigate your issue and do not send task text.</p>
+    </section>
+
+    <section>
+      <h2>8. Website data</h2>
+      <p>This website does not set cookies, use client-side analytics, run advertising trackers, or collect task text. The hosting provider, currently Vercel, may process standard request information such as IP address, browser details, requested URL, and time of request to deliver and secure the site under its own terms and retention practices.</p>
+      <p>If you email support, your email provider and ours process the message and related delivery information. We use it only to answer your request, investigate the issue, protect the service, and meet legal obligations. Support messages are kept only as long as reasonably needed for those purposes.</p>
+    </section>
+
+    <section>
+      <h2>9. Sharing and third-party services</h2>
+      <p>Kindling does not sell personal information or use it for cross-app advertising. Data is shared only as described here for app functionality, analytics, billing, hosting, security, and user-requested support.</p>
+      <ul>
+        <li><strong>Apple:</strong> StoreKit purchases, device backups, notifications, Live Activities, and optional on-device intelligence.</li>
+        <li><strong>TelemetryDeck:</strong> limited product interaction analytics.</li>
+        <li><strong>Cloudflare:</strong> hosted AI request routing, rate limiting, and content-free operational logs.</li>
+        <li><strong>OpenAI:</strong> optional hosted first-step generation after consent.</li>
+        <li><strong>Vercel:</strong> static website hosting and security logs. Vercel Web Analytics is not installed on this site.</li>
+      </ul>
+    </section>
+
+    <section id="choices">
+      <h2>10. Retention, deletion, and your choices</h2>
+      <ul>
+        <li>Use Kindling without an account and keep smarter steps off.</li>
+        <li>Decline hosted AI consent while keeping local templates and eligible on-device generation.</li>
+        <li>Turn notification access or Live Activities off in iPhone Settings.</li>
+        <li>Delete an active or parked task from Your tasks. This also removes its saved steps, sessions, and AI request logs.</li>
+        <li>Clear all finished and discarded tasks in Kindling Settings. This removes their related data too.</li>
+        <li>Delete the app to remove all Kindling data from the iPhone. Apple backups may retain an earlier copy under Apple's backup controls.</li>
+        <li>Use the backup exclusion setting to keep the local Kindling store out of future device backups.</li>
+      </ul>
+      <p>Tasks are not deleted automatically. You can remove active and parked tasks individually while keeping Kindling installed, clear finished and discarded tasks together, or delete the app to remove the entire local store from the iPhone.</p>
+    </section>
+
+    <section>
+      <h2>11. Children and international processing</h2>
+      <p>Kindling is not directed to children under 13, and we do not knowingly collect their personal information. You must be at least 13 to use Kindling. If you are under the age of legal majority where you live, a parent or legal guardian must permit your use.</p>
+      <p>TelemetryDeck hosts its service in the European Union. Cloudflare, OpenAI, Apple, Vercel, and email providers may process data in countries other than your own. Where required, we rely on applicable provider terms and lawful contractual or other transfer safeguards. Privacy protections and government access rules can differ by country.</p>
+    </section>
+
+    <section>
+      <h2>12. Changes and contact</h2>
+      <p>Material changes to this policy will be posted here with a new effective date. A new hosted AI processor or retention practice should also require a new consent choice in the app where appropriate.</p>
+      <p>Kindling is provided by Aftaab Siddiqui and published under the name Gentleloop Labs. For privacy questions, requests, or complaints, email <a href="mailto:hello@maskedsyntax.com">hello@maskedsyntax.com</a>.</p>
+    </section>
+
+    <section class="source-links" aria-label="Service privacy references">
+      <h2>Service references</h2>
+      <ul>
+        <li><a href="https://platform.openai.com/docs/models/default-usage-policies-by-endpoint" rel="external">OpenAI API data controls</a></li>
+        <li><a href="https://telemetrydeck.com/docs/guides/privacy-faq/" rel="external">TelemetryDeck privacy FAQ</a></li>
+        <li><a href="https://www.apple.com/legal/privacy/" rel="external">Apple Privacy Policy</a></li>
+        <li><a href="https://www.cloudflare.com/privacypolicy/" rel="external">Cloudflare Privacy Policy</a></li>
+        <li><a href="https://vercel.com/legal/privacy-policy" rel="external">Vercel Privacy Policy</a></li>
+      </ul>
+    </section>
   </article>
 </BaseLayout>

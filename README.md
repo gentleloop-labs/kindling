@@ -14,7 +14,7 @@ Kindling is a local-first task-initiation tool for the moment someone knows what
 - `proxy/` — Cloudflare Worker backing the optional hosted AI step tier
 - `design/tokens.css` — canonical cross-surface design tokens
 - `prototype/` — dependency-free validation flow
-- `landing/` — Astro static site; serves the prototype at `/try/`
+- `landing/` — Astro static site for the homepage, support, privacy, and terms URLs
 - `docs/validation-results.md` — the Phase 0 gate and evidence record
 
 ## Build and test the app
@@ -55,12 +55,11 @@ The prototype has no dependencies and no build step. Its Research mode panel sto
 
 ```sh
 cd landing
-cp .env.example .env
 npm install
 npm run dev
 ```
 
-Set `PUBLIC_WAITLIST_FORM_ACTION` to a real hosted form endpoint before deploying. `npm run build` syncs the prototype to `landing/public/try/` and produces the static site in `landing/dist/`.
+`npm run build` syncs the shared design tokens and production app artwork, then produces the static site in `landing/dist/`. Set `SITE_URL` only when a preview build needs a canonical URL other than `https://kindling.maskedsyntax.com`.
 
 ## Verify Phase 0
 

@@ -49,6 +49,21 @@ struct SchemaTests {
         #expect(try context.fetch(FetchDescriptor<AiRequestLog>()).isEmpty)
     }
 
+    @Test("active and parked tasks can be permanently deleted")
+    func deleteActiveAndParkedTasks() throws {
+        let context = try makeContext()
+        let active = AvoidedTask(title: "send the form", status: .active)
+        let parked = AvoidedTask(title: "sort the paperwork", status: .steppedAway)
+        context.insert(active)
+        context.insert(parked)
+        try context.save()
+
+        try TaskDataDeletion.delete(active, from: context)
+        try TaskDataDeletion.delete(parked, from: context)
+
+        #expect(try context.fetch(FetchDescriptor<AvoidedTask>()).isEmpty)
+    }
+
     @Test("a running session has no outcome, and every outcome is a non-failure")
     func outcomeIsOptionalAndNeverAFailure() throws {
         let context = try makeContext()

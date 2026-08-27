@@ -211,8 +211,8 @@ struct SettingsScreen: View {
         }
     }
 
-    /// The only deletion path in the app. Cascade rules take the steps, sessions,
-    /// and request logs with each task.
+    /// Bulk deletion for work that has already been released. The task shelf owns
+    /// confirmed deletion of active and parked tasks.
     private func clearFinished() {
         let finished = (try? context.fetch(FetchDescriptor<AvoidedTask>(
             predicate: #Predicate { $0.statusRaw == "done" || $0.statusRaw == "discarded" }

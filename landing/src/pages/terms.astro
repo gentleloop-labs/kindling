@@ -2,25 +2,119 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Terms — Kindling" description="Kindling's Phase 0 terms notice.">
+<BaseLayout
+  title="Kindling Terms of Use"
+  description="Terms for using the Kindling iPhone app, including subscriptions, lifetime purchases, billing, refunds, and acceptable use."
+>
   <article class="legal section-shell">
-    <p class="eyebrow">Draft for validation</p>
-    <h1>Terms</h1>
-    <p class="legal-notice">Last updated August 10, 2026. This validation-stage stub is not a substitute for the professionally reviewed terms required before release.</p>
+    <header class="legal-header">
+      <p class="eyebrow">Terms of use</p>
+      <h1>Simple terms for a small start.</h1>
+      <p class="legal-notice">Effective August 27, 2026</p>
+      <p>These terms apply to your use of the Kindling app and website. By downloading, buying, or using Kindling, you agree to these terms and Apple's applicable terms.</p>
+    </header>
 
-    <h2>Prototype use</h2>
-    <p>The Kindling website and prototype are provided for product research and evaluation. Features may change, stop working, or be removed while the product is being validated.</p>
+    <nav class="legal-toc" aria-label="Terms contents">
+      <a href="#license">License</a>
+      <a href="#plus">Kindling Plus</a>
+      <a href="#billing">Billing</a>
+      <a href="#acceptable-use">Acceptable use</a>
+      <a href="#disclaimers">Disclaimers</a>
+    </nav>
 
-    <h2>No medical service</h2>
-    <p>Kindling is not medical care, therapy, diagnosis, or crisis support. Do not rely on it for medical decisions or emergencies.</p>
+    <section>
+      <h2>1. Provider and eligibility</h2>
+      <p>Kindling is provided by Aftaab Siddiqui and published under the name Gentleloop Labs. You can contact the provider at <a href="mailto:hello@maskedsyntax.com">hello@maskedsyntax.com</a>.</p>
+      <p>You must be at least 13 to use Kindling. If you are under the age of legal majority where you live, you may use Kindling only with permission from a parent or legal guardian who agrees to these terms for you.</p>
+    </section>
 
-    <h2>Your content</h2>
-    <p>You remain responsible for words you enter. During Phase 0, task and first-step text stay in the current browser tab and are not transmitted as research analytics.</p>
+    <section id="license">
+      <h2>2. App license and Apple's Standard EULA</h2>
+      <p>Kindling is licensed, not sold. Your license is personal, limited, non-exclusive, non-transferable, and subject to these terms and Apple's usage rules.</p>
+      <p>Apple's <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" rel="external">Standard Licensed Application End User License Agreement</a> applies to the app and is incorporated into these terms. If these terms conflict with mandatory law or Apple's controlling terms, those rules apply to the extent of the conflict.</p>
+    </section>
 
-    <h2>Acceptable use</h2>
-    <p>Do not attempt to disrupt the site, access other people's information, or use the prototype unlawfully. The site is offered as available, without a promise that it will meet every need.</p>
+    <section>
+      <h2>3. What Kindling provides</h2>
+      <p>Kindling is a productivity tool that helps you enter an avoided task, receive a small suggested first step, and begin a short timer. Local template suggestions remain available without an account.</p>
+      <p>Features can change as the app improves. We will not intentionally remove paid access in a way that violates applicable consumer law or Apple's rules.</p>
+    </section>
 
-    <h2>Before launch</h2>
-    <p>Governing law, limitation of liability, contact details, age requirements, and provider disclosures will be finalized with legal review before public app distribution.</p>
+    <section id="plus">
+      <h2>4. Kindling Plus</h2>
+      <p>The full task-starting flow is free for one active task at a time. Kindling Plus unlocks the ability to keep multiple tasks parked and return to them.</p>
+      <p>Kindling may offer Plus through monthly and annual auto-renewing subscriptions and a one-time, non-consumable Kindling Plus Lifetime purchase. The App Store purchase screen shows the products currently available to you, the localized price, billing period, and any introductory offer for which Apple says you are eligible.</p>
+      <p>Kindling Plus Lifetime is a one-time purchase that does not expire. It unlocks the Kindling Plus features included in this app and updates made available to this same Kindling app for as long as the app remains supported and compatible with your device. It is restorable with the Apple Account used for the purchase.</p>
+      <p>Lifetime refers to the supported life of the Kindling app, not the purchaser's life. It does not promise that Kindling, every feature, hosted AI, third-party services, or compatibility with future devices and operating systems will be available forever. It does not include separately sold successor apps or products. Any discontinuation remains subject to Apple's rules and rights that cannot be excluded under applicable consumer law.</p>
+    </section>
+
+    <section id="billing">
+      <h2>5. Billing, renewal, cancellation, and restoration</h2>
+      <p>Apple processes every Kindling purchase through your Apple Account. We do not receive or store your payment card number.</p>
+      <p>Subscriptions renew automatically for the selected period until canceled. Apple charges the price shown at purchase and handles taxes, currency conversion, price-change notices, trial eligibility, renewal, and payment issues under its terms.</p>
+      <p>You can cancel from iPhone Settings by tapping your name, Subscriptions, then Kindling. Canceling stops future renewal. Access normally continues until the end of the paid period, subject to Apple's rules. If you are using a free or discounted trial and do not want it to renew, follow <a href="https://support.apple.com/en-us/118428" rel="external">Apple's cancellation instructions</a>.</p>
+      <p>Use Restore purchases in Kindling Settings to ask Apple to restore an active subscription or lifetime entitlement associated with the same Apple Account.</p>
+    </section>
+
+    <section>
+      <h2>6. Refunds</h2>
+      <p>Apple controls App Store refund decisions. Kindling cannot issue an Apple transaction refund directly. Purchases may be eligible under Apple's rules and applicable consumer law. To request one, use <a href="https://reportaproblem.apple.com/" rel="external">reportaproblem.apple.com</a> or contact Apple Support.</p>
+    </section>
+
+    <section>
+      <h2>7. Your content and optional AI</h2>
+      <p>You keep your rights in task text you enter. You are responsible for entering it lawfully and for deciding whether it is appropriate to place sensitive information in the app.</p>
+      <p>Hosted AI is optional and requires a separate consent choice before cloud fallback is available. If you allow it, the task title can be processed by Cloudflare and OpenAI to return a first-step suggestion. The <a href="/privacy/">Privacy Policy</a> explains this processing and retention.</p>
+      <p>Suggested steps are generated or selected automatically. They can be incomplete, unsuitable, or wrong. Use your judgment and do not rely on a suggestion for medical, legal, financial, safety-critical, or emergency decisions.</p>
+    </section>
+
+    <section id="acceptable-use">
+      <h2>8. Acceptable use</h2>
+      <p>You may not use Kindling or its services to:</p>
+      <ul>
+        <li>break the law, violate another person's rights, or encourage harm;</li>
+        <li>probe, disrupt, overload, bypass, or interfere with the app, website, hosted AI service, rate limits, or security controls;</li>
+        <li>extract, resell, or provide unauthorized access to the hosted AI service;</li>
+        <li>reverse engineer or copy Kindling except where applicable law expressly permits it;</li>
+        <li>submit malware, automated abusive traffic, or content you do not have the right to process.</li>
+      </ul>
+      <p>We may limit hosted services or terminate access where reasonably necessary to protect Kindling, users, providers, or the public, subject to applicable law and Apple's terms.</p>
+    </section>
+
+    <section id="disclaimers">
+      <h2>9. Health and emergency disclaimer</h2>
+      <p>Kindling is a general productivity tool. It is not medical care, diagnosis, treatment, therapy, or crisis support. It is not designed to monitor a health condition or replace advice from a qualified professional.</p>
+      <p>Do not use Kindling for emergencies or where a delayed, missing, or incorrect reminder or suggestion could cause harm. Contact local emergency services or an appropriate professional when needed.</p>
+    </section>
+
+    <section>
+      <h2>10. Availability and warranties</h2>
+      <p>To the maximum extent permitted by law, Kindling and its services are provided as available. We do not promise uninterrupted availability, error-free suggestions, delivery of notifications, or compatibility with every device or operating system configuration.</p>
+      <p>Nothing in these terms excludes warranties, remedies, or consumer rights that cannot legally be excluded. Additional warranty terms in Apple's Standard EULA also apply.</p>
+    </section>
+
+    <section>
+      <h2>11. Liability</h2>
+      <p>To the maximum extent permitted by applicable law, the provider is not liable for indirect, incidental, special, consequential, or punitive losses arising from use of or inability to use Kindling. Any limitation is subject to mandatory consumer protections and the liability terms in Apple's Standard EULA.</p>
+      <p>To the maximum extent permitted by applicable law, the provider's total aggregate liability arising from Kindling will not exceed the greater of the amount you paid for Kindling during the 12 months before the event giving rise to the claim or INR 5,000. This cap does not apply where liability cannot legally be limited, including liability for fraud, willful misconduct, or death or personal injury caused by negligence where applicable law prohibits limitation.</p>
+    </section>
+
+    <section>
+      <h2>12. Suspension, termination, and service changes</h2>
+      <p>You may stop using Kindling at any time. Deleting the app does not cancel an Apple subscription. Cancel it through Apple separately.</p>
+      <p>We may suspend hosted features for security, abuse, maintenance, legal requirements, or provider outages. If Kindling is discontinued, treatment of active subscriptions and lifetime purchases will follow Apple's rules, applicable law, and the lifetime definition in these terms.</p>
+    </section>
+
+    <section>
+      <h2>13. Governing law and changes</h2>
+      <p>Before filing a claim, you and the provider agree to make a good-faith effort to resolve the dispute by email for 30 days. This does not prevent either party from seeking urgent protective relief or using a consumer remedy that cannot be waived.</p>
+      <p>Except where mandatory consumer law requires otherwise, these terms are governed by the laws of India, without regard to conflict-of-law rules, and the courts in New Delhi, India have exclusive jurisdiction. You retain any mandatory rights and may use any forum that applicable consumer law requires.</p>
+      <p>We may update these terms for product, legal, security, or operational changes. Material revisions will be posted here with a new effective date. Continued use after a revision takes effect means you accept it where permitted by law.</p>
+    </section>
+
+    <section>
+      <h2>14. Contact</h2>
+      <p>For support, billing questions, legal notices, or disputes, email <a href="mailto:hello@maskedsyntax.com">hello@maskedsyntax.com</a>. Please do not include task text, purchase receipts, or full Apple Account details unless we specifically explain why they are needed.</p>
+    </section>
   </article>
 </BaseLayout>

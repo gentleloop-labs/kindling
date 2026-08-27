@@ -1,7 +1,6 @@
 ---
 import "../styles/tokens.css";
 import "../styles/global.css";
-import Analytics from "@vercel/analytics/astro";
 import Ember from "../components/Ember.astro";
 
 interface Props {
@@ -10,7 +9,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(path, Astro.site);
+const socialImageURL = new URL("/assets/kindling-app-icon.png", Astro.site);
 ---
 
 <!doctype html>
@@ -25,16 +26,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Kindling" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="Kindling app icon featuring Ember, the glowing mascot" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" href="/assets/kindling-app-icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/kindling-app-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>{title}</title>
-    <Analytics />
-    <script is:inline>
-      // Set before first paint so revealed sections never flash in and back out.
-      if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.documentElement.classList.add("js-reveal");
-      }
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -46,18 +52,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         </a>
         <nav aria-label="Primary navigation">
           <a href="/#how-it-works">How it works</a>
-          <a class="nav-try" href="/try/" data-track="try_clicked">Try it now</a>
+          <a href="/support/">Support</a>
+          <a class="nav-try" href="/#kindling-plus">Kindling Plus</a>
         </nav>
       </div>
     </header>
     <main id="main"><slot /></main>
     <footer class="site-footer">
       <p><Ember variant="dot" /> A small start is still a start.</p>
-      <nav aria-label="Legal">
+      <nav aria-label="Footer navigation">
+        <a href="/support/">Support</a>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
       </nav>
-      <p>© {new Date().getFullYear()} Kindling</p>
+      <p>© {new Date().getFullYear()} Aftaab Siddiqui. Kindling is published under Gentleloop Labs.</p>
     </footer>
 
     <script is:inline>
@@ -65,23 +73,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       const setScrolled = () => header?.setAttribute("data-scrolled", String(window.scrollY > 8));
       setScrolled();
       window.addEventListener("scroll", setScrolled, { passive: true });
-
-      const reveals = document.querySelectorAll("[data-reveal]");
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-        reveals.forEach((element) => element.classList.add("is-visible"));
-      } else {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            });
-          },
-          { rootMargin: "0px 0px -12% 0px" }
-        );
-        reveals.forEach((element) => observer.observe(element));
-      }
     </script>
   </body>
 </html>
