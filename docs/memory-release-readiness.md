@@ -32,7 +32,7 @@ Updated September 16, 2026. Target submission: December 7, 2026.
 - Primary category is Travel; secondary category is Photo & Video.
 - Kindling Pro group/products exist at $4.99 monthly, $29.99 annually with a seven-day trial, and $59.99 lifetime. All are `READY_TO_SUBMIT` and excluded from the current submission until the release candidate is ready.
 - The previous task products remain unreferenced by the binary and are not attached to review. App Store Connect does not permit removing an unapproved product in every state.
-- Build 13 is the rejected task-era build. It must be replaced by the release-candidate build before submission.
+- Build 14 (`1.0.0`) was uploaded on September 16, 2026 and is `IN_BETA_TESTING` for the internal TestFlight group. Build 13 remains the rejected task-era build attached to the App Store version and must be replaced by the final release candidate before submission.
 
 ## External release gates still required
 
@@ -40,7 +40,7 @@ These cannot be truthfully completed by source changes or simulator automation:
 
 1. TestFlight with at least 12 people across small, medium, and large libraries; limited selection; iCloud-only items; multiple countries/time zones; and older supported hardware.
 2. Manual VoiceOver, Dynamic Type, Reduce Motion, increased-contrast, real-device storage, notification, microphone, Photos picker, and purchase-state audits.
-3. A signed Release archive uploaded as a new build, followed by App Store processing and attachment to version 1.0.
+3. Promote a tested build (or upload a later release candidate) and attach it to App Store version 1.0.
 4. Final deep submission validation, attachment of the three new Pro products, and submission on or after December 7, 2026.
 
 Do not submit the currently attached build 13.

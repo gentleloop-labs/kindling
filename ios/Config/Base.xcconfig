@@ -11,28 +11,14 @@ SUPPORTED_PLATFORMS = iphoneos iphonesimulator
 SUPPORTS_MACCATALYST = NO
 
 MARKETING_VERSION = 1.0.0
-CURRENT_PROJECT_VERSION = 1
+CURRENT_PROJECT_VERSION = 14
 
 KINDLING_BUNDLE_PREFIX = dev.aftaab.kindling
 KINDLING_APP_GROUP = group.dev.aftaab.kindling
 
-// Required for device builds and for the Live Activity work in Phase 4.
-// Simulator builds sign ad-hoc and ignore this.
+// Automatic signing is used for device archives and App Store Connect uploads.
 DEVELOPMENT_TEAM = GVGJLY2H53
 CODE_SIGN_STYLE = Automatic
-
-// AI step generation (§12 v1.1). The OpenAI key lives in the Cloudflare Worker,
-// never here — these two values are only the endpoint and a rotatable app token.
-// NOTE: xcconfig treats "//" as a comment, so the scheme is NOT stored here.
-// The host is combined with https:// in Swift.
-KINDLING_STEP_HOST = kindling-step.maskedsyntax.workers.dev
-
-// APP_TOKEN lives in Local.xcconfig, which is gitignored. It ships in the app
-// binary either way, so treat it as rotatable rather than secret — but keeping it
-// out of version control means a public repo can't hand someone your OpenAI spend.
-// `#include?` is the optional form: the build still works without the file, and
-// the app simply stays local-only.
-KINDLING_APP_TOKEN =
 
 // Supplied locally. An empty ID selects the no-op analytics tracker.
 KINDLING_TELEMETRYDECK_APP_ID =
