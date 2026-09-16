@@ -1,0 +1,96 @@
+project:
+  name: Kindling inviting App Store screenshots
+  device: iPhone 17 Pro Max - Deep Blue - Portrait
+  output_dir: framed-inviting/en-US
+  output_size: iPhone6_5
+
+screenshots:
+  01-remember:
+    frame: false
+    template: templates/kindling-store-inviting.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/01-remember.png
+      mascot: ../ios/Packages/KindlingUI/Sources/KindlingUI/Resources/Tokens.xcassets/EmberMascot.imageset/EmberMascot.png
+    variables:
+      variant: remember
+      kicker: From camera roll to keepsake
+      headline_before: Photos become a
+      headline_accent: memory trail.
+      headline_after: ""
+      supporting: Kindling finds the shape of your trip—then leaves every moment yours to edit.
+      mascot_message: I found 4 moments!
+      mascot_submessage: Your trail is ready to shape.
+      sticker_icon: ✦
+      sticker_label: Editable from the start
+
+  02-atlas:
+    frame: false
+    template: templates/kindling-store-inviting.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/02-atlas.png
+      mascot: ../ios/Packages/KindlingUI/Sources/KindlingUI/Resources/Tokens.xcassets/EmberMascot.imageset/EmberMascot.png
+    variables:
+      variant: atlas
+      kicker: Your world, remembered
+      headline_before: Every trip in your
+      headline_accent: private atlas.
+      headline_after: ""
+      supporting: A warm, visual home for the places and days you never want to lose.
+      mascot_message: Look how far you've wandered.
+      mascot_submessage: Four journeys, all in one place.
+      sticker_icon: ⌖
+      sticker_label: Private on your phone
+
+  03-memory-trail:
+    frame: false
+    template: templates/kindling-store-inviting.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/03-memory-trail.png
+      mascot: ../ios/Packages/KindlingUI/Sources/KindlingUI/Resources/Tokens.xcassets/EmberMascot.imageset/EmberMascot.png
+    variables:
+      variant: trail
+      kicker: Relive it in order
+      headline_before: Follow the story,
+      headline_accent: not the camera roll.
+      headline_after: ""
+      supporting: Move through the map and moments just as the day unfolded.
+      mascot_message: Start anywhere.
+      mascot_submessage: I'll keep the route with you.
+      sticker_icon: ↝
+      sticker_label: Map + moments together
+
+  04-find-it:
+    frame: false
+    template: templates/kindling-store-inviting.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/04-find-it.png
+      mascot: ../ios/Packages/KindlingUI/Sources/KindlingUI/Resources/Tokens.xcassets/EmberMascot.imageset/EmberMascot.png
+    variables:
+      variant: search
+      kicker: More than a photo
+      headline_before: Remember what
+      headline_accent: photos missed.
+      headline_after: ""
+      supporting: Keep the sounds, tiny details, feelings, and stories only you noticed.
+      mascot_message: What did the street sound like?
+      mascot_submessage: Tiny prompts bring the day back.
+      sticker_icon: ≋
+      sticker_label: Notes + voice memories
+
+  05-share-safely:
+    frame: false
+    template: templates/kindling-store-inviting.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/05-share-safely.png
+      mascot: ../ios/Packages/KindlingUI/Sources/KindlingUI/Resources/Tokens.xcassets/EmberMascot.imageset/EmberMascot.png
+    variables:
+      variant: share
+      kicker: A little piece of the trip
+      headline_before: Turn a trip into a
+      headline_accent: postcard.
+      headline_after: ""
+      supporting: Make something beautiful to save, revisit, or send to someone you love.
+      mascot_message: Made from your own moments.
+      mascot_submessage: Beautiful—and yours to share.
+      sticker_icon: ♡
+      sticker_label: Ready to send

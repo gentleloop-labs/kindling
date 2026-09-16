@@ -1,0 +1,349 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #2b2420;
+  --muted: #796f67;
+  --paper: #fff9f2;
+  --cream: #f6eadc;
+  --accent: #ae451b;
+  --accent-soft: #f6c9a7;
+  --gold: #e7a53e;
+  --frame: #2b2420;
+  --sage: #9fb49a;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", sans-serif;
+  background: var(--paper);
+}
+
+.store-shot {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 8% 27%, rgba(231, 165, 62, 0.22) 0 3%, transparent 3.2%),
+    radial-gradient(circle at 94% 42%, rgba(169, 71, 28, 0.12) 0 8%, transparent 8.2%),
+    linear-gradient(160deg, #fffaf4 0%, #fdf3ea 55%, #fff7ef 100%);
+}
+
+.sun-wash {
+  position: absolute;
+  z-index: 0;
+  right: -240px;
+  bottom: -210px;
+  width: 760px;
+  height: 760px;
+  border-radius: 50%;
+  background: rgba(232, 112, 58, 0.12);
+  box-shadow: 0 0 0 90px rgba(232, 112, 58, 0.035);
+}
+
+.copy {
+  position: absolute;
+  z-index: 5;
+  top: 2.4%;
+  left: 4.5%;
+  width: 91%;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 10px 22px;
+  color: var(--accent);
+  border: 3px solid rgba(174, 69, 27, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 24px;
+  font-weight: 730;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.eyebrow span {
+  color: var(--gold);
+}
+
+h1 {
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: 81px;
+  font-weight: 780;
+  letter-spacing: -1.5px;
+  line-height: 0.98;
+}
+
+h1 span,
+h1 em {
+  display: inline;
+}
+
+h1 em {
+  color: var(--accent);
+  font-style: normal;
+  margin-left: 0.08em;
+}
+
+.copy p {
+  max-width: 1000px;
+  margin: 20px auto 0;
+  color: var(--muted);
+  font-size: 31px;
+  font-weight: 540;
+  line-height: 1.2;
+}
+
+.app-frame {
+  position: absolute;
+  z-index: 2;
+  top: 19.3%;
+  left: 13%;
+  width: 74%;
+  height: 75%;
+  overflow: hidden;
+  border-radius: 70px;
+  background: var(--paper);
+  clip-path: inset(0 round 70px);
+  box-shadow:
+    0 38px 80px rgba(73, 50, 34, 0.18),
+    0 0 0 12px rgba(255, 255, 255, 0.72);
+}
+
+.app-frame::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border: 5px solid var(--frame);
+  border-radius: 70px;
+  content: "";
+  pointer-events: none;
+}
+
+.app-frame img {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ember-scene {
+  position: absolute;
+  z-index: 7;
+  top: 21.5%;
+  right: 1.6%;
+  width: 270px;
+  height: 320px;
+  pointer-events: none;
+}
+
+.ember-scene img {
+  position: absolute;
+  right: -16px;
+  bottom: 0;
+  width: 154px;
+  height: 154px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(88, 42, 21, 0.22));
+  transform: rotate(7deg);
+}
+
+.speech {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  width: 258px;
+  padding: 22px 22px 24px;
+  border: 4px solid rgba(43, 36, 32, 0.92);
+  border-radius: 30px 30px 8px 30px;
+  background: #fff;
+  box-shadow: 0 16px 30px rgba(70, 50, 36, 0.14);
+  transform: rotate(2deg);
+}
+
+.speech::after {
+  position: absolute;
+  right: 28px;
+  bottom: -25px;
+  width: 35px;
+  height: 35px;
+  border-right: 4px solid rgba(43, 36, 32, 0.92);
+  border-bottom: 4px solid rgba(43, 36, 32, 0.92);
+  background: #fff;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.speech strong,
+.speech span {
+  display: block;
+}
+
+.speech strong {
+  font-size: 28px;
+  font-weight: 760;
+  line-height: 1.08;
+}
+
+.speech span {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 21px;
+  font-weight: 560;
+  line-height: 1.18;
+}
+
+.feature-sticker {
+  position: absolute;
+  z-index: 6;
+  left: 1.8%;
+  top: 60%;
+  display: flex;
+  width: 205px;
+  min-height: 112px;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 16px;
+  color: var(--ink);
+  border: 4px solid rgba(43, 36, 32, 0.88);
+  border-radius: 22px;
+  background: #fff1b7;
+  box-shadow: 0 14px 25px rgba(70, 50, 36, 0.14);
+  font-size: 23px;
+  font-weight: 730;
+  line-height: 1.05;
+  transform: rotate(-5deg);
+}
+
+.sticker-icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.route {
+  position: absolute;
+  z-index: 1;
+  width: 170px;
+  height: 320px;
+  border: 5px dashed rgba(174, 69, 27, 0.26);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+}
+
+.route-one {
+  top: 34%;
+  left: -78px;
+  transform: rotate(-18deg);
+}
+
+.route-two {
+  right: -85px;
+  bottom: 10%;
+  transform: rotate(28deg);
+}
+
+.spark {
+  position: absolute;
+  z-index: 4;
+  color: var(--gold);
+  font-weight: 900;
+  text-shadow: 0 6px 12px rgba(148, 92, 22, 0.16);
+}
+
+.spark-one {
+  top: 18.2%;
+  left: 5%;
+  font-size: 55px;
+  transform: rotate(-16deg);
+}
+
+.spark-two {
+  right: 4.5%;
+  bottom: 24%;
+  font-size: 44px;
+  transform: rotate(17deg);
+}
+
+.spark-three {
+  right: 6.5%;
+  bottom: 20.5%;
+  color: var(--sage);
+  font-size: 25px;
+}
+
+.variant-atlas .ember-scene,
+.variant-search .ember-scene {
+  right: auto;
+  left: 1.6%;
+}
+
+.variant-atlas .ember-scene img,
+.variant-search .ember-scene img {
+  right: auto;
+  left: -16px;
+  transform: rotate(-7deg);
+}
+
+.variant-atlas .speech,
+.variant-search .speech {
+  right: auto;
+  left: 12px;
+  border-radius: 30px 30px 30px 8px;
+  transform: rotate(-2deg);
+}
+
+.variant-atlas .speech::after,
+.variant-search .speech::after {
+  right: auto;
+  left: 28px;
+}
+
+.variant-atlas .feature-sticker,
+.variant-search .feature-sticker {
+  right: 1.8%;
+  left: auto;
+  transform: rotate(5deg);
+}
+
+.variant-atlas .feature-sticker {
+  background: #dcead8;
+}
+
+.variant-trail .feature-sticker {
+  background: #d9eef1;
+}
+
+.variant-search .feature-sticker {
+  background: #eedfff;
+}
+
+.variant-share .feature-sticker {
+  background: #ffdcca;
+}
+
+.variant-share .ember-scene {
+  top: 23.5%;
+}
+
+.variant-share .feature-sticker {
+  top: 65%;
+}
