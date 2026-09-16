@@ -5,6 +5,7 @@ import SwiftUI
 
 struct MemoryTrailView: View {
     @Bindable var trip: MemoryTrip
+    var initialFocusMomentID: UUID? = nil
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @Environment(\.analyticsTracker) private var analytics
@@ -13,41 +14,48 @@ struct MemoryTrailView: View {
     @State private var showingDeleteConfirmation = false
 
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: Space.s3) {
-                hero
-                if trip.orderedMoments.contains(where: { $0.latitude != nil && $0.longitude != nil }) {
-                    VStack(alignment: .leading, spacing: Space.s1) {
-                        Text("Memory map")
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: Space.s3) {
+                    hero
+                    if trip.orderedMoments.contains(where: { $0.latitude != nil && $0.longitude != nil }) {
+                        VStack(alignment: .leading, spacing: Space.s1) {
+                            Text("Memory map")
+                                .font(.kindlingButton)
+                                .foregroundStyle(KindlingColor.textPrimary)
+                            MemoryMapView(
+                                moments: trip.orderedMoments,
+                                selectedMomentID: selectedMomentID,
+                                onSelect: { selectedMomentID = $0.id }
+                            )
+                            .frame(height: 280)
+                            .clipShape(RoundedRectangle(cornerRadius: KindlingLayout.radius))
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: Space.s2) {
+                        Text("Your trail")
                             .font(.kindlingButton)
                             .foregroundStyle(KindlingColor.textPrimary)
-                        MemoryMapView(
-                            moments: trip.orderedMoments,
-                            selectedMomentID: selectedMomentID,
-                            onSelect: { selectedMomentID = $0.id }
-                        )
-                        .frame(height: 280)
-                        .clipShape(RoundedRectangle(cornerRadius: KindlingLayout.radius))
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: Space.s2) {
-                    Text("Your trail")
-                        .font(.kindlingButton)
-                        .foregroundStyle(KindlingColor.textPrimary)
-                    ForEach(Array(trip.orderedMoments.enumerated()), id: \.element.id) { index, moment in
-                        MomentMemoryCard(moment: moment, index: index)
-                            .id(moment.id)
-                            .overlay {
-                                if selectedMomentID == moment.id {
-                                    RoundedRectangle(cornerRadius: KindlingLayout.radius)
-                                        .stroke(KindlingColor.focus, lineWidth: 2)
+                        ForEach(Array(trip.orderedMoments.enumerated()), id: \.element.id) { index, moment in
+                            MomentMemoryCard(moment: moment, index: index)
+                                .id(moment.id)
+                                .overlay {
+                                    if selectedMomentID == moment.id {
+                                        RoundedRectangle(cornerRadius: KindlingLayout.radius)
+                                            .stroke(KindlingColor.focus, lineWidth: 2)
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
+                .padding(Space.s3)
             }
-            .padding(Space.s3)
+            .task(id: initialFocusMomentID) {
+                guard let initialFocusMomentID else { return }
+                try? await Task.sleep(for: .milliseconds(500))
+                proxy.scrollTo(initialFocusMomentID, anchor: .top)
+            }
         }
         .background(KindlingColor.background)
         .navigationTitle(trip.title)

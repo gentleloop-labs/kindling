@@ -6,6 +6,7 @@ import UIKit
 
 struct SharePreviewScreen: View {
     @Bindable var trip: MemoryTrip
+    var initialFocus: SharePreviewFocus? = nil
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @Environment(\.analyticsTracker) private var analytics
@@ -21,94 +22,102 @@ struct SharePreviewScreen: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: Space.s3) {
-                    ArtifactCanvasView(
-                        trip: trip,
-                        type: artifactType,
-                        theme: theme,
-                        privacy: privacy
-                    )
-                    .aspectRatio(4 / 5, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: KindlingLayout.radius))
-                    .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
-                    .accessibilityLabel("Exact sharing preview")
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: Space.s3) {
+                        ArtifactCanvasView(
+                            trip: trip,
+                            type: artifactType,
+                            theme: theme,
+                            privacy: privacy
+                        )
+                        .aspectRatio(4 / 5, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: KindlingLayout.radius))
+                        .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
+                        .accessibilityLabel("Exact sharing preview")
 
-                    Picker("Artifact", selection: $artifactType) {
-                        Text("Postcard").tag(AnalyticsArtifactType.postcard)
-                        Text("Map card").tag(AnalyticsArtifactType.mapCard)
-                    }
-                    .pickerStyle(.segmented)
+                        Picker("Artifact", selection: $artifactType) {
+                            Text("Postcard").tag(AnalyticsArtifactType.postcard)
+                            Text("Map card").tag(AnalyticsArtifactType.mapCard)
+                        }
+                        .pickerStyle(.segmented)
 
-                    VStack(alignment: .leading, spacing: Space.s1) {
-                        Text("Style").font(.kindlingButton)
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(ShareTheme.allCases) { candidate in
-                                    Button {
-                                        if candidate.isPro && !entitlements.hasPro {
-                                            analytics.track(.paywallDisplayed(source: .premiumTheme))
-                                            showingPaywall = true
-                                        } else {
-                                            theme = candidate
-                                            artifactURL = nil
-                                        }
-                                    } label: {
-                                        VStack(spacing: 4) {
-                                            Circle()
-                                                .fill(candidate.background)
-                                                .frame(width: 38, height: 38)
-                                                .overlay {
-                                                    if theme == candidate {
-                                                        Circle().stroke(KindlingColor.focus, lineWidth: 3)
+                        VStack(alignment: .leading, spacing: Space.s1) {
+                            Text("Style").font(.kindlingButton)
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(ShareTheme.allCases) { candidate in
+                                        Button {
+                                            if candidate.isPro && !entitlements.hasPro {
+                                                analytics.track(.paywallDisplayed(source: .premiumTheme))
+                                                showingPaywall = true
+                                            } else {
+                                                theme = candidate
+                                                artifactURL = nil
+                                            }
+                                        } label: {
+                                            VStack(spacing: 4) {
+                                                Circle()
+                                                    .fill(candidate.background)
+                                                    .frame(width: 38, height: 38)
+                                                    .overlay {
+                                                        if theme == candidate {
+                                                            Circle().stroke(KindlingColor.focus, lineWidth: 3)
+                                                        }
                                                     }
-                                                }
-                                            Text(candidate.label + (candidate.isPro ? " Pro" : ""))
-                                                .font(.kindlingCaption)
+                                                Text(candidate.label + (candidate.isPro ? " Pro" : ""))
+                                                    .font(.kindlingCaption)
+                                            }
                                         }
+                                        .buttonStyle(.plain)
                                     }
-                                    .buttonStyle(.plain)
                                 }
                             }
+                            .scrollIndicators(.hidden)
                         }
-                        .scrollIndicators(.hidden)
-                    }
 
-                    VStack(alignment: .leading, spacing: Space.s1) {
-                        Text("What to include").font(.kindlingButton)
-                        Toggle("Trip title", isOn: $privacy.includesTitle)
-                        Toggle("Dates", isOn: $privacy.includesDates)
-                        Toggle("Places", isOn: $privacy.includesPlaces)
-                        Toggle("Notes", isOn: $privacy.includesNotes)
-                        Toggle("Sensitive moments", isOn: $privacy.includesSensitiveMoments)
-                    }
-                    .padding(Space.s2)
-                    .background(KindlingColor.surface, in: RoundedRectangle(cornerRadius: KindlingLayout.radius))
-
-                    if let message {
-                        Text(message)
-                            .font(.kindlingCaption)
-                            .foregroundStyle(KindlingColor.textSecondary)
-                    }
-
-                    if let artifactURL {
-                        ShareLink(item: artifactURL) {
-                            Label("Share", systemImage: "square.and.arrow.up")
-                                .frame(maxWidth: .infinity)
+                        VStack(alignment: .leading, spacing: Space.s1) {
+                            Text("What to include").font(.kindlingButton)
+                            Toggle("Trip title", isOn: $privacy.includesTitle)
+                            Toggle("Dates", isOn: $privacy.includesDates)
+                            Toggle("Places", isOn: $privacy.includesPlaces)
+                            Toggle("Notes", isOn: $privacy.includesNotes)
+                            Toggle("Sensitive moments", isOn: $privacy.includesSensitiveMoments)
                         }
-                        .buttonStyle(.kindlingPrimary)
-                        .simultaneousGesture(TapGesture().onEnded {
-                            analytics.track(.shareSheetOpened)
-                        })
-                    } else {
-                        Button(isRendering ? "Preparing…" : "Prepare to share") {
-                            render()
+                        .padding(Space.s2)
+                        .background(KindlingColor.surface, in: RoundedRectangle(cornerRadius: KindlingLayout.radius))
+                        .id(SharePreviewFocus.privacy)
+
+                        if let message {
+                            Text(message)
+                                .font(.kindlingCaption)
+                                .foregroundStyle(KindlingColor.textSecondary)
                         }
-                        .buttonStyle(.kindlingPrimary)
-                        .disabled(isRendering || (artifactType == .mapCard && locatedMoments.isEmpty))
+
+                        if let artifactURL {
+                            ShareLink(item: artifactURL) {
+                                Label("Share", systemImage: "square.and.arrow.up")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.kindlingPrimary)
+                            .simultaneousGesture(TapGesture().onEnded {
+                                analytics.track(.shareSheetOpened)
+                            })
+                        } else {
+                            Button(isRendering ? "Preparing…" : "Prepare to share") {
+                                render()
+                            }
+                            .buttonStyle(.kindlingPrimary)
+                            .disabled(isRendering || (artifactType == .mapCard && locatedMoments.isEmpty))
+                        }
                     }
+                    .padding(Space.s3)
                 }
-                .padding(Space.s3)
+                .task(id: initialFocus) {
+                    guard let initialFocus else { return }
+                    try? await Task.sleep(for: .milliseconds(500))
+                    proxy.scrollTo(initialFocus, anchor: .top)
+                }
             }
             .background(KindlingColor.background)
             .navigationTitle("Privacy preview")
@@ -179,6 +188,10 @@ struct SharePreviewScreen: View {
     }
 }
 
+enum SharePreviewFocus: Hashable {
+    case privacy
+}
+
 private enum ShareTheme: String, CaseIterable, Identifiable {
     case standard
     case dusk
@@ -219,19 +232,19 @@ private struct ArtifactCanvasView: View {
     }
 
     private var postcard: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 14) {
             if let image = coverImage {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)
-                    .frame(height: 355)
+                    .frame(height: 250)
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 22))
             } else {
                 RoundedRectangle(cornerRadius: 22)
                     .fill(theme.accent.opacity(0.23))
-                    .frame(height: 355)
+                    .frame(height: 250)
                     .overlay {
                         Image(systemName: "map.fill")
                             .font(.system(size: 64, weight: .light))
@@ -240,7 +253,7 @@ private struct ArtifactCanvasView: View {
             }
             if privacy.includesTitle {
                 Text(trip.title)
-                    .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(theme.foreground)
                     .lineLimit(2)
             }
@@ -262,7 +275,7 @@ private struct ArtifactCanvasView: View {
             .font(.system(size: 16, weight: .semibold, design: .rounded))
             .foregroundStyle(theme.accent)
         }
-        .padding(30)
+        .padding(24)
     }
 
     private var mapCard: some View {

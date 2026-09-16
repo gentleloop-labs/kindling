@@ -19,6 +19,23 @@ struct DraftReviewScreen: View {
     var body: some View {
         List {
             Section {
+                HStack(spacing: Space.s2) {
+                    EmberView(state: .arranging, size: 58)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Your trail is ready to shape")
+                            .font(.kindlingButton)
+                            .foregroundStyle(KindlingColor.textPrimary)
+                        Text("\(allMedia.count) photos · \(trip.moments.count) editable moments")
+                            .font(.kindlingCaption)
+                            .foregroundStyle(KindlingColor.textSecondary)
+                    }
+                }
+                .padding(.vertical, 4)
+            } footer: {
+                Text("Kindling groups nearby photos by time and place. Everything below stays editable.")
+            }
+
+            Section {
                 TextField("Trip title", text: $trip.title)
                     .font(.kindlingTitle)
                 DatePicker("Started", selection: startDate, displayedComponents: .date)

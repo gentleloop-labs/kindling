@@ -42,10 +42,10 @@ capture_screen() {
     "$shots_output_dir/$output_name.png"
 }
 
-capture_screen onboarding 01-remember
+capture_screen draft 01-remember
 capture_screen atlas 02-atlas
 capture_screen trail 03-memory-trail
-capture_screen memories 04-find-it
+capture_screen moment 04-find-it
 capture_screen share 05-share-safely
 
 echo "Captured five seeded memory-product screens in $shots_output_dir"

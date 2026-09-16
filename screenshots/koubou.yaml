@@ -12,10 +12,10 @@ screenshots:
       screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/01-remember.png
     variables:
       variant: remember
-      headline_before: Remember where
-      headline_accent: life happened.
+      headline_before: Photos become a
+      headline_accent: memory trail.
       headline_after: ""
-      supporting: Turn scattered travel photos into a private memory trail.
+      supporting: Kindling groups a whole trip into editable moments—automatically.
 
   02-atlas:
     frame: false
@@ -24,10 +24,10 @@ screenshots:
       screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/02-atlas.png
     variables:
       variant: atlas
-      headline_before: See every trip in your
+      headline_before: Every trip in your
       headline_accent: private atlas.
       headline_after: ""
-      supporting: No account. No public feed. Your memories stay yours.
+      supporting: See the places, dates, and moments that made each journey yours.
 
   03-memory-trail:
     frame: false
@@ -36,10 +36,10 @@ screenshots:
       screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/03-memory-trail.png
     variables:
       variant: trail
-      headline_before: Relive the places and
-      headline_accent: moments.
+      headline_before: Follow the story,
+      headline_accent: not the camera roll.
       headline_after: ""
-      supporting: Photos, notes, voice memories, and an approximate map path.
+      supporting: Move through the map and the moments in the order they happened.
 
   04-find-it:
     frame: false
@@ -48,10 +48,10 @@ screenshots:
       screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/04-find-it.png
     variables:
       variant: search
-      headline_before: Find the detail you
-      headline_accent: almost forgot.
+      headline_before: Remember what
+      headline_accent: photos missed.
       headline_after: ""
-      supporting: Search places, notes, Sparks, tags, and return intent locally.
+      supporting: Add notes, voice memories, private tags, and gentle prompts.
 
   05-share-safely:
     frame: false
@@ -60,7 +60,7 @@ screenshots:
       screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/05-share-safely.png
     variables:
       variant: share
-      headline_before: Preview privacy before
-      headline_accent: you share.
+      headline_before: Share the story—
+      headline_accent: keep control.
       headline_after: ""
-      supporting: Choose exactly which dates, places, notes, and moments appear.
+      supporting: Preview exactly which dates, places, notes, and moments leave your phone.
