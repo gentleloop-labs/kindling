@@ -24,6 +24,13 @@ enum SampleTripFactory {
         return try? context.fetch(descriptor).first
     }
 
+    static func screenshotTrip(titled title: String, in context: ModelContext) -> MemoryTrip? {
+        let descriptor = FetchDescriptor<MemoryTrip>(predicate: #Predicate {
+            $0.sourceRaw == "sample" && $0.title == title
+        })
+        return try? context.fetch(descriptor).first
+    }
+
     static func create(in context: ModelContext) -> MemoryTrip {
         if let existing = existing(in: context) { return existing }
         let calendar = Calendar(identifier: .gregorian)

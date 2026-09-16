@@ -66,7 +66,7 @@ struct RootView: View {
             }
         }
         .sheet(item: $debugShare) { trip in
-            SharePreviewScreen(trip: trip, initialFocus: .privacy)
+            SharePreviewScreen(trip: trip)
         }
         .sheet(isPresented: $debugPaywall) {
             PaywallScreen(source: .settings)
@@ -104,8 +104,12 @@ private extension RootView {
             selectedTab = .memories
         case "share":
             completedOnboarding = true
-            let trip = SampleTripFactory.create(in: context)
-            trip.title = "Lisbon Weekend"
+            SampleTripFactory.createScreenshotLibrary(in: context)
+            let trip = SampleTripFactory.screenshotTrip(
+                titled: "Three Days on the Amalfi Coast",
+                in: context
+            ) ?? SampleTripFactory.create(in: context)
+            trip.title = "Amalfi Coast"
             try? context.save()
             debugShare = trip
         case "paywall":
