@@ -31,32 +31,3 @@ public struct KindlingField: View {
             )
     }
 }
-
-/// The blank-page mitigation from §14, and the single most-watched element in the
-/// whole flow: a tappable suggestion for people who freeze on an empty field.
-public struct SampleTaskChip: View {
-    let text: String
-    let action: () -> Void
-
-    public init(text: String, action: @escaping () -> Void) {
-        self.text = text
-        self.action = action
-    }
-
-    public var body: some View {
-        Button(action: action) {
-            Text(text)
-                .font(.kindlingCaption)
-                .foregroundStyle(KindlingColor.textPrimary)
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(Space.s2)
-                .frame(minHeight: KindlingLayout.minTapTarget)
-                .background(
-                    RoundedRectangle(cornerRadius: KindlingLayout.radius, style: .continuous)
-                        .fill(KindlingColor.surface)
-                )
-        }
-        .buttonStyle(.plain)
-    }
-}

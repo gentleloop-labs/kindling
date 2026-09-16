@@ -1,4 +1,6 @@
-# Implementation status
+# Legacy task-starter implementation status
+
+> Archived on 2026-09-16. This report describes the pre-pivot product and is not a forward-looking authority.
 
 Updated: 2026-08-26
 

@@ -1,73 +1,45 @@
 # Kindling
 
-Kindling is a local-first task-initiation tool for the moment someone knows what they need to do and cannot start. It is an **iOS app, and only an iOS app** — Swift, SwiftUI, iOS 17+, with no cross-platform layer. Android is not planned, now or later.
+Kindling is a private, ADHD-friendly travel memory map for iPhone. It turns selected photos and videos into editable trips, moments, maps, notes, voice memories, searchable details, and privacy-previewed sharing cards.
 
-**Current state:** the app is feature-complete through Phase 4 and simulator-verified. Remaining work is Phase 5 — paywall, analytics, legal, and store assets — tracked in `docs/release-plan.md` against a 2026-08-31 App Store submission.
+The current product specification is [`spec.md`](spec.md). Documents that describe the rejected task-starter product are retained with a **Legacy** banner for historical context only.
 
 ## Repository
 
-- `docs/kindling-full-plan.md` — product source of truth, §-numbered
-- `IMPLEMENTATION.md` — phased engineering plan and the record of the decisions behind it
-- `docs/implementation-status.md` — what is actually built, phase by phase
-- `docs/release-plan.md` — the path to submission; authority for Phase 5
-- `ios/` — the app. App target, widget extension, and the `KindlingCore` / `KindlingUI` local packages
-- `proxy/` — Cloudflare Worker backing the optional hosted AI step tier
-- `design/tokens.css` — canonical cross-surface design tokens
-- `prototype/` — dependency-free validation flow
-- `landing/` — Astro static site for the homepage, support, privacy, and terms URLs
-- `docs/validation-results.md` — the Phase 0 gate and evidence record
+- `ios/` — native SwiftUI app, local `KindlingCore` and `KindlingUI` packages, and StoreKit configuration.
+- `landing/` — Astro website with current support, privacy, and terms pages.
+- `metadata/` — canonical English App Store metadata.
+- `screenshots/` — App Store screenshot automation and outputs; task-era images must be replaced before submission.
+- `prototype/`, `proxy/`, and older planning documents — legacy task-starter artifacts, not part of the current app or deployment path.
 
-## Build and test the app
+## Build and test
 
-The Xcode project is generated, so edit `ios/project.yml` rather than the `.xcodeproj`:
+Generate the Xcode project from `ios/project.yml`:
 
 ```sh
 cd ios
 xcodegen generate
-open Kindling.xcodeproj
+xcodebuild -project Kindling.xcodeproj -scheme Kindling \
+  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
 ```
 
-The domain layer tests need no simulator and are the fast feedback loop:
+Run the fast domain suite without a simulator:
 
 ```sh
-cd ios/Packages/KindlingCore && swift test
+cd ios/Packages/KindlingCore
+swift test
 ```
 
-Copy `ios/Config/Local.xcconfig.example` to `Local.xcconfig` (gitignored) to point the app at a deployed step Worker. Without it the app runs template-only and the AI toggle stays hidden.
+Debug builds use `ios/Kindling.storekit`. Release builds use the real App Store catalog.
 
-Purchases run against `ios/Kindling.storekit` in Debug, so the paywall is testable with no App Store Connect setup. Use Xcode's **Debug → StoreKit** menu to force renewals, refunds, and Ask-to-Buy.
+## Privacy architecture
 
-## Deploy the step proxy
+- No account and no cloud sync in the first memory release.
+- The system picker shares only selected media; broad photo-library permission is not required.
+- Kindling stores protected, optimized display copies in its private app container.
+- Coordinates, media, memory text, voice recordings, tags, and search terms cannot enter the typed analytics interface.
+- The previous App Group remains temporarily available only for user-directed deletion of legacy data.
 
-Optional — the app falls back to on-device and template steps without it. See `proxy/README.md`.
+## Product boundary
 
-## Run the prototype
-
-Serve the repository with any static server and open `prototype/`. Add `?dev=1` to reveal a three-second timer fast-forward control.
-
-```sh
-npx serve .
-```
-
-The prototype has no dependencies and no build step. Its Research mode panel stores only whitelisted interaction events in local browser storage; task and first-step text are not included.
-
-## Run the landing page
-
-```sh
-cd landing
-npm install
-npm run dev
-```
-
-`npm run build` syncs the shared design tokens and production app artwork, then produces the static site in `landing/dist/`. Set `SITE_URL` only when a preview build needs a canonical URL other than `https://kindling.gentlelooplabs.com`.
-
-## Verify Phase 0
-
-```sh
-node --test prototype/tests/*.test.mjs
-cd landing && npm run check && npm run build
-```
-
-Follow `docs/phase-0-runbook.md` for phone testing and evidence collection, and `docs/phase-0-validation-playbook.md` for the full recruitment, interview, and measurement process.
-
-Note that the Phase 0 gate was **overridden by owner decision on 2026-08-17**, not satisfied — engineering began with the evidence still outstanding. `docs/validation-results.md` records that distinction deliberately; it should not be smoothed over.
+The first release includes manual import, deterministic clustering, editable Memory Trails, maps, Sparks, notes, voice memories, local search, static postcards/map cards, local resurfacing, and Kindling Pro. iCloud sync, automatic trip discovery, semantic search, shared trips, animated films, widgets, and AI remain post-v1.

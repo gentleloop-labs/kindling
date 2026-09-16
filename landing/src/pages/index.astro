@@ -4,83 +4,68 @@ import Ember from "../components/Ember.astro";
 ---
 
 <BaseLayout
-  title="Kindling | Start the task you are avoiding"
-  description="Kindling helps you start the one thing you are avoiding with a tiny first step and a short timer."
+  title="Kindling | Remember where life happened"
+  description="Turn scattered travel photos into a private, interactive memory map."
 >
   <section class="hero section-shell">
     <div class="hero-copy">
-      <p class="eyebrow">A gentle task starter for iPhone</p>
-      <h1>Kindling helps you start the one thing you are avoiding.</h1>
+      <p class="eyebrow">A private travel memory map for iPhone</p>
+      <h1>Remember where life happened.</h1>
       <p class="hero-lede">
-        Name the task. Get one small, concrete first step. Start a two or five minute timer and let that be enough for now.
+        Choose photos from a past trip. Kindling arranges the places, moments, and small details into a trail you can actually revisit.
       </p>
       <div class="hero-actions">
-        <a class="button button--primary" href="#how-it-works">
-          See how it works <span class="arrow" aria-hidden="true">↓</span>
-        </a>
+        <a class="button button--primary" href="#how-it-works">See how it works <span class="arrow" aria-hidden="true">↓</span></a>
         <a class="text-link" href="/support/">Get support</a>
       </div>
       <ul class="trust-list" aria-label="Kindling principles">
         <li>No account</li>
-        <li>Works offline</li>
-        <li>No streaks</li>
+        <li>Selected photos only</li>
+        <li>Private by default</li>
       </ul>
     </div>
-
     <div class="hero-visual">
       <div class="hearth hearth--outer" aria-hidden="true"></div>
       <div class="hearth hearth--inner" aria-hidden="true"></div>
       <Ember variant="hero" sparks />
-      <div class="mini-session" aria-label="Example Kindling session">
-        <span>First step</span>
-        <strong>Open the document.</strong>
-        <span class="mini-timer">02:00</span>
+      <div class="mini-session" aria-label="Example Kindling memory trail">
+        <span>Memory trail</span>
+        <strong>A Weekend in Lisbon</strong>
+        <span class="mini-timer">4 moments</span>
       </div>
     </div>
   </section>
 
   <section class="manifesto">
     <div class="section-shell manifesto-inner">
-      <p data-reveal>
-        You already know what needs doing. Kindling makes the distance to <strong>starting</strong> smaller.
-      </p>
+      <p data-reveal>Your camera roll remembers <strong>where</strong>. Kindling helps you remember what it felt like.</p>
     </div>
   </section>
 
   <section class="loop section-shell" id="how-it-works" aria-labelledby="loop-title">
     <div class="section-heading">
-      <p class="eyebrow">One calm loop</p>
-      <h2 id="loop-title">From stuck to started.</h2>
-      <p>No planning system to maintain. Just three small moves that help you begin what is in front of you.</p>
+      <p class="eyebrow">One gentle loop</p>
+      <h2 id="loop-title">From camera roll to memory trail.</h2>
+      <p>No blank journal page and no trip-planning system to maintain.</p>
     </div>
-
     <ol class="beats">
       <li data-reveal>
         <span class="beat-number">01</span>
-        <div class="flow-preview flow-preview--entry" aria-hidden="true">
-          <span>What are you avoiding?</span>
-          <strong>Book the appointment</strong>
-        </div>
-        <h3>Enter one task</h3>
-        <p>Write it in your own words. You do not need to sort the rest of your day first.</p>
+        <div class="flow-preview flow-preview--entry" aria-hidden="true"><span>Choose a past trip</span><strong>18 selected photos</strong></div>
+        <h3>Pick only what you want</h3>
+        <p>The system photo picker shares the items you choose without asking for your whole library.</p>
       </li>
       <li data-reveal>
         <span class="beat-number">02</span>
-        <div class="flow-preview flow-preview--step" aria-hidden="true">
-          <span>Your first step</span>
-          <strong>Open your calendar.</strong>
-        </div>
-        <h3>Receive a tiny first step</h3>
-        <p>Kindling suggests one concrete action. Local templates always work, even without a connection.</p>
+        <div class="flow-preview flow-preview--step" aria-hidden="true"><span>Kindling arranged</span><strong>5 moments · 3 places</strong></div>
+        <h3>Review the suggested trail</h3>
+        <p>Kindling groups photos by time and place. Every title, moment, and location remains editable.</p>
       </li>
       <li data-reveal>
         <span class="beat-number">03</span>
-        <div class="flow-preview flow-preview--timer" aria-hidden="true">
-          <span>Stay with this step</span>
-          <strong>02:00</strong>
-        </div>
-        <h3>Start a short timer</h3>
-        <p>Choose two or five minutes. Keep going, stop for now, or notice a distraction without judgment.</p>
+        <div class="flow-preview flow-preview--timer" aria-hidden="true"><span>A small Spark</span><strong>What did this place sound like?</strong></div>
+        <h3>Add one detail—or none</h3>
+        <p>Optional notes, Sparks, tags, and voice memories help without turning the experience into homework.</p>
       </li>
     </ol>
   </section>
@@ -88,67 +73,49 @@ import Ember from "../components/Ember.astro";
   <section class="feature-section">
     <div class="section-shell feature-grid">
       <div data-reveal>
-        <p class="eyebrow">Built for the moment</p>
-        <h2>Support that stays out of the way.</h2>
-        <p>
-          A Live Activity can keep the countdown visible on your Lock Screen or Dynamic Island. Optional notifications can let you know when the timer ends without showing your task title.
-        </p>
+        <p class="eyebrow">Made to come back to</p>
+        <h2>Maps, search, and postcards from your past.</h2>
+        <p>Find a memory by place or detail, follow an approximate trip path, and opt into gentle resurfacing without streaks or obligations.</p>
       </div>
       <div class="privacy-card" data-reveal>
         <img src="/assets/kindling-app-icon.webp" alt="Kindling app icon" width="256" height="256" decoding="async" />
         <div>
-          <h3>Local by default</h3>
-          <p>Your tasks are stored on your iPhone. Kindling has no account, and offline first steps are always available.</p>
+          <h3>Local first</h3>
+          <p>Kindling keeps protected, optimized copies and memory details on your iPhone. Your photos and words are not analytics data.</p>
           <a class="text-link" href="/privacy/">Read the privacy policy</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="plus section-shell" id="kindling-plus" aria-labelledby="plus-title">
+  <section class="plus section-shell" id="kindling-pro" aria-labelledby="pro-title">
     <div class="plus-copy">
-      <p class="eyebrow">Kindling Plus</p>
-      <h2 id="plus-title">Keep more than one task warm.</h2>
-      <p>
-        The complete rescue flow is free for one active task at a time. Kindling Plus lets you park and return to multiple tasks.
-      </p>
-      <p class="fine-print">
-        Plus is offered in the app through Apple as monthly and annual subscriptions and as a non-expiring, one-time Kindling Plus Lifetime purchase. The App Store purchase screen shows current localized prices and trial eligibility before you confirm. <a href="/terms/#plus">See what Lifetime means</a>.
-      </p>
+      <p class="eyebrow">Kindling Pro</p>
+      <h2 id="pro-title">Keep your whole atlas.</h2>
+      <p>Your first two saved trips are free. Pro unlocks unlimited trails, premium postcard and map styles, branding controls, and expanded resurfacing controls.</p>
+      <p class="fine-print">Monthly, annual, and non-expiring Lifetime choices are offered through Apple. The purchase screen shows current localized prices and trial eligibility. <a href="/terms/#pro">Read the terms</a>.</p>
     </div>
-    <div class="task-stack" aria-label="Example of multiple parked tasks" data-reveal>
-      <article><span>Ready</span><strong>Send the application</strong><small>Open the draft.</small></article>
-      <article><span>Parked</span><strong>Sort the paperwork</strong><small>Put one envelope on the table.</small></article>
-      <article><span>Parked</span><strong>Reply to Sam</strong><small>Open the conversation.</small></article>
+    <div class="task-stack" aria-label="Example memory trails" data-reveal>
+      <article><span>Lisbon</span><strong>A Weekend in Lisbon</strong><small>4 moments · 3 places</small></article>
+      <article><span>Kyoto</span><strong>Autumn in Kyoto</strong><small>8 moments · 5 places</small></article>
+      <article><span>Goa</span><strong>Three Slow Days</strong><small>6 moments · 4 places</small></article>
     </div>
   </section>
 
   <section class="not-section">
     <div class="section-shell not-grid">
-      <div>
-        <p class="eyebrow">Deliberately focused</p>
-        <h2>Less pressure. Less planning.</h2>
-      </div>
+      <div><p class="eyebrow">Deliberately focused</p><h2>A memory product—not another planner.</h2></div>
       <div class="not-list">
-        <article data-reveal>
-          <span aria-hidden="true">1</span>
-          <div><h3>Not a day planner</h3><p>Kindling helps with the task in front of you, not an entire schedule.</p></div>
-        </article>
-        <article data-reveal>
-          <span aria-hidden="true">2</span>
-          <div><h3>Not a streak</h3><p>No missed day warning, score, or mascot disappointment. Coming back is enough.</p></div>
-        </article>
-        <article data-reveal>
-          <span aria-hidden="true">3</span>
-          <div><h3>Not medical care</h3><p>Kindling is a productivity tool. It does not diagnose, treat, or provide crisis support.</p></div>
-        </article>
+        <article data-reveal><span aria-hidden="true">1</span><div><h3>Not a trip planner</h3><p>No bookings, itineraries, budgets, or navigation.</p></div></article>
+        <article data-reveal><span aria-hidden="true">2</span><div><h3>Not a public feed</h3><p>No followers, likes, comments, or pressure to perform your memories.</p></div></article>
+        <article data-reveal><span aria-hidden="true">3</span><div><h3>Not medical care</h3><p>Kindling is a private travel-memory tool. It does not diagnose or treat any medical condition.</p></div></article>
       </div>
     </div>
   </section>
 
   <section class="quote-section section-shell" aria-label="Kindling principle">
     <Ember variant="inline" />
-    <blockquote data-reveal>Starting small still counts as starting.</blockquote>
+    <blockquote data-reveal>The details you almost forgot are often the ones worth keeping.</blockquote>
     <a class="button button--secondary" href="/support/">Questions? Visit support</a>
   </section>
 </BaseLayout>

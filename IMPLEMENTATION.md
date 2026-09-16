@@ -1,4 +1,6 @@
-# Kindling — Implementation Plan
+# Legacy: Kindling task-starter implementation plan
+
+> Archived on 2026-09-16. This document describes the rejected task-initiation product and is retained only as historical engineering context. `spec.md` is the product authority for the travel-memory app.
 
 ## Context
 

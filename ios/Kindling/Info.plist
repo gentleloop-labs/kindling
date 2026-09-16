@@ -12,10 +12,6 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>KindlingStepHost</key>
-	<string>$(KINDLING_STEP_HOST)</string>
-	<key>KindlingAppToken</key>
-	<string>$(KINDLING_APP_TOKEN)</string>
 	<key>KindlingTelemetryDeckAppID</key>
 	<string>$(KINDLING_TELEMETRYDECK_APP_ID)</string>
 	<key>CFBundleDisplayName</key>
@@ -30,10 +26,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
-	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Kindling uses the microphone only when you choose to record a private voice memory.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>

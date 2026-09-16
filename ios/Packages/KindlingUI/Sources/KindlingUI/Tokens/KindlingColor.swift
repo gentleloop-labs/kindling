@@ -40,8 +40,8 @@ public enum KindlingColor {
 
     /// There is deliberately no error or destructive color.
     ///
-    /// No red appears anywhere in this system, including the timer's final
-    /// seconds. Errors are primary text plus an icon or a plain sentence; the
+    /// No red appears anywhere in this system. Errors are primary text plus an
+    /// icon or a plain sentence; the
     /// no-failure-state principle applies to color, not only to copy.
 
     private static func color(_ name: String) -> Color {

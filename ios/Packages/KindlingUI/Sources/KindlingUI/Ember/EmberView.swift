@@ -1,12 +1,11 @@
 import SwiftUI
 
-/// Kindling's Ember mascot, shared by the app, widgets, and Live Activities.
+/// Kindling's Ember mascot, shared across the memory experience.
 ///
 /// State is carried by glow, warmth, and motion so the same character remains
 /// recognizable everywhere it appears.
 ///
-/// It lives in `KindlingUI` rather than the app target because the widget
-/// extension needs it too.
+/// It lives in `KindlingUI` so every feature uses the same states and motion.
 public struct EmberView: View {
     let state: EmberState
     let size: CGFloat
@@ -57,9 +56,10 @@ public struct EmberView: View {
     private var glowOpacity: Double {
         switch state {
         case .resting: 0
-        case .ready: 0.18
-        case .focusing: 0.28
-        case .distracted: 0.16
+        case .welcoming: 0.18
+        case .gathering: 0.28
+        case .arranging: 0.24
+        case .remembering: 0.20
         case .celebrating: 0.38
         }
     }
@@ -67,9 +67,10 @@ public struct EmberView: View {
     private var glowRadius: CGFloat {
         switch state {
         case .resting: 0
-        case .ready: 0.06
-        case .focusing: 0.09
-        case .distracted: 0.06
+        case .welcoming: 0.06
+        case .gathering: 0.09
+        case .arranging: 0.08
+        case .remembering: 0.07
         case .celebrating: 0.12
         }
     }
@@ -79,24 +80,21 @@ public struct EmberView: View {
     private var pulseScale: CGFloat {
         guard !reduceMotion else { return 1 }
         return switch state {
-        case .focusing: animating ? 1.08 : 0.96
+        case .gathering, .arranging: animating ? 1.08 : 0.96
         case .celebrating: animating ? 1.12 : 1
         default: 1
         }
     }
 
     private var flickerOpacity: Double {
-        guard !reduceMotion, state == .distracted else { return 1 }
-        return animating ? 0.65 : 1
+        1
     }
 
     private var pulseAnimation: Animation? {
         guard !reduceMotion else { return nil }
         switch state {
-        case .focusing:
+        case .gathering, .arranging:
             return .easeInOut(duration: 2.2).repeatForever(autoreverses: true)
-        case .distracted:
-            return .easeInOut(duration: 0.45).repeatForever(autoreverses: true)
         case .celebrating:
             // The one deliberate spring in the system, and only here.
             return .spring(response: 0.6, dampingFraction: 0.6)

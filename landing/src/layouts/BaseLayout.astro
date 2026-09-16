@@ -12,7 +12,7 @@ const { title, description } = Astro.props;
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalURL = new URL(path, Astro.site);
 const socialImageURL = new URL("/assets/kindling-social-card.png", Astro.site);
-const socialImageAlt = "Kindling helps you start an avoided task with one tiny first step and a short timer";
+const socialImageAlt = "Kindling turns travel photos into a private, interactive memory map";
 ---
 
 <!doctype html>

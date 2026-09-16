@@ -34,8 +34,6 @@ targets:
       - package: KindlingUI
       - package: TelemetryDeck
         product: TelemetryDeck
-      - target: KindlingWidget
-        embed: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.aftaab.kindling
@@ -45,27 +43,25 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ENABLE_PREVIEWS: YES
 
-  KindlingWidget:
-    type: app-extension
+  KindlingUITests:
+    type: bundle.ui-testing
     platform: iOS
     sources:
-      - path: KindlingWidget
+      - path: KindlingUITests
     dependencies:
-      - package: KindlingCore
-      - package: KindlingUI
+      - target: Kindling
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: dev.aftaab.kindling.widget
-        PRODUCT_NAME: KindlingWidget
-        INFOPLIST_FILE: KindlingWidget/Info.plist
-        CODE_SIGN_ENTITLEMENTS: KindlingWidget/KindlingWidget.entitlements
-        ENABLE_PREVIEWS: YES
+        PRODUCT_BUNDLE_IDENTIFIER: dev.aftaab.kindling.uitests
+        TEST_TARGET_NAME: Kindling
+        GENERATE_INFOPLIST_FILE: YES
 
 schemes:
   Kindling:
     build:
       targets:
         Kindling: all
+        KindlingUITests: [test]
     run:
       config: Debug
       # Local StoreKit products, so the paywall and the entitlement paths are
@@ -75,3 +71,7 @@ schemes:
       storeKitConfiguration: Kindling.storekit
     archive:
       config: Release
+    test:
+      config: Debug
+      targets:
+        - KindlingUITests

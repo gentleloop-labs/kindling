@@ -15,10 +15,8 @@ const mascotSource = resolve(
 const appIconSource = resolve(root, "ios/Kindling/Assets.xcassets/AppIcon.appiconset/Kindling-AppIcon.png");
 const publicAssets = resolve(root, "landing/public/assets");
 
-await mkdir(resolve(root, "prototype"), { recursive: true });
 await mkdir(resolve(root, "landing/src/styles"), { recursive: true });
 await mkdir(publicAssets, { recursive: true });
-await copyFile(tokenSource, resolve(root, "prototype/tokens.css"));
 await copyFile(tokenSource, resolve(root, "landing/src/styles/tokens.css"));
 await sharp(mascotSource)
   .resize(400, 400, { fit: "inside", withoutEnlargement: true })
@@ -41,7 +39,7 @@ const socialCardArtwork = Buffer.from(`
         <stop offset="70%" stop-color="#f36f2c" stop-opacity="0.13" />
         <stop offset="100%" stop-color="#f36f2c" stop-opacity="0" />
       </radialGradient>
-      <linearGradient id="step" x1="0" y1="0" x2="1" y2="1">
+      <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stop-color="#fffaf3" />
         <stop offset="100%" stop-color="#f6eadc" />
       </linearGradient>
@@ -54,37 +52,25 @@ const socialCardArtwork = Buffer.from(`
 
     <text x="142" y="92" fill="#5a3a2b" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="4">KINDLING</text>
     <text x="60" y="210" fill="#2b211c" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="750">
-      <tspan x="60" dy="0">Start the task</tspan>
-      <tspan x="60" dy="78">you are avoiding.</tspan>
+      <tspan x="60" dy="0">Remember where</tspan>
+      <tspan x="60" dy="78">life happened.</tspan>
     </text>
-    <text x="64" y="349" fill="#735b4d" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="400">One tiny first step. One short timer.</text>
+    <text x="64" y="349" fill="#735b4d" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="400">Turn selected trip photos into a private Memory Trail.</text>
 
     <g transform="translate(60 411)">
-      <rect width="650" height="128" rx="30" fill="url(#step)" stroke="#e8d7c8" stroke-width="2" />
-      <g transform="translate(25 24)">
-        <circle cx="19" cy="19" r="19" fill="#f36f2c" />
-        <text x="19" y="27" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">1</text>
-        <text x="0" y="77" fill="#3f3028" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">Name it</text>
-      </g>
-      <text x="190" y="72" fill="#c7a48c" font-family="Arial, Helvetica, sans-serif" font-size="31">›</text>
-      <g transform="translate(238 24)">
-        <circle cx="19" cy="19" r="19" fill="#f36f2c" />
-        <text x="19" y="27" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">2</text>
-        <text x="0" y="77" fill="#3f3028" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">Tiny step</text>
-      </g>
-      <text x="410" y="72" fill="#c7a48c" font-family="Arial, Helvetica, sans-serif" font-size="31">›</text>
-      <g transform="translate(458 24)">
-        <circle cx="19" cy="19" r="19" fill="#f36f2c" />
-        <text x="19" y="27" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">3</text>
-        <text x="0" y="77" fill="#3f3028" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">Start 2 min</text>
-      </g>
+      <rect width="650" height="128" rx="30" fill="url(#card)" stroke="#e8d7c8" stroke-width="2" />
+      <text x="30" y="39" fill="#a26b4a" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="2">A WEEKEND IN LISBON</text>
+      <path d="M42 92 C 138 34, 228 115, 319 69 S 486 40, 597 86" fill="none" stroke="#f36f2c" stroke-width="5" stroke-linecap="round" />
+      <circle cx="42" cy="92" r="10" fill="#ffb13b" />
+      <circle cx="319" cy="69" r="10" fill="#ffb13b" />
+      <circle cx="597" cy="86" r="10" fill="#ffb13b" />
     </g>
 
     <g transform="translate(810 445)">
       <rect width="298" height="120" rx="28" fill="#fffaf3" stroke="#e4cdbb" stroke-width="2" />
-      <text x="28" y="38" fill="#a26b4a" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="2">YOUR FIRST STEP</text>
-      <text x="28" y="75" fill="#33251e" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">Open the document.</text>
-      <text x="218" y="102" fill="#f36f2c" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">02:00</text>
+      <text x="28" y="38" fill="#a26b4a" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" letter-spacing="2">A SMALL SPARK</text>
+      <text x="28" y="75" fill="#33251e" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">What did this</text>
+      <text x="28" y="101" fill="#33251e" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">place sound like?</text>
     </g>
   </svg>
 `);

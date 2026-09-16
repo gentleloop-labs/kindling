@@ -3,17 +3,17 @@
   "nonRenewingSubscriptions": [],
   "products": [
     {
-      "displayPrice": "44.99",
+      "displayPrice": "59.99",
       "familyShareable": true,
       "internalID": "8DF36A5E-D17D-546A-944A-95A9FF18CD27",
       "localizations": [
         {
-          "description": "Park as many tasks as you need, forever. One payment.",
-          "displayName": "Kindling, for good",
+          "description": "Unlimited memory trails and every Kindling Pro feature, forever.",
+          "displayName": "Kindling Pro Lifetime",
           "locale": "en_US"
         }
       ],
-      "productID": "dev.aftaab.kindling.multitask.lifetime",
+      "productID": "dev.aftaab.kindling.pro.lifetime",
       "referenceName": "Lifetime",
       "type": "NonConsumable"
     }
@@ -31,12 +31,12 @@
     {
       "id": "9AFBF20E-411B-59CB-A796-FE8F6726E501",
       "localizations": [],
-      "name": "Multi-task",
+      "name": "Kindling Pro",
       "subscriptions": [
         {
           "adHocOffers": [],
           "codeOffers": [],
-          "displayPrice": "3.99",
+          "displayPrice": "4.99",
           "familyShareable": true,
           "groupNumber": 1,
           "internalID": "F0902014-5861-55C0-8875-25F286DD03C3",
@@ -47,12 +47,12 @@
           },
           "localizations": [
             {
-              "description": "Park as many tasks as you need.",
-              "displayName": "Monthly",
+              "description": "Unlimited memory trails, premium cards, and resurfacing controls.",
+              "displayName": "Kindling Pro Monthly",
               "locale": "en_US"
             }
           ],
-          "productID": "dev.aftaab.kindling.multitask.monthly",
+          "productID": "dev.aftaab.kindling.pro.monthly",
           "recurringSubscriptionPeriod": "P1M",
           "referenceName": "Monthly",
           "subscriptionGroupID": "9AFBF20E-411B-59CB-A796-FE8F6726E501",
@@ -61,7 +61,7 @@
         {
           "adHocOffers": [],
           "codeOffers": [],
-          "displayPrice": "19.99",
+          "displayPrice": "29.99",
           "familyShareable": true,
           "groupNumber": 1,
           "internalID": "9E079F5A-C4DD-563A-9388-389D2E4E5FCB",
@@ -72,12 +72,12 @@
           },
           "localizations": [
             {
-              "description": "Park as many tasks as you need.",
-              "displayName": "Annual",
+              "description": "Unlimited memory trails, premium cards, and resurfacing controls.",
+              "displayName": "Kindling Pro Annual",
               "locale": "en_US"
             }
           ],
-          "productID": "dev.aftaab.kindling.multitask.annual",
+          "productID": "dev.aftaab.kindling.pro.annual",
           "recurringSubscriptionPeriod": "P1Y",
           "referenceName": "Annual",
           "subscriptionGroupID": "9AFBF20E-411B-59CB-A796-FE8F6726E501",

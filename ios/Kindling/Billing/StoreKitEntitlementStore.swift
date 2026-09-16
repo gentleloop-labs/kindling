@@ -30,7 +30,7 @@ enum PurchaseOutcome: Equatable {
 @MainActor
 final class StoreKitEntitlementStore: EntitlementProviding {
     /// Cached so the paywall check does not wait on the network mid-flow.
-    private(set) var hasMultiTask = false
+    private(set) var hasPro = false
     /// Prevents a paid user seeing a brief free-tier upsell while StoreKit is still
     /// taking its first entitlement reading at launch.
     private(set) var hasLoadedEntitlements = false
@@ -83,18 +83,18 @@ final class StoreKitEntitlementStore: EntitlementProviding {
             // grants nothing. Failing closed is safe because the free tier is whole.
             guard case .verified(let transaction) = result else { continue }
             guard transaction.revocationDate == nil else { continue }
-            if ProductID.entitlement(for: transaction.productID) == .multiTask {
+            if ProductID.entitlement(for: transaction.productID) == .pro {
                 entitled = true
             }
         }
-        hasMultiTask = entitled
+        hasPro = entitled
         hasLoadedEntitlements = true
     }
 
     nonisolated func isActive(_ entitlement: Entitlement) async -> Bool {
         switch entitlement {
-        case .multiTask:
-            return await MainActor.run { hasMultiTask }
+        case .pro:
+            return await MainActor.run { hasPro }
         }
     }
 
@@ -124,7 +124,7 @@ final class StoreKitEntitlementStore: EntitlementProviding {
                 guard case .verified(let transaction) = verification else { return .failed }
                 await transaction.finish()
                 await refresh()
-                return hasMultiTask ? .purchased : .failed
+                return hasPro ? .purchased : .failed
             case .userCancelled:
                 return .cancelled
             case .pending:
@@ -168,7 +168,7 @@ final class StoreKitEntitlementStore: EntitlementProviding {
             await refresh()
             // The round-trip succeeded either way; the entitlement decides which
             // answer it was.
-            return hasMultiTask ? .restored : .nothingToRestore
+            return hasPro ? .restored : .nothingToRestore
         } catch {
             // Offline, or the user dismissed the App Store sign-in sheet. Distinct
             // from having nothing to restore.

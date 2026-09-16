@@ -21,6 +21,20 @@
                ReferencedContainer = "container:Kindling.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CFBE3E5A4F14DAF6EEE94AEA"
+               BuildableName = "KindlingUITests.xctest"
+               BlueprintName = "KindlingUITests"
+               ReferencedContainer = "container:Kindling.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -39,7 +53,20 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CFBE3E5A4F14DAF6EEE94AEA"
+               BuildableName = "KindlingUITests.xctest"
+               BlueprintName = "KindlingUITests"
+               ReferencedContainer = "container:Kindling.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

@@ -1,4 +1,6 @@
-# Release plan — App Store submission by 2026-08-31
+# Legacy task-starter release plan
+
+> Archived on 2026-09-16. The current release direction is the memory-product roadmap in `spec.md`.
 
 Created 2026-08-18, revised the same day. Supersedes the two-day sprint plan, which
 targeted a working v1 rather than a shipped product.

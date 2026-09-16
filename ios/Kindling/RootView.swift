@@ -3,192 +3,102 @@ import KindlingUI
 import SwiftData
 import SwiftUI
 
-/// The app shell. Start remains the default destination, while saved tasks and
-/// settings are stable places in the tab bar instead of transient sheets. The bar
-/// disappears during onboarding and a session so those moments stay single-purpose.
 struct RootView: View {
-    @Environment(StoreKitEntitlementStore.self) private var entitlements
+    @Environment(\.modelContext) private var context
     @Environment(\.analyticsTracker) private var analytics
-    @Query private var tasks: [AvoidedTask]
-
-    @State private var selectedTab: AppTab = .start
-    @State private var showingPaywall = false
-    @State private var paywallSource: PaywallScreen.Source = .discovery
-    @State private var chromeVisible = true
-    @State private var requestedTaskID: UUID?
-    @State private var releasedTaskID: UUID?
-    @State private var newTaskRequest: UUID?
-    @State private var aiConfigurationRevision = UUID()
-
+    @AppStorage("kindling.memory.onboarding.completed") private var completedOnboarding = false
+    @State private var selectedTab: AppTab = .atlas
+    @State private var pendingAction: AtlasAction?
     #if DEBUG
-    @State private var showingDebug = false
+    @State private var debugTrail: MemoryTrip?
+    @State private var debugShare: MemoryTrip?
+    @State private var debugPaywall = false
     #endif
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            startTab
-                .toolbar(chromeVisible ? .visible : .hidden, for: .tabBar)
-                .toolbarBackground(KindlingColor.background, for: .tabBar)
-                .toolbarBackground(chromeVisible ? .visible : .hidden, for: .tabBar)
-                .tabItem {
-                    Label("Start", systemImage: "flame")
-                }
-                .tag(AppTab.start)
+            AtlasScreen(pendingAction: $pendingAction)
+                .tabItem { Label("Atlas", systemImage: "map.fill") }
+                .tag(AppTab.atlas)
 
-            TaskShelfScreen(
-                onResume: resumeTask,
-                onStartNew: attemptStartNewTask,
-                onRelease: { releasedTaskID = $0 }
-            )
-            .tabItem {
-                Label("Tasks", systemImage: "square.stack.3d.up")
-            }
-            .tag(AppTab.tasks)
+            MemoriesScreen()
+                .tabItem { Label("Memories", systemImage: "photo.stack") }
+                .tag(AppTab.memories)
 
             SettingsScreen()
-                .tabItem {
-                    Label("Settings", systemImage: "gearshape")
-                }
+                .tabItem { Label("Settings", systemImage: "gearshape") }
                 .tag(AppTab.settings)
         }
         .tint(KindlingColor.accent)
-        .onChange(of: selectedTab) { previous, _ in
-            if previous == .settings {
-                aiConfigurationRevision = UUID()
+        .fullScreenCover(isPresented: Binding(
+            get: { !completedOnboarding },
+            set: { if !$0 { completedOnboarding = true } }
+        )) {
+            MemoryOnboardingScreen { action in
+                completedOnboarding = true
+                selectedTab = .atlas
+                pendingAction = action
+                analytics.track(.onboardingCompleted)
             }
         }
-        .sheet(isPresented: $showingPaywall) {
-            PaywallScreen(source: paywallSource) {
-                if paywallSource == .taskShelf {
-                    newTaskRequest = UUID()
-                    selectedTab = .start
-                }
-            }
+        .task {
+            ImportRecoveryService.recoverInterruptedImports(in: context)
+            analytics.track(.appOpened)
         }
         #if DEBUG
-        .task {
-            if ProcessInfo.processInfo.environment["KINDLING_OPEN_TASKS"] == "1" {
-                selectedTab = .tasks
-            }
-            if ProcessInfo.processInfo.environment["KINDLING_OPEN_SETTINGS"] == "1" {
-                selectedTab = .settings
-            }
-            if ProcessInfo.processInfo.environment["KINDLING_OPEN_PAYWALL"] == "1" {
-                analytics.track(.paywallDisplayed(source: .settings))
-                showingPaywall = true
-            }
+        .task { routeDebugScreenshotIfNeeded() }
+        .sheet(item: $debugTrail) { trip in
+            NavigationStack { MemoryTrailView(trip: trip) }
         }
-        .sheet(isPresented: $showingDebug) {
-            DebugToolsView()
+        .sheet(item: $debugShare) { trip in
+            SharePreviewScreen(trip: trip)
+        }
+        .sheet(isPresented: $debugPaywall) {
+            PaywallScreen(source: .settings)
         }
         #endif
-    }
-
-    private var startTab: some View {
-        RescueFlowView(
-            chromeVisible: $chromeVisible,
-            requestedTaskID: $requestedTaskID,
-            releasedTaskID: $releasedTaskID,
-            newTaskRequest: $newTaskRequest,
-            aiConfigurationRevision: $aiConfigurationRevision,
-            onShowPlus: presentPaywall
-        )
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if chromeVisible {
-                    HStack(spacing: Space.s1) {
-                        Spacer()
-
-                        #if DEBUG
-                        if ProcessInfo.processInfo.environment["KINDLING_SCREEN"] == nil {
-                            Button { showingDebug = true } label: {
-                                Image(systemName: "hammer")
-                                    .kindlingChromeIcon()
-                            }
-                            .accessibilityLabel("Developer tools")
-                        }
-                        #endif
-
-                        if entitlements.hasLoadedEntitlements && !entitlements.hasMultiTask {
-                            Button { presentPaywall(source: .home) } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "sparkles")
-                                    Text("Plus")
-                                }
-                                .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                .foregroundStyle(KindlingColor.accent)
-                                .padding(.horizontal, Space.s1)
-                                .frame(height: KindlingLayout.minTapTarget)
-                                .contentShape(Rectangle())
-                            }
-                            .accessibilityLabel("Kindling Plus")
-                        }
-
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, Space.s3)
-                    .frame(height: KindlingLayout.minTapTarget)
-                    .background(KindlingColor.background)
-                }
-            }
-    }
-
-    private func resumeTask(_ id: UUID) {
-        requestedTaskID = id
-        selectedTab = .start
-    }
-
-    private func attemptStartNewTask() {
-        analytics.track(.secondTaskAttempted)
-        let count = ActiveTaskPolicy.currentActiveCount(in: tasks.map(\.status))
-        if ActiveTaskPolicy.canStartAnotherTask(
-            currentActiveCount: count,
-            hasMultiTaskEntitlement: entitlements.hasMultiTask
-        ) {
-            newTaskRequest = UUID()
-            selectedTab = .start
-        } else {
-            presentPaywall(source: .taskShelf)
-        }
-    }
-
-    private func presentPaywall(source: AnalyticsPaywallSource) {
-        paywallSource = source == .taskShelf ? .taskShelf : .discovery
-        analytics.track(.paywallDisplayed(source: source))
-        showingPaywall = true
-    }
-}
-
-private enum AppTab: Hashable {
-    case start
-    case tasks
-    case settings
-}
-
-private extension Image {
-    /// Normalizes symbols with different intrinsic bounds so the app chrome
-    /// reads as one aligned control group instead of two floating glyphs.
-    func kindlingChromeIcon() -> some View {
-        font(.system(size: 20, weight: .medium))
-            .foregroundStyle(KindlingColor.textSecondary)
-            .frame(
-                width: KindlingLayout.minTapTarget,
-                height: KindlingLayout.minTapTarget
-            )
-            .contentShape(Rectangle())
     }
 }
 
 #if DEBUG
-/// Kept out of release builds entirely. The design gallery is a living reference for
-/// the token system; the store probe is the Phase 1 persistence check.
-struct DebugToolsView: View {
-    var body: some View {
-        TabView {
-            DesignGallery()
-                .tabItem { Label("Design", systemImage: "paintpalette") }
-            PersistenceProbeView()
-                .tabItem { Label("Store", systemImage: "internaldrive") }
+private extension RootView {
+    func routeDebugScreenshotIfNeeded() {
+        guard let screen = ProcessInfo.processInfo.environment["KINDLING_SCREEN"] else { return }
+        switch screen {
+        case "onboarding":
+            completedOnboarding = false
+        case "atlas":
+            completedOnboarding = true
+            _ = SampleTripFactory.create(in: context)
+            selectedTab = .atlas
+        case "trail":
+            completedOnboarding = true
+            debugTrail = SampleTripFactory.create(in: context)
+        case "memories":
+            completedOnboarding = true
+            _ = SampleTripFactory.create(in: context)
+            selectedTab = .memories
+        case "share":
+            completedOnboarding = true
+            debugShare = SampleTripFactory.create(in: context)
+        case "paywall":
+            completedOnboarding = true
+            debugPaywall = true
+        default:
+            break
         }
     }
 }
 #endif
+
+enum AtlasAction: String, Identifiable {
+    case importPhotos
+    case openSample
+    var id: String { rawValue }
+}
+
+private enum AppTab: Hashable {
+    case atlas
+    case memories
+    case settings
+}

@@ -1,5 +1,6 @@
-# Kindling
-## Complete Product Plan — ADHD Task-Initiation App
+# Legacy: Kindling task-starter product plan
+
+> Archived on 2026-09-16. This document describes the rejected task-initiation product. The current travel-memory product is specified in `spec.md`.
 
 *Consolidated from a multi-stage planning process, current as of August 3, 2026. Competitor and market research was conducted via live web search on August 2-3, 2026 and is dated accordingly; treat anything time-sensitive (pricing, store fees, tooling maturity) as needing a re-check if this document is read much later.*
 

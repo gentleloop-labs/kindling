@@ -5,62 +5,62 @@ project:
   output_size: iPhone6_5
 
 screenshots:
-  01-name-it:
+  01-remember:
     frame: false
     template: templates/kindling-store.html
     assets:
-      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/01-name-it.png
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/01-remember.png
     variables:
-      variant: name
-      headline_before: Name the
-      headline_accent: thing
-      headline_after: "you're avoiding."
-      supporting: No lists. No planning. Just name the thing.
-
-  02-start-small:
-    frame: false
-    template: templates/kindling-store.html
-    assets:
-      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/02-start-small.png
-    variables:
-      variant: step
-      headline_before: Stuck? Start with one
-      headline_accent: tiny step.
+      variant: remember
+      headline_before: Remember where
+      headline_accent: life happened.
       headline_after: ""
-      supporting: One concrete first move. You never see the whole plan.
+      supporting: Turn scattered travel photos into a private memory trail.
 
-  03-two-minutes:
+  02-atlas:
     frame: false
     template: templates/kindling-store.html
     assets:
-      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/03-two-minutes.png
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/02-atlas.png
     variables:
-      variant: timer
-      headline_before: Two minutes. One
-      headline_accent: clear action.
+      variant: atlas
+      headline_before: See every trip in your
+      headline_accent: private atlas.
       headline_after: ""
-      supporting: No pressure. No red. Stop at any time.
+      supporting: No account. No public feed. Your memories stay yours.
 
-  04-starting-counts:
+  03-memory-trail:
     frame: false
     template: templates/kindling-store.html
     assets:
-      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/04-starting-counts.png
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/03-memory-trail.png
     variables:
-      variant: celebrate
-      headline_before: Starting counts as a
-      headline_accent: win.
+      variant: trail
+      headline_before: Relive the places and
+      headline_accent: moments.
       headline_after: ""
-      supporting: Beginning is enough. No streaks, scores, or pressure.
+      supporting: Photos, notes, voice memories, and an approximate map path.
 
-  05-no-guilt:
+  04-find-it:
     frame: false
     template: templates/kindling-store.html
     assets:
-      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/05-no-guilt.png
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/04-find-it.png
     variables:
-      variant: outcome
-      headline_before: Keep going—or stop
-      headline_accent: without guilt.
+      variant: search
+      headline_before: Find the detail you
+      headline_accent: almost forgot.
       headline_after: ""
-      supporting: Keep going, stop for now, or say you got distracted.
+      supporting: Search places, notes, Sparks, tags, and return intent locally.
+
+  05-share-safely:
+    frame: false
+    template: templates/kindling-store.html
+    assets:
+      screen: raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait/05-share-safely.png
+    variables:
+      variant: share
+      headline_before: Preview privacy before
+      headline_accent: you share.
+      headline_after: ""
+      supporting: Choose exactly which dates, places, notes, and moments appear.
