@@ -1,7 +1,11 @@
 ---
+import "@fontsource-variable/fraunces/soft.css";
+import "@fontsource-variable/fraunces/soft-italic.css";
+import "@fontsource-variable/nunito/wght.css";
 import "../styles/tokens.css";
 import "../styles/global.css";
 import Ember from "../components/Ember.astro";
+import { appStoreURL } from "../site";
 
 interface Props {
   title: string;
@@ -12,7 +16,7 @@ const { title, description } = Astro.props;
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalURL = new URL(path, Astro.site);
 const socialImageURL = new URL("/assets/kindling-social-card.png", Astro.site);
-const socialImageAlt = "Kindling turns travel photos into a private, interactive memory map";
+const socialImageAlt = "Kindling: remember where life happened. A Lisbon weekend laid out as a memory trail.";
 ---
 
 <!doctype html>
@@ -46,6 +50,7 @@ const socialImageAlt = "Kindling turns travel photos into a private, interactive
     <link rel="apple-touch-icon" href="/assets/kindling-app-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add("js");</script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -57,15 +62,17 @@ const socialImageAlt = "Kindling turns travel photos into a private, interactive
         </a>
         <nav aria-label="Primary navigation">
           <a href="/#how-it-works">How it works</a>
+          <a href="/#kindling-pro">Pro</a>
           <a href="/support/">Support</a>
-          <a class="nav-try" href="/#kindling-plus">Kindling Plus</a>
+          <a class="nav-try" href={appStoreURL} rel="external">Get the app</a>
         </nav>
       </div>
     </header>
     <main id="main"><slot /></main>
     <footer class="site-footer">
-      <p><Ember variant="dot" /> A small start is still a start.</p>
+      <p><Ember variant="dot" /> Remember where life happened.</p>
       <nav aria-label="Footer navigation">
+        <a href={appStoreURL} rel="external">App Store</a>
         <a href="/support/">Support</a>
         <a href="/privacy/">Privacy</a>
         <a href="/terms/">Terms</a>
@@ -78,6 +85,20 @@ const socialImageAlt = "Kindling turns travel photos into a private, interactive
       const setScrolled = () => header?.setAttribute("data-scrolled", String(window.scrollY > 8));
       setScrolled();
       window.addEventListener("scroll", setScrolled, { passive: true });
+
+      const revealed = document.querySelectorAll("[data-reveal]");
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.setAttribute("data-revealed", "");
+            observer.unobserve(entry.target);
+          }
+        }, { rootMargin: "0px 0px -8% 0px" });
+        revealed.forEach((element) => observer.observe(element));
+      } else {
+        revealed.forEach((element) => element.setAttribute("data-revealed", ""));
+      }
     </script>
   </body>
 </html>

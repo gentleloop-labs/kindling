@@ -1,7 +1,7 @@
 {
   "name": "Kindling",
   "short_name": "Kindling",
-  "description": "Turn scattered travel photos into a private, interactive memory map.",
+  "description": "Pick the photos from a trip and see it laid out in order on a map.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#faf6f1",

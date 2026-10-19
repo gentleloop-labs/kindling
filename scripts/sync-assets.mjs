@@ -14,9 +14,53 @@ const mascotSource = resolve(
 );
 const appIconSource = resolve(root, "ios/Kindling/Assets.xcassets/AppIcon.appiconset/Kindling-AppIcon.png");
 const publicAssets = resolve(root, "landing/public/assets");
+const sampleMediaDirectory = resolve(root, "ios/Kindling/Assets.xcassets");
+const screenshotDirectory = resolve(root, "screenshots/raw/en-US/iPhone_17_Pro_Max_-_Deep_Blue_-_Portrait");
+
+// The bundled, app-owned sample trips. The website shows the same media as the app and the App Store.
+const samplePhotos = [
+  ["SampleTram.imageset/sample-tram.png", "tram"],
+  ["SampleTarts.imageset/sample-tarts.png", "tarts"],
+  ["SampleSunset.imageset/sample-sunset.png", "sunset"],
+  ["SampleDoor.imageset/sample-door.png", "door"],
+  ["SampleKyoto.imageset/sample-kyoto.jpg", "kyoto"],
+  ["SampleAmalfi.imageset/sample-amalfi.jpg", "amalfi"],
+  ["SampleIceland.imageset/sample-iceland.jpg", "iceland"]
+];
+
+// Raw shipping-UI captures from the App Store screenshot pipeline.
+const appScreens = [
+  ["01-remember.png", "review"],
+  ["02-atlas.png", "atlas"],
+  ["03-memory-trail.png", "trail"],
+  ["04-find-it.png", "moment"],
+  ["05-share-safely.png", "share"]
+];
 
 await mkdir(resolve(root, "landing/src/styles"), { recursive: true });
-await mkdir(publicAssets, { recursive: true });
+await mkdir(resolve(publicAssets, "photos"), { recursive: true });
+await mkdir(resolve(publicAssets, "screens"), { recursive: true });
+
+for (const [source, name] of samplePhotos) {
+  await sharp(resolve(sampleMediaDirectory, source))
+    .resize({ width: 640, withoutEnlargement: true })
+    .webp({ quality: 78, effort: 6 })
+    .toFile(resolve(publicAssets, "photos", `${name}.webp`));
+}
+
+for (const [source, name] of appScreens) {
+  await sharp(resolve(screenshotDirectory, source))
+    .resize({ width: 600, withoutEnlargement: true })
+    .webp({ quality: 82, effort: 6 })
+    .toFile(resolve(publicAssets, "screens", `${name}.webp`));
+}
+
+// The trail screen's memory map, including its "Approximate memory path" label.
+await sharp(resolve(screenshotDirectory, "03-memory-trail.png"))
+  .extract({ left: 72, top: 1703, width: 1061, height: 838 })
+  .resize({ width: 720 })
+  .webp({ quality: 82, effort: 6 })
+  .toFile(resolve(publicAssets, "screens", "trail-map.webp"));
 await copyFile(tokenSource, resolve(root, "landing/src/styles/tokens.css"));
 await sharp(mascotSource)
   .resize(400, 400, { fit: "inside", withoutEnlargement: true })
@@ -91,4 +135,4 @@ await sharp(socialCardArtwork)
   .png({ compressionLevel: 9, effort: 10, palette: false })
   .toFile(resolve(publicAssets, "kindling-social-card.png"));
 
-console.log("Synced shared tokens, production app artwork, and the social preview card.");
+console.log("Synced shared tokens, production app artwork, sample media, app screens, and the social preview card.");
