@@ -38,3 +38,7 @@ proxy/.wrangler/
 
 # Local build config holding the rotatable app token
 ios/Config/Local.xcconfig
+
+# Local App Store Connect and screenshot review output
+.asc/
+screenshots/review/

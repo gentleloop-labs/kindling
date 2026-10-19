@@ -12,7 +12,6 @@ struct PaywallScreen: View {
     var onPurchased: () -> Void = {}
 
     @State private var selectedProductID = ProductID.annual
-    @State private var introEligibility: [String: Bool] = [:]
     @State private var isLoading = true
     @State private var isPurchasing = false
     @State private var isRestoring = false
@@ -98,7 +97,7 @@ struct PaywallScreen: View {
         } else if store.products.isEmpty && isScreenshotRoute {
             VStack(spacing: Space.s1) {
                 previewProduct("Monthly", price: "$4.99", selected: false)
-                previewProduct("Annual", price: "$29.99", selected: true, trial: true)
+                previewProduct("Annual", price: "$29.99", selected: true)
                 previewProduct("Early lifetime", price: "$59.99", selected: false)
             }
         } else if store.products.isEmpty {
@@ -116,13 +115,12 @@ struct PaywallScreen: View {
         }
     }
 
-    private func previewProduct(_ name: String, price: String, selected: Bool, trial: Bool = false) -> some View {
+    private func previewProduct(_ name: String, price: String, selected: Bool) -> some View {
         HStack(spacing: Space.s2) {
             Image(systemName: selected ? "largecircle.fill.circle" : "circle")
                 .foregroundStyle(KindlingColor.accent)
             VStack(alignment: .leading, spacing: 2) {
                 Text(name).font(.kindlingBody)
-                if trial { Text("Includes a 7-day free trial").font(.kindlingCaption) }
             }
             Spacer()
             Text(price).font(.kindlingButton)
@@ -150,9 +148,6 @@ struct PaywallScreen: View {
                     .foregroundStyle(KindlingColor.accent)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(product.displayName).font(.kindlingBody)
-                    if introEligibility[product.id] == true {
-                        Text("Includes a 7-day free trial").font(.kindlingCaption)
-                    }
                 }
                 Spacer()
                 Text(product.displayPrice).font(.kindlingButton)
@@ -177,10 +172,9 @@ struct PaywallScreen: View {
 
     private var purchaseButtonTitle: String {
         if isPurchasing { return "Checking with Apple…" }
-        if isScreenshotRoute { return "Start 7-day free trial" }
         guard let selectedProduct else { return "Continue" }
         if selectedProduct.id == ProductID.lifetime { return "Unlock forever" }
-        return introEligibility[selectedProduct.id] == true ? "Start 7-day free trial" : "Continue"
+        return "Continue"
     }
 
     private var isScreenshotRoute: Bool {
@@ -197,9 +191,6 @@ struct PaywallScreen: View {
         if !store.products.contains(where: { $0.id == selectedProductID }) {
             selectedProductID = store.products.first?.id ?? ProductID.annual
         }
-        var eligibility: [String: Bool] = [:]
-        for product in store.products { eligibility[product.id] = await store.isEligibleForIntroOffer(product) }
-        introEligibility = eligibility
         isLoading = false
     }
 

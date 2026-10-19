@@ -9,7 +9,7 @@ The current product specification is [`spec.md`](spec.md). Documents that descri
 - `ios/` — native SwiftUI app, local `KindlingCore` and `KindlingUI` packages, and StoreKit configuration.
 - `landing/` — Astro website with current support, privacy, and terms pages.
 - `metadata/` — canonical English App Store metadata.
-- `screenshots/` — App Store screenshot automation and outputs; task-era images must be replaced before submission.
+- `screenshots/` — App Store screenshot automation and current memory-product outputs.
 - `prototype/`, `proxy/`, and older planning documents — legacy task-starter artifacts, not part of the current app or deployment path.
 
 ## Build and test

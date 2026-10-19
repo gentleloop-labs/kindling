@@ -1,6 +1,8 @@
 # Kindling memory pivot — release readiness
 
-Updated September 16, 2026. Target submission: December 7, 2026.
+Originally updated September 16, 2026. Release status checked October 19, 2026.
+
+Kindling 1.0 is released. App Store Connect reports version 1.0 as `READY_FOR_SALE`, with build 15 attached. The sections below preserve the pre-release readiness snapshot; its submission plan and build 13 warning no longer describe the current App Store state. The planned 12-person TestFlight and manual device audits were not recorded as completed in this document.
 
 ## Implemented
 
