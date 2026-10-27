@@ -8,6 +8,18 @@ public enum TripLimitPolicy {
     }
 }
 
+public enum ReviewPromptPolicy {
+    /// Asks at most once per app version, and only after a real (non-sample) trail is saved.
+    /// StoreKit applies its own yearly cap on top of this.
+    public static func shouldRequestReview(
+        savedTripCount: Int,
+        lastPromptedVersion: String?,
+        currentVersion: String
+    ) -> Bool {
+        savedTripCount >= 1 && lastPromptedVersion != currentVersion
+    }
+}
+
 public struct ResurfacingCandidate: Sendable, Equatable {
     public let momentID: UUID
     public let tripID: UUID

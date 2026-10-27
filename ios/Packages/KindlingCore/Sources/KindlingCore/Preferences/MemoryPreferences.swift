@@ -9,6 +9,7 @@ public enum PreferenceKey {
     public static let resurfacingCadence = "resurfacing_cadence"
     public static let includePhotosInPostcards = "include_photos_in_postcards"
     public static let legacyDataDecision = "legacy_data_decision"
+    public static let reviewPromptVersion = "review_prompt_version"
 }
 
 @MainActor

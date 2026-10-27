@@ -12,6 +12,14 @@ struct MemoryPolicyTests {
         #expect(TripLimitPolicy.canSaveTrip(completedTripCount: 99, hasPro: true))
     }
 
+    @Test("review prompt waits for a saved trail and asks once per version")
+    func reviewPrompt() {
+        #expect(!ReviewPromptPolicy.shouldRequestReview(savedTripCount: 0, lastPromptedVersion: nil, currentVersion: "1.0.0"))
+        #expect(ReviewPromptPolicy.shouldRequestReview(savedTripCount: 1, lastPromptedVersion: nil, currentVersion: "1.0.0"))
+        #expect(!ReviewPromptPolicy.shouldRequestReview(savedTripCount: 3, lastPromptedVersion: "1.0.0", currentVersion: "1.0.0"))
+        #expect(ReviewPromptPolicy.shouldRequestReview(savedTripCount: 3, lastPromptedVersion: "1.0.0", currentVersion: "1.1.0"))
+    }
+
     @Test("all new products grant Pro and old task products grant nothing")
     func productMapping() {
         #expect(ProductID.all.count == 3)

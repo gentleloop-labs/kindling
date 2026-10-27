@@ -1,5 +1,6 @@
 import KindlingCore
 import KindlingUI
+import StoreKit
 import SwiftData
 import SwiftUI
 
@@ -11,6 +12,7 @@ struct DraftReviewScreen: View {
     @Environment(\.modelContext) private var context
     @Environment(\.analyticsTracker) private var analytics
     @Environment(StoreKitEntitlementStore.self) private var entitlements
+    @Environment(\.requestReview) private var requestReview
     @Query private var allTrips: [MemoryTrip]
     @State private var showingPaywall = false
     @State private var showingCancelConfirmation = false
@@ -185,7 +187,27 @@ struct DraftReviewScreen: View {
         ImportRecoveryService.markDraft(trip.id, as: .saved, in: context)
         try? context.save()
         analytics.track(.draftSaved)
+        let shouldPromptForReview = trip.source != .sample && ReviewPromptPolicy.shouldRequestReview(
+            savedTripCount: completedUserTripCount + 1,
+            lastPromptedVersion: PreferencesStore(context: context).value(PreferenceKey.reviewPromptVersion),
+            currentVersion: appVersion
+        )
         onSaved()
+        if shouldPromptForReview { scheduleReviewPrompt() }
+    }
+
+    private var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+    }
+
+    private func scheduleReviewPrompt() {
+        PreferencesStore(context: context).set(PreferenceKey.reviewPromptVersion, appVersion)
+        let requestReview = requestReview
+        Task { @MainActor in
+            // Let the save dismissal and trail transition settle before StoreKit shows its sheet.
+            try? await Task.sleep(for: .seconds(1.5))
+            requestReview()
+        }
     }
 
     private func autosave() {

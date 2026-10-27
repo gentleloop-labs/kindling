@@ -102,6 +102,10 @@ struct SettingsScreen: View {
                 }
 
                 Section {
+                    Link("Rate Kindling", destination: URL(string: "https://apps.apple.com/app/id6805423597?action=write-review")!)
+                }
+
+                Section {
                     Link("Privacy policy", destination: URL(string: "https://kindling.gentlelooplabs.com/privacy/")!)
                     Link("Terms of use", destination: URL(string: "https://kindling.gentlelooplabs.com/terms/")!)
                     Link("Support", destination: URL(string: "https://kindling.gentlelooplabs.com/support/")!)
